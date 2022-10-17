@@ -11,7 +11,7 @@ db.once('open', () => console.log('Connected to Database'))
 
 app.use(express.json())
 
-const swsiRouter = require('./routes/swsi')
-app.use('/swsi', swsiRouter)
+const applicationRouter = require('./routes/applications')
+app.use('/applications', applicationRouter)
 
 app.listen(3000, () => console.log('Server Started'))

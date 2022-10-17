@@ -1,0 +1,27 @@
+GET http://localhost:3000/applications
+
+###
+
+GET http://localhost:3000/applications/634d902d295b5dcd5bb4ba6c
+
+###
+
+POST http://localhost:3000/applications
+Content-Type: application/json
+
+{
+    "name": "Amazing Person",
+    "subscribedToChannel": "Web Dev Simplified"
+}
+
+### 
+
+DELETE http://localhost:3000/applications/634d902d295b5dcd5bb4ba6c
+
+###
+PATCH http://localhost:3000/applications/634d92c602df8404c52aad36
+Content-Type: application/json
+
+{
+    "name": "New Name"
+}
