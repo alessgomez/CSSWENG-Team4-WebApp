@@ -2,18 +2,57 @@ const { builtinModules } = require('module')
 const mongoose = require('mongoose')
 
 const applicationSchema = new mongoose.Schema({
-    name: {
+    applicationNo: {
+        type: Number, 
+        required: true
+    },
+    applicantNo: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Client',
+        required: true
+    },
+    referenceClientNo: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Client'
+    },
+    representativeNo: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Representative'
+    },
+    establishmentName: {
+        type: String
+    },
+    address: {
         type: String, 
         required: true
     },
-    subscribedToChannel: {
-        type: String,
+    landmark: {
+        type: String
+    },
+    ownership: {
+        type: String, 
         required: true
     },
-    subscribeDate:{
-        type: Date,
-        required: true,
-        default: Date.now
+    connectionType: {
+        type: String
+    },
+    status: {
+        type: String, 
+        required: true
+    },
+    nearestBranch: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Branch'
+    },
+    fee: {
+        type: Number, 
+        required: true
+    },
+    documents: [{
+        type: mongoose.Schema.Types.ObjectId, ref: 'Document'
+    }],
+    startDate: {
+        type: Date, 
+        required: true
+    },
+    completionDate: {
+        type: Date
     }
 })
 
