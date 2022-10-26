@@ -6,7 +6,15 @@ const clientSchema = new mongoose.Schema({
         type: Number, 
         required: true
     },
-    name: {
+    firstName: {
+        type: String,
+        required: true
+    },
+    middleName: {
+        type: String,
+        required: true
+    },
+    lastName: {
         type: String,
         required: true
     },

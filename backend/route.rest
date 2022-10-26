@@ -25,3 +25,20 @@ Content-Type: application/json
 {
     "name": "New Name"
 }
+
+###
+POST http://localhost:3000/applications
+Content-Type: application/json
+
+{
+    "firstName": "Hannah",
+    "middleName": "Regine",
+    "lastName": "Fong",
+    "email": "hannahfong@gmail.com",
+    "contactNo": "091771909329",
+    "establishmentName": "",
+    "address": "1125 Paco Manila",
+    "refClientNo": "",
+    "landmark": "Robinsons Otis",
+    "ownership": "owned"
+}
