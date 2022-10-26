@@ -91,18 +91,12 @@ async function generateNums(req, res, next) {
 
     try {
         clients = await Client.find()
-
-        if (clients == null)
-            return res.status(404).json({message: 'No database entries'})
     } catch (err) {
         return res.status(500).json({message: err.message})
     }
 
     try {
         applications = await Application.find()
-
-        if (applications == null)
-            return res.status(404).json({message: 'No database entries'})
     } catch (err) {
         return res.status(500).json({message: err.message})
     }
