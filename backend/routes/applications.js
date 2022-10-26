@@ -109,16 +109,14 @@ async function generateNums(req, res, next) {
 
     try{
         refClient = await Client.findOne({firstName: req.body.refFirstName, middleName:req.body.refMiddleName, lastName: req.body.refLastName, clientNo: req.body.refClientNo})
-        if (refClient == null){
-            return res.status(404).json({message: 'Cannot find client'})
-        }
     } catch(err) {
-        return res.status(500).json({message: err.message})
+        res.status(500).json({message: err.message})
     }
 
     res.clientNum = clients.length
     res.applicationNum = applications.length
-    res.refClient = refClient._id
+    if (refClient != null)
+        res.refClient = refClient._id
     next()
 }
 

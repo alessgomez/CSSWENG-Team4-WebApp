@@ -31,14 +31,19 @@ POST http://localhost:3000/applications
 Content-Type: application/json
 
 {
-    "firstName": "Hannah",
-    "middleName": "Regine",
-    "lastName": "Fong",
-    "email": "hannahfong@gmail.com",
-    "contactNo": "091771909329",
+    "firstName": "Aless",
+    "middleName": "Interino",
+    "lastName": "Gomez",
+    "email": "hrf@gmail.com",
+    "contactNo": "09260716958",
     "establishmentName": "",
-    "address": "1125 Paco Manila",
-    "refClientNo": "",
-    "landmark": "Robinsons Otis",
+    "address": "159-C Apo St.",
+    "refClientNo": 0,
+    "refFirstName": "Hannah",
+    "refMiddleName": "Chua",
+    "refLastName": "Fong",
+    "landmark": "Lourdes School, QC",
     "ownership": "owned"
+
 }
+
