@@ -1,112 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const Client = require('../models/client')
 const Application = require('../models/application')
-
-//Step 1 - Customer Information
-router.post('/', (req, res) => {
-    
-    var nClients
-    var refClientNo
-    var applicantNo
-    var applicationNo
-    var client 
-    var application
-    //create client record 
-    Client.find({})
-    .then(function(result){
-        nClients = result.length
-
-        client = new Client({
-            clientNo: nClients,
-            firstName: req.body.firstName,
-            middleName: req.body.middleName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            contactNo: req.body.contactNo
-        })
-    
-        /*try{
-            const newClient = client.save()
-            //res.status(201).json(newClient)
-        } catch(err){
-            res.status(400).json({message: err.message})
-        }*/
-
-        return Client.findOne({firstName: req.body.refFirstName, middleName: req.body.refMiddleName, lastName: req.body.refLastName, clientNo: req.body.refClientNo})
-    })
-    .then(function(result){
-        if (result != null)
-            refClientNo = result._id
-        else
-            refClientNo = null
-
-        return Client.findOne({clientNo: nClients})
-    })
-    .then(function(result) {
-        if (result != null)
-            applicantNo = result._id
-        else
-            applicantNo = null
-        
-        return Application.find()
-    })
-    .then(function(result) {
-        applicationNo = result.length
-
-        application = new Application({
-            applicationNo: applicationNo,
-            applicantNo: applicantNo,
-            establishmentName: req.body.establishmentName, 
-            address: req.body.address,
-            refClientNo: refClientNo,
-            landmark: req.body.landmark,
-            ownership: req.body.ownership,
-        })
-
-        /*try{
-            const newApplication = application.save()
-            res.status(201).json(newApplication)
-        } catch(err){
-            res.status(400).json({message: err.message})
-        }*/
-    })
-    .then(function(){
-        try{
-            const newClient = client.save()
-            const newApplication = application.save()
-            res.status(201).json(JSON.stringify(newApplication) + JSON.stringify(newClient))
-        } catch(err){
-            res.status(400).json({message: err.message})
-        }
-    })
-
-/*    Client.findOne({firstName: req.body.refFirstName, middleName: req.body.refMiddleName, lastName: req.body.refLastName, clientNo: req.body.refClientNo}, "", async (error, result) => {
-        if (result != null)
-            refClientNo = result._id
-        else
-            refClientNo = null
-
-        const application = new Application({
-            //applicationNo
-            //applicantNo
-            establishmentName: req.body.establishmentName, 
-            address: req.body.address,
-            refClientNo: refClientNo,
-            landmark: req.body.landmark,
-            ownership: req.body.ownership,
-        })
-
-        try{
-            const newApplication = await application.save()
-            res.status(201).json(newApplication)
-        } catch(err){
-            res.status(400).json({message: err.message})
-        }
-    })*/
-})
-
-//TEMPLATE FUNCTIONS ***
+const Client = require('../models/client')
 
 // Getting all
 router.get('/', async (req, res) => {
@@ -123,16 +18,39 @@ router.get('/:id', getApplication, (req, res) => {
     res.json(res.application)
 })
 
-//Creating One
-router.post('/', async (req, res) => {
-    const application = new Application({
-        name: req.body.name,
-        subscribedToChannel: req.body.subscribedToChannel
+//Creating New Client + Application
+router.post('/', generateNums, async (req, res) => {
+    // Create client
+    const client = new Client({
+        clientNo: res.clientNum,
+        firstName: req.body.firstName,
+        middleName: req.body.middleName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        contactNo: req.body.contactNo
     })
 
     try{
-        const newApplication = await application.save()
-        res.status(201).json(newApplication)
+        const newClient = await client.save()
+        //res.status(201).json(newClient)
+        
+        // Create application
+        const application = new Application({
+            applicationNo: Number(res.applicationNum),
+            applicantNo: newClient._id,
+            establishmentName: req.body.establishmentName, 
+            address: req.body.address,
+            referenceClientNo: res.refClient,
+            landmark: req.body.landmark,
+            ownership: req.body.ownership,
+        })
+
+        try{
+            const newApplication = await application.save()
+            res.status(201).json(newClient + newApplication)
+        } catch(err){
+            res.status(400).json({message: err.message})
+        }
     } catch(err){
         res.status(400).json({message: err.message})
     }
@@ -166,6 +84,44 @@ router.delete('/:id', getApplication, async (req, res) => {
     
 })
 
+async function generateNums(req, res, next) {
+    let clients
+    let applications
+    let refClient
+
+    try {
+        clients = await Client.find()
+
+        if (clients == null)
+            return res.status(404).json({message: 'No database entries'})
+    } catch (err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    try {
+        applications = await Application.find()
+
+        if (applications == null)
+            return res.status(404).json({message: 'No database entries'})
+    } catch (err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    try{
+        refClient = await Client.findOne({firstName: req.body.refFirstName, middleName:req.body.refMiddleName, lastName: req.body.refLastName, clientNo: req.body.refClientNo})
+        if (refClient == null){
+            return res.status(404).json({message: 'Cannot find client'})
+        }
+    } catch(err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.clientNum = clients.length
+    res.applicationNum = applications.length
+    res.refClient = refClient._id
+    next()
+}
+
 async function getApplication(req, res, next) {
     let application 
     try{
@@ -180,7 +136,5 @@ async function getApplication(req, res, next) {
     res.application = application
     next()
 }
-
-//END OF TEMPLATE FUNCTIONS ***
 
 module.exports = router
