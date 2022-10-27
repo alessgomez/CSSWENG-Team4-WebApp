@@ -54,6 +54,21 @@ const applicationSchema = new mongoose.Schema({
     },
     completionDate: {
         type: Date
+    },
+    visitScheduleStatus: {
+        type: String,
+        required: true,
+        default: 'waiting'
+    },
+    visitationStatus: {
+        type: String,
+        required: true,
+        default: 'waiting'
+    },
+    installationStatus: {
+        type: String,
+        required: true,
+        default: 'waiting'
     }
 })
 
