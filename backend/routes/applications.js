@@ -87,6 +87,15 @@ router.post('/step2a', generateRepNumAndApp, async (req, res) => {
     }
 })
 
+// Step 6: Visitation
+router.get('/:id', getApplication, (req, res) => {
+    res.json(res.application.)
+})
+
+router.get('/:id', getApplication, (req, res) => {
+    res.json(res.application)
+})
+
 /* *********** TEMPLATE FUNCTIONS *************************
 // Getting all
 router.get('/', async (req, res) => {
@@ -209,10 +218,10 @@ async function generateRepNumAndApp(req, res, next) {
     next()
 }
 
-/* async function getApplication(req, res, next) {
+async function getApplication(req, res, next) {
     let application 
     try{
-        application = await Application.findById(req.params.id)
+        application = await Application.findOne({applicationNo: req.params.id})
         if (application == null){
             return res.status(404).json({message: 'Cannot find application'})
         }
@@ -222,7 +231,7 @@ async function generateRepNumAndApp(req, res, next) {
 
     res.application = application
     next()
-}*/
+}
 
 async function getClient(req, res, next) {
     let client 
