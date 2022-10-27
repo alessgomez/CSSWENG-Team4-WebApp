@@ -11,7 +11,7 @@ const fileUpload = require('express-fileupload')
 router.use(express.static('public'))
 router.use(fileUpload())
 
-//Creating New Client + Application
+// Step 1: Creating new client + application
 router.post('/step1', generateNums, async (req, res) => {
     // Create client
     const client = new Client({
@@ -25,7 +25,6 @@ router.post('/step1', generateNums, async (req, res) => {
 
     try{
         const newClient = await client.save()
-        //res.status(201).json(newClient)
         
         // Create application
         const application = new Application({
@@ -49,7 +48,7 @@ router.post('/step1', generateNums, async (req, res) => {
     }
 })
 
-// Uploading valid ID for application
+// Step 2: Uploading valid ID for application
 router.patch('/step2/:id', getClient, (req, res) => {
     const image = req.files.validId
     image.mv(path.resolve(__dirname, '../public/validIds',image.name), async (error) => {
@@ -63,7 +62,7 @@ router.patch('/step2/:id', getClient, (req, res) => {
     })
 })
 
-// Creating representative, if applicable
+// Step 2A: Creating representative, if applicable
 router.post('/step2a', generateRepNumAndApp, async (req, res) => {
     const representative = new Representative ({
         idNo: res.repNum,
@@ -86,12 +85,21 @@ router.post('/step2a', generateRepNumAndApp, async (req, res) => {
     }
 })
 
+// Step 4: Visit Schedule
+router.get('/step4/:id', getApplication, (req, res) => {
+    res.send({visitScheduleStatus: res.application.visitScheduleStatus})
+})
+
+// Step 5: Purchase Materials
+
+
 // Step 6: Visitation
-router.get('/:id', getApplication, (req, res) => {
+router.get('/step6/:id', getApplication, (req, res) => {
     res.send({visitationStatus: res.application.visitationStatus})
 })
 
-router.get('/:id', getApplication, (req, res) => {
+// Step 7: Installation
+router.get('/step7/:id', getApplication, (req, res) => {
     res.send({installationStatus: res.application.installationStatus})
 })
 
