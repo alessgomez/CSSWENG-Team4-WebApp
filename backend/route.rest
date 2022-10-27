@@ -99,4 +99,4 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/applications/step3/0
+GET http://localhost:3000/applications/step3-1/0

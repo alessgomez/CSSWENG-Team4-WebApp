@@ -88,19 +88,29 @@ router.post('/step2a', generateRepNumAndApp, async (req, res) => {
 })
 
 //Step 3
-router.get('/step3/:id', getApplication, (req, res) => {
+router.get('/step3-1/:id', getApplication, (req, res) => {
     //get filled out app form
-    //get customer reminders pdf
-    //get filled out authorization letter 
-
-    //isa muna
-    res.download(path.resolve(__dirname, '../files/postmalone.pdf'), function(err) {
+    res.download(path.resolve(__dirname, '../public/files/postmalone.pdf'), function(err) {
         if (err){
             console.log(err);
         }
-        else
-        {
-            console.log("success!!!!")
+    })
+})
+
+router.get('/step3-2/:id', getApplication, (req, res) => {
+    //get customer reminders slip
+    res.download(path.resolve(__dirname, '../public/files/Customer Reminders Slip.pdf'), function(err) {
+        if (err){
+            console.log(err);
+        }
+    })
+})
+
+router.get('/step3-3/:id', getApplication, (req, res) => {
+    //get filled out auth form
+    res.download(path.resolve(__dirname, '../public/files/postmalone.pdf'), function(err) {
+        if (err){
+            console.log(err);
         }
     })
 })
