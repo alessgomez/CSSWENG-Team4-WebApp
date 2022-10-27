@@ -1,0 +1,81 @@
+//Step 3
+/*router.get('/generateFilledPDF/:id', getApplication, async(req, res) => {
+    createPdf('./public/files/Application Form.pdf', './public/files/output.pdf', res.application)
+})*/
+
+/* *********** TEMPLATE FUNCTIONS *************************
+// Getting all
+router.get('/', async (req, res) => {
+    try{
+        const applications = await Application.find()
+        res.json(applications)
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+})
+
+// Getting One
+router.get('/:id', getApplication, (req, res) => {
+    res.json(res.application)
+})
+
+//Updating One
+router.patch('/:id', getApplication, async (req, res) => {
+    if (req.body.name != null) {
+        res.application.name = req.body.name
+    }
+
+    if (req.body.subscribedToChannel != null) {
+        res.application.subscribedToChannel = req.body.subscribedToChannel
+    }
+    try {
+        const updatedApplication = await res.application.save()
+        res.json(updatedApplication)
+    } catch(err) {
+        res.status(400).json({message: err.message})
+    }
+})
+
+//Deleting One
+router.delete('/:id', getApplication, async (req, res) => {
+    try{
+        await res.application.remove()
+        res.json({message: "Deleted Application"})
+    } catch(err) {
+        res.status(500).json({message: err.message})
+    }
+    
+}) ****************************** */
+
+/*async function generateDocNumAndApp(req, res, next) {
+    let documents
+    let applications
+
+    try {
+        documents = await Document.find()
+        applications = await Application.find()
+    } catch(err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.docNum = documents.length
+    res.application = applications[applications.length-1]
+    next()
+}
+
+router.post('/submitID', generateDocNumAndApp, async (req, res) => {
+    const document = new Document ({
+        documentId: res.docNum,
+        name: req.body.name
+    })
+
+    try {
+        const newDocument = await document.save()
+        res.application.documents.push(newDocument._id)
+        res.application.save()
+        res.status(201).json(newDocument)
+    } catch(err) {
+        res.status(400).json({message: err.message})
+    }
+})
+*/

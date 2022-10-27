@@ -10,14 +10,12 @@ const path = require('path'); // Local path directory for our static resource fo
 const fileUpload = require('express-fileupload')
 const {PDFDocument} = require('pdf-lib')
 const {readFile, writeFile} = require('fs/promises')
-const client = require('../models/client')
 
 router.use(express.static('public'))
 router.use(fileUpload())
 
 // Step 1: Creating new client + application
 router.post('/step1', generateNums, async (req, res) => {
-    // Create client
     const client = new Client({
         clientNo: res.clientNum,
         firstName: req.body.firstName,
@@ -30,7 +28,6 @@ router.post('/step1', generateNums, async (req, res) => {
     try{
         const newClient = await client.save()
         
-        // Create application
         const application = new Application({
             applicationNo: res.applicationNum,
             applicantNo: newClient._id,
@@ -92,22 +89,16 @@ router.post('/step2a', generateRepNumAndApp, async (req, res) => {
     }
 })
 
-//Step 3
-router.get('/generateFilledPDF/:id', getApplication, async(req, res) => {
-    createPdf('./public/files/Application Form.pdf', './public/files/output.pdf', res.application)
-})
-
 router.get('/step3-1/:id', getApplication, (req, res) => {
-    //get filled out app form
-    res.download(path.resolve(__dirname, '../public/files/postmalone.pdf'), function(err) {
+    createAppForm('./public/files/Application Form.pdf', './public/files/Application Form-filled.pdf', res.application)
+    res.download(path.resolve(__dirname, '../public/files/Application Form-filled.pdf'), function(err) {
         if (err){
             console.log(err);
         }
     })
 })
 
-router.get('/step3-2/:id', getApplication, (req, res) => {
-    //get customer reminders slip
+router.get('/step3-2', (req, res) => {
     res.download(path.resolve(__dirname, '../public/files/Customer Reminders Slip.pdf'), function(err) {
         if (err){
             console.log(err);
@@ -116,8 +107,8 @@ router.get('/step3-2/:id', getApplication, (req, res) => {
 })
 
 router.get('/step3-3/:id', getApplication, (req, res) => {
-    //get filled out auth form
-    res.download(path.resolve(__dirname, '../public/files/postmalone.pdf'), function(err) {
+    createAuthLetter('./public/files/Authorization Letter.pdf', './public/files/Authorization Letter-filled.pdf', res.application)
+    res.download(path.resolve(__dirname, '../public/files/Authorization Letter-filled.pdf'), function(err) {
         if (err){
             console.log(err);
         }
@@ -171,52 +162,6 @@ router.post('/addmaterials', generateMaterialNum, async (req, res) => {
     }
 })
 
-
-
-/* *********** TEMPLATE FUNCTIONS *************************
-// Getting all
-router.get('/', async (req, res) => {
-    try{
-        const applications = await Application.find()
-        res.json(applications)
-    } catch (err) {
-        res.status(500).json({message: err.message})
-    }
-})
-
-// Getting One
-router.get('/:id', getApplication, (req, res) => {
-    res.json(res.application)
-})
-
-//Updating One
-router.patch('/:id', getApplication, async (req, res) => {
-    if (req.body.name != null) {
-        res.application.name = req.body.name
-    }
-
-    if (req.body.subscribedToChannel != null) {
-        res.application.subscribedToChannel = req.body.subscribedToChannel
-    }
-    try {
-        const updatedApplication = await res.application.save()
-        res.json(updatedApplication)
-    } catch(err) {
-        res.status(400).json({message: err.message})
-    }
-})
-
-//Deleting One
-router.delete('/:id', getApplication, async (req, res) => {
-    try{
-        await res.application.remove()
-        res.json({message: "Deleted Application"})
-    } catch(err) {
-        res.status(500).json({message: err.message})
-    }
-    
-}) ****************************** */
-
 async function generateNums(req, res, next) {
     let clients
     let applications
@@ -246,39 +191,6 @@ async function generateNums(req, res, next) {
         res.refClient = refClient._id
     next()
 }
-
-/*async function generateDocNumAndApp(req, res, next) {
-    let documents
-    let applications
-
-    try {
-        documents = await Document.find()
-        applications = await Application.find()
-    } catch(err) {
-        return res.status(500).json({message: err.message})
-    }
-
-    res.docNum = documents.length
-    res.application = applications[applications.length-1]
-    next()
-}
-
-router.post('/submitID', generateDocNumAndApp, async (req, res) => {
-    const document = new Document ({
-        documentId: res.docNum,
-        name: req.body.name
-    })
-
-    try {
-        const newDocument = await document.save()
-        res.application.documents.push(newDocument._id)
-        res.application.save()
-        res.status(201).json(newDocument)
-    } catch(err) {
-        res.status(400).json({message: err.message})
-    }
-})
-*/
 
 async function generateRepNumAndApp(req, res, next) {
     let representatives
@@ -338,7 +250,7 @@ async function getClient(req, res, next) {
     next()
 }
 
-async function createPdf(input, output, application) {
+async function createAppForm(input, output, application) {
     let client
     let refClient
 
@@ -353,7 +265,7 @@ async function createPdf(input, output, application) {
 
         const form = pdfDoc.getForm()
 
-        form.getTextField('text_1vizu').setText(application.startDate.toString()) // date
+        form.getTextField('text_1vizu').setText(application.startDate.toLocaleDateString()) // date
         form.getTextField('text_2qyqy').setText(client.lastName + ", " + client.firstName + ", " + client.middleName) // (last, given, middle)
         form.getTextField('text_3altv').setText(application.establishmentName) // establishment
         form.getTextField('text_4phzg').setText(application.address) // address
@@ -373,6 +285,38 @@ async function createPdf(input, output, application) {
         
         if (application.representativeNo != null)
             form.getCheckBox('checkbox_12tcnn').check() // representative
+
+        const pdfBytes = await pdfDoc.save()
+
+        await writeFile(output, pdfBytes)
+        console.log("PDF created!")
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+async function createAuthLetter(input, output, application) {
+    let client
+    let representative
+
+    try {
+        client = await Client.findOne({_id: application.applicantNo})
+        representative = await Representative.findOne({_id: application.representativeNo})
+
+        const pdfDoc = await PDFDocument.load(await readFile(input))
+
+        const fieldNames = pdfDoc.getForm().getFields().map((f) => f.getName())
+        console.log(fieldNames)
+
+        const form = pdfDoc.getForm()
+
+        const date = new Date();
+
+        form.getTextField('text_1ikep').setText(date.toLocaleDateString()) // date
+        form.getTextField('text_2bbyb').setText(client.firstName + ' ' + client.middleName + ' ' + client.lastName) // client (given middle last)
+        form.getTextField('text_3lisc').setText(representative.firstName + ' ' + representative.middleName + representative.lastName) // representative (given middle last)
+        form.getTextField('text_4vdsg').setText(representative.firstName + ' ' + representative.middleName + representative.lastName) // representative (given middle last)
+        form.getTextField('text_5pfye').setText(client.firstName + ' ' + client.middleName + ' ' + client.lastName) // client (given middle last)
 
         const pdfBytes = await pdfDoc.save()
 
