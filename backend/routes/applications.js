@@ -4,7 +4,12 @@ const Application = require('../models/application')
 const Client = require('../models/client')
 const Document = require('../models/document')
 const Representative = require('../models/representative')
+
 const path = require('path'); // Local path directory for our static resource folder
+const fileUpload = require('express-fileupload')
+
+router.use(express.static('public'))
+router.use(fileUpload())
 
 //Creating New Client + Application
 router.post('/step1', generateNums, async (req, res) => {
@@ -48,7 +53,7 @@ router.post('/step1', generateNums, async (req, res) => {
 // Uploading valid ID for application
 router.patch('/step2/:id', getClient, (req, res) => {
     const image = req.files.validId
-    image.mv(path.resolve(__dirname, 'public/validIds',image.name), async (error) => {
+    image.mv(path.resolve(__dirname, '../public/validIds',image.name), async (error) => {
         res.client.validId = '/validIds/' + image.name
         try {
             const updatedClient = await res.client.save()
@@ -58,53 +63,6 @@ router.patch('/step2/:id', getClient, (req, res) => {
         }
     })
 })
-
-
-
-/*
-app.post('/submit-post', function(req, res) {
-    const {image} = req.files
-    image.mv(path.resolve(__dirname,'public/images',image.name),(error) => {
-        Post.create({
-            ...req.body,
-            image:'/images/'+image.name
-        }, (error,post) => {
-            res.redirect('/')
-        })
-    })
-});
-    -----
-    if (req.body.name != null) {
-        res.application.name = req.body.name
-    }
-
-    if (req.body.subscribedToChannel != null) {
-        res.application.subscribedToChannel = req.body.subscribedToChannel
-    }
-    try {
-        const updatedApplication = await res.application.save()
-        res.json(updatedApplication)
-    } catch(err) {
-        res.status(400).json({message: err.message})
-    }
-
-
-//patch
-router.patch('/:id', getApplication, async (req, res) => {
-    if (req.body.name != null) {
-        res.application.name = req.body.name
-    }
-
-    if (req.body.subscribedToChannel != null) {
-        res.application.subscribedToChannel = req.body.subscribedToChannel
-    }
-    try {
-        const updatedApplication = await res.application.save()
-        res.json(updatedApplication)
-    } catch(err) {
-        res.status(400).json({message: err.message})
-    }
-})*/
 
 // Creating representative, if applicable
 router.post('/step2a', generateRepNumAndApp, async (req, res) => {
@@ -269,7 +227,7 @@ async function generateRepNumAndApp(req, res, next) {
 async function getClient(req, res, next) {
     let client 
     try{
-        client = await Client.findById(req.params.id)
+        client = await Client.findOne({clientNo: req.params.id})
         if (client == null){
             return res.status(404).json({message: 'Cannot find client'})
         }
