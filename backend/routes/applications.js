@@ -74,19 +74,24 @@ router.post('/step2a', generateRepNumAndApp, async (req, res) => {
         email: req.body.email,
         contactNo: req.body.contactNo,
         relationshipToApplicant: req.body.relationship,
-        validId: req.body.validId
+        validId: ""
     })
 
-    try {
-        const newRepresentative = await representative.save()
-        res.application.representativeNo = newRepresentative._id
-        res.application.save()
-
-        const client = await Client.findOne({_id: res.application.applicantNo})
-        res.send({clientNo: client.clientNo})
-    } catch(err) {
-        res.status(400).json({message: err.message})
-    }
+    const image = req.files.validId
+    image.mv(path.resolve(__dirname, '../public/validIds',image.name), async (error) => {
+        representative.validId = '/validIds/' + image.name
+        
+        try {
+            const newRepresentative = await representative.save()
+            res.application.representativeNo = newRepresentative._id
+            res.application.save()
+    
+            const client = await Client.findOne({_id: res.application.applicantNo})
+            res.send({clientNo: client.clientNo})
+        } catch(err) {
+            res.status(400).json({message: err.message})
+        }
+    })
 })
 
 router.get('/step3-1/:id', getApplication, (req, res) => {
