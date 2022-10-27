@@ -4,9 +4,10 @@ const Application = require('../models/application')
 const Client = require('../models/client')
 const Document = require('../models/document')
 const Representative = require('../models/representative')
+const path = require('path'); // Local path directory for our static resource folder
 
 //Creating New Client + Application
-router.post('/', generateNums, async (req, res) => {
+router.post('/step1', generateNums, async (req, res) => {
     // Create client
     const client = new Client({
         clientNo: res.clientNum,
@@ -34,7 +35,8 @@ router.post('/', generateNums, async (req, res) => {
 
         try{
             const newApplication = await application.save()
-            res.status(201).json(newClient + newApplication)
+            //res.status(201).json(newClient + newApplication)
+            res.send({clientNo: newClient.clientNo})
         } catch(err){
             res.status(400).json({message: err.message})
         }
@@ -44,24 +46,68 @@ router.post('/', generateNums, async (req, res) => {
 })
 
 // Uploading valid ID for application
-router.post('/submitID', generateDocNumAndApp, async (req, res) => {
-    const document = new Document ({
-        documentId: res.docNum,
-        name: req.body.name
+router.patch('/step2/:id', getClient, (req, res) => {
+    const image = req.files.validId
+    image.mv(path.resolve(__dirname, 'public/validIds',image.name), async (error) => {
+        res.client.validId = '/validIds/' + image.name
+        try {
+            const updatedClient = await res.client.save()
+            res.json(updatedClient)
+        } catch(err) {
+            res.status(400).json({message: err.message})
+        }
     })
+})
 
+
+
+/*
+app.post('/submit-post', function(req, res) {
+    const {image} = req.files
+    image.mv(path.resolve(__dirname,'public/images',image.name),(error) => {
+        Post.create({
+            ...req.body,
+            image:'/images/'+image.name
+        }, (error,post) => {
+            res.redirect('/')
+        })
+    })
+});
+    -----
+    if (req.body.name != null) {
+        res.application.name = req.body.name
+    }
+
+    if (req.body.subscribedToChannel != null) {
+        res.application.subscribedToChannel = req.body.subscribedToChannel
+    }
     try {
-        const newDocument = await document.save()
-        res.application.documents.push(newDocument._id)
-        res.application.save()
-        res.status(201).json(newDocument)
+        const updatedApplication = await res.application.save()
+        res.json(updatedApplication)
     } catch(err) {
         res.status(400).json({message: err.message})
     }
-})
+
+
+//patch
+router.patch('/:id', getApplication, async (req, res) => {
+    if (req.body.name != null) {
+        res.application.name = req.body.name
+    }
+
+    if (req.body.subscribedToChannel != null) {
+        res.application.subscribedToChannel = req.body.subscribedToChannel
+    }
+    try {
+        const updatedApplication = await res.application.save()
+        res.json(updatedApplication)
+    } catch(err) {
+        res.status(400).json({message: err.message})
+    }
+})*/
 
 // Creating representative, if applicable
-router.post('/createRep', generateRepNumAndApp, async (req, res) => {
+router.post('/step2a', generateRepNumAndApp, async (req, res) => {
     const representative = new Representative ({
         idNo: res.repNum,
         firstName: req.body.firstName,
@@ -157,7 +203,7 @@ async function generateNums(req, res, next) {
     next()
 }
 
-async function generateDocNumAndApp(req, res, next) {
+/*async function generateDocNumAndApp(req, res, next) {
     let documents
     let applications
 
@@ -172,6 +218,23 @@ async function generateDocNumAndApp(req, res, next) {
     res.application = applications[applications.length-1]
     next()
 }
+
+router.post('/submitID', generateDocNumAndApp, async (req, res) => {
+    const document = new Document ({
+        documentId: res.docNum,
+        name: req.body.name
+    })
+
+    try {
+        const newDocument = await document.save()
+        res.application.documents.push(newDocument._id)
+        res.application.save()
+        res.status(201).json(newDocument)
+    } catch(err) {
+        res.status(400).json({message: err.message})
+    }
+})
+*/
 
 async function generateRepNumAndApp(req, res, next) {
     let representatives
@@ -202,5 +265,20 @@ async function generateRepNumAndApp(req, res, next) {
     res.application = application
     next()
 }*/
+
+async function getClient(req, res, next) {
+    let client 
+    try{
+        client = await Client.findById(req.params.id)
+        if (client == null){
+            return res.status(404).json({message: 'Cannot find client'})
+        }
+    } catch(err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.client = client
+    next()
+}
 
 module.exports = router

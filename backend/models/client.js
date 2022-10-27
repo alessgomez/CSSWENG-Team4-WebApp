@@ -25,6 +25,9 @@ const clientSchema = new mongoose.Schema({
     contactNo: {
         type: String,
         required: true
+    },
+    validId: {
+        type: String
     }
 })
 
