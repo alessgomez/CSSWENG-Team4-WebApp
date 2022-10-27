@@ -43,7 +43,8 @@ Content-Type: application/json
     "refMiddleName": "Chua",
     "refLastName": "Fong",
     "landmark": "Lourdes School, QC",
-    "ownership": "owned"
+    "ownership": "owned",
+    "connectionType": "Tapping"
 }
 
 ###
@@ -74,3 +75,24 @@ Content-Type: application/json
 
 PATCH http://localhost:3000/applications/step2/0
 Content-Type: image/png
+
+###
+
+GET http://localhost:3000/applications/step5/0
+
+###
+
+POST http://localhost:3000/applications/addmaterials
+Content-Type: application/json
+
+{
+    "connectionType": "Tapping",
+    "materials": [{
+        "name": "Elbow 3/4",
+        "quantity": "3" 
+    },
+    {
+        "name": "Elbow 1/2",
+        "quantity": "1" 
+    }]
+}

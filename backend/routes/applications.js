@@ -4,6 +4,7 @@ const Application = require('../models/application')
 const Client = require('../models/client')
 const Document = require('../models/document')
 const Representative = require('../models/representative')
+const Material = require('../models/material')
 
 const path = require('path'); // Local path directory for our static resource folder
 const fileUpload = require('express-fileupload')
@@ -91,7 +92,20 @@ router.get('/step4/:id', getApplication, (req, res) => {
 })
 
 // Step 5: Purchase Materials
+router.get('/step5/:id', getApplication, async (req, res) => {
+    let materials
+    try {
+        materials = await Material.findOne({connectionType: res.application.connectionType})
 
+        if (materials == null){
+            return res.status(404).json({message: 'Cannot find materials'})
+        }
+    } catch(err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.send({materials: materials.materials})
+})
 
 // Step 6: Visitation
 router.get('/step6/:id', getApplication, (req, res) => {
@@ -102,6 +116,24 @@ router.get('/step6/:id', getApplication, (req, res) => {
 router.get('/step7/:id', getApplication, (req, res) => {
     res.send({installationStatus: res.application.installationStatus})
 })
+
+// Add materials
+router.post('/addmaterials', generateMaterialNum, async (req, res) => {
+    const materials = new Material ({
+        materialNo: res.materialNo,
+        connectionType: req.body.connectionType,
+        materials: req.body.materials
+    })
+
+    try {
+        const newMaterials = await materials.save()
+        res.json(newMaterials)
+    } catch(err) {
+        res.status(400).json({message: err.message})
+    }
+})
+
+
 
 /* *********** TEMPLATE FUNCTIONS *************************
 // Getting all
@@ -222,6 +254,19 @@ async function generateRepNumAndApp(req, res, next) {
 
     res.repNum = representatives.length
     res.application = applications[applications.length-1]
+    next()
+}
+
+async function generateMaterialNum(req, res, next) {
+    let materials
+
+    try {
+        materials = await Material.find()
+    } catch(err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.materialNo = materials.length
     next()
 }
 
