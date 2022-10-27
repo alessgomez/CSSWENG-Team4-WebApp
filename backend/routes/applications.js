@@ -8,6 +8,9 @@ const Material = require('../models/material')
 
 const path = require('path'); // Local path directory for our static resource folder
 const fileUpload = require('express-fileupload')
+const {PDFDocument} = require('pdf-lib')
+const {readFile, writeFile} = require('fs/promises')
+const client = require('../models/client')
 
 router.use(express.static('public'))
 router.use(fileUpload())
@@ -81,13 +84,19 @@ router.post('/step2a', generateRepNumAndApp, async (req, res) => {
         const newRepresentative = await representative.save()
         res.application.representativeNo = newRepresentative._id
         res.application.save()
-        res.send({clientNo})
+
+        const client = await Client.findOne({_id: res.application.applicantNo})
+        res.send({clientNo: client.clientNo})
     } catch(err) {
         res.status(400).json({message: err.message})
     }
 })
 
 //Step 3
+router.get('/generateFilledPDF/:id', getApplication, async(req, res) => {
+    createPdf('./public/files/Application Form.pdf', './public/files/output.pdf', res.application)
+})
+
 router.get('/step3-1/:id', getApplication, (req, res) => {
     //get filled out app form
     res.download(path.resolve(__dirname, '../public/files/postmalone.pdf'), function(err) {
@@ -327,6 +336,51 @@ async function getClient(req, res, next) {
 
     res.client = client
     next()
+}
+
+async function createPdf(input, output, application) {
+    let client
+    let refClient
+
+    try {
+        client = await Client.findOne({_id: application.applicantNo})
+        refClient = await Client.findOne({_id: application.referenceClientNo})
+
+        const pdfDoc = await PDFDocument.load(await readFile(input))
+
+        const fieldNames = pdfDoc.getForm().getFields().map((f) => f.getName())
+        console.log(fieldNames)
+
+        const form = pdfDoc.getForm()
+
+        form.getTextField('text_1vizu').setText(application.startDate.toString()) // date
+        form.getTextField('text_2qyqy').setText(client.lastName + ", " + client.firstName + ", " + client.middleName) // (last, given, middle)
+        form.getTextField('text_3altv').setText(application.establishmentName) // establishment
+        form.getTextField('text_4phzg').setText(application.address) // address
+        
+        if (refClient != null)
+            form.getTextField('text_5yvjt').setText(refClient.clientNo.toString()) // ref acc
+        
+        form.getTextField('text_6xk').setText(application.landmark) // landmark
+        form.getTextField('text_7uvjy').setText(client.contactNo) // contact no
+        form.getTextField('text_8mjrg').setText(client.email) // email
+        form.getTextField('text_9qspa').setText(application.applicationNo.toString()) // application no
+
+        if (application.ownership === "owned")
+            form.getCheckBox('checkbox_10nnmb').check() // owned
+        else
+            form.getCheckBox('checkbox_11jhuz',).check() // leased
+        
+        if (application.representativeNo != null)
+            form.getCheckBox('checkbox_12tcnn').check() // representative
+
+        const pdfBytes = await pdfDoc.save()
+
+        await writeFile(output, pdfBytes)
+        console.log("PDF created!")
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 module.exports = router

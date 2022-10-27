@@ -31,19 +31,19 @@ POST http://localhost:3000/applications/step1
 Content-Type: application/json
 
 {
-    "firstName": "Aless",
-    "middleName": "Interino",
-    "lastName": "Gomez",
+    "firstName": "Hannah",
+    "middleName": "Chua",
+    "lastName": "Fong",
     "email": "hrf@gmail.com",
     "contactNo": "09260716958",
     "establishmentName": "",
     "address": "159-C Apo St.",
     "refClientNo": 0,
-    "refFirstName": "Hannah",
-    "refMiddleName": "Chua",
-    "refLastName": "Fong",
+    "refFirstName": "Aless",
+    "refMiddleName": "Interino",
+    "refLastName": "Gomez",
     "landmark": "Lourdes School, QC",
-    "ownership": "owned",
+    "ownership": "leased",
     "connectionType": "Tapping"
 }
 
@@ -58,7 +58,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/applications/createRep
+POST http://localhost:3000/applications/step2a
 Content-Type: application/json
 
 {
@@ -100,3 +100,7 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3000/applications/step3-1/0
+
+###
+
+GET http://localhost:3000/applications/generateFilledPDF/1
