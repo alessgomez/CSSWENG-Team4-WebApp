@@ -36,6 +36,7 @@ router.post('/step1', generateNums, async (req, res) => {
             referenceClientNo: res.refClient,
             landmark: req.body.landmark,
             ownership: req.body.ownership,
+            connectionType: req.body.connectionType //remove if there is already admin side
         })
 
         try{
