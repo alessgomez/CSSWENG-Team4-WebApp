@@ -2,21 +2,8 @@ const express = require('express')
 const router = express.Router()
 const Application = require('../models/application')
 const Client = require('../models/client')
-
-// Getting all
-router.get('/', async (req, res) => {
-    try{
-        const applications = await Application.find()
-        res.json(applications)
-    } catch (err) {
-        res.status(500).json({message: err.message})
-    }
-})
-
-// Getting One
-router.get('/:id', getApplication, (req, res) => {
-    res.json(res.application)
-})
+const Document = require('../models/document')
+const Representative = require('../models/representative')
 
 //Creating New Client + Application
 router.post('/', generateNums, async (req, res) => {
@@ -36,7 +23,7 @@ router.post('/', generateNums, async (req, res) => {
         
         // Create application
         const application = new Application({
-            applicationNo: Number(res.applicationNum),
+            applicationNo: res.applicationNum,
             applicantNo: newClient._id,
             establishmentName: req.body.establishmentName, 
             address: req.body.address,
@@ -54,6 +41,62 @@ router.post('/', generateNums, async (req, res) => {
     } catch(err){
         res.status(400).json({message: err.message})
     }
+})
+
+// Uploading valid ID for application
+router.post('/submitID', generateDocNumAndApp, async (req, res) => {
+    const document = new Document ({
+        documentId: res.docNum,
+        name: req.body.name
+    })
+
+    try {
+        const newDocument = await document.save()
+        res.application.documents.push(newDocument._id)
+        res.application.save()
+        res.status(201).json(newDocument)
+    } catch(err) {
+        res.status(400).json({message: err.message})
+    }
+})
+
+// Creating representative, if applicable
+router.post('/createRep', generateRepNumAndApp, async (req, res) => {
+    const representative = new Representative ({
+        idNo: res.repNum,
+        firstName: req.body.firstName,
+        middleName: req.body.middleName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        contactNo: req.body.contactNo,
+        relationshipToApplicant: req.body.relationship,
+        validId: req.body.validId
+    })
+
+    try {
+        const newRepresentative = await representative.save()
+        res.application.representativeNo = newRepresentative._id
+        res.application.save()
+        res.status(201).json(newRepresentative)
+    } catch(err) {
+        res.status(400).json({message: err.message})
+    }
+})
+
+/* *********** TEMPLATE FUNCTIONS *************************
+// Getting all
+router.get('/', async (req, res) => {
+    try{
+        const applications = await Application.find()
+        res.json(applications)
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+})
+
+// Getting One
+router.get('/:id', getApplication, (req, res) => {
+    res.json(res.application)
 })
 
 //Updating One
@@ -82,7 +125,7 @@ router.delete('/:id', getApplication, async (req, res) => {
         res.status(500).json({message: err.message})
     }
     
-})
+}) ****************************** */
 
 async function generateNums(req, res, next) {
     let clients
@@ -114,7 +157,38 @@ async function generateNums(req, res, next) {
     next()
 }
 
-async function getApplication(req, res, next) {
+async function generateDocNumAndApp(req, res, next) {
+    let documents
+    let applications
+
+    try {
+        documents = await Document.find()
+        applications = await Application.find()
+    } catch(err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.docNum = documents.length
+    res.application = applications[applications.length-1]
+    next()
+}
+
+async function generateRepNumAndApp(req, res, next) {
+    let representatives
+
+    try {
+        representatives = await Representative.find()
+        applications = await Application.find()
+    } catch(err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.repNum = representatives.length
+    res.application = applications[applications.length-1]
+    next()
+}
+
+/* async function getApplication(req, res, next) {
     let application 
     try{
         application = await Application.findById(req.params.id)
@@ -127,6 +201,6 @@ async function getApplication(req, res, next) {
 
     res.application = application
     next()
-}
+}*/
 
 module.exports = router

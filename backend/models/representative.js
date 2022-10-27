@@ -6,7 +6,15 @@ const representativeSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    name: {
+    firstName: {
+        type: String, 
+        required: true
+    },
+    middleName: {
+        type: String, 
+        required: true
+    },
+    lastName: {
         type: String, 
         required: true
     },
@@ -15,7 +23,7 @@ const representativeSchema = new mongoose.Schema({
         required: true
     },
     contactNo:{
-        type: Number,
+        type: String,
         required: true
     },
     relationshipToApplicant:{

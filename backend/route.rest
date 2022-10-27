@@ -44,6 +44,28 @@ Content-Type: application/json
     "refLastName": "Fong",
     "landmark": "Lourdes School, QC",
     "ownership": "owned"
-
 }
 
+###
+
+POST http://localhost:3000/applications/submitID
+Content-Type: application/json
+
+{
+    "name": "gomezLicense.jpg"
+}
+
+###
+
+POST http://localhost:3000/applications/createRep
+Content-Type: application/json
+
+{
+    "firstName": "Jane",
+    "middleName": "G.",
+    "lastName": "Doe",
+    "email": "jgd@gmail.com",
+    "contactNo": "09756365927",
+    "relationship": "aunt",
+    "validId": "janedoepassport.jpg"
+}
