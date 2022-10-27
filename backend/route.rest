@@ -96,3 +96,7 @@ Content-Type: application/json
         "quantity": "1" 
     }]
 }
+
+###
+
+GET http://localhost:3000/applications/step3/0
