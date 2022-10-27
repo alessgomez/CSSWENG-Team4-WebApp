@@ -40,7 +40,6 @@ router.post('/step1', generateNums, async (req, res) => {
 
         try{
             const newApplication = await application.save()
-            //res.status(201).json(newClient + newApplication)
             res.send({clientNo: newClient.clientNo})
         } catch(err){
             res.status(400).json({message: err.message})
@@ -57,7 +56,7 @@ router.patch('/step2/:id', getClient, (req, res) => {
         res.client.validId = '/validIds/' + image.name
         try {
             const updatedClient = await res.client.save()
-            res.json(updatedClient)
+            res.send({clientNo: updatedClient.clientNo})
         } catch(err) {
             res.status(400).json({message: err.message})
         }
@@ -81,7 +80,7 @@ router.post('/step2a', generateRepNumAndApp, async (req, res) => {
         const newRepresentative = await representative.save()
         res.application.representativeNo = newRepresentative._id
         res.application.save()
-        res.status(201).json(newRepresentative)
+        res.send({clientNo})
     } catch(err) {
         res.status(400).json({message: err.message})
     }
@@ -89,11 +88,11 @@ router.post('/step2a', generateRepNumAndApp, async (req, res) => {
 
 // Step 6: Visitation
 router.get('/:id', getApplication, (req, res) => {
-    res.json(res.application.)
+    res.send({visitationStatus: res.application.visitationStatus})
 })
 
 router.get('/:id', getApplication, (req, res) => {
-    res.json(res.application)
+    res.send({installationStatus: res.application.installationStatus})
 })
 
 /* *********** TEMPLATE FUNCTIONS *************************
