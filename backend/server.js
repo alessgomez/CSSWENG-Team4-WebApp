@@ -11,7 +11,12 @@ db.once('open', () => console.log('Connected to Database'))
 
 app.use(express.json())
 
+//client applications
 const applicationRouter = require('./routes/applications')
 app.use('/applications', applicationRouter)
+
+//admin dashboard
+const adminRouter = require('./routes/admin')
+app.use('/admin', adminRouter)
 
 app.listen(3000, () => console.log('Server Started'))

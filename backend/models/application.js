@@ -33,11 +33,6 @@ const applicationSchema = new mongoose.Schema({
     connectionType: {
         type: String
     },
-    status: {
-        type: String, 
-        required: true,
-        default: 'pending'
-    },
     nearestBranch: {
         type: mongoose.Schema.Types.ObjectId, ref: 'Branch'
     },
@@ -55,21 +50,12 @@ const applicationSchema = new mongoose.Schema({
     completionDate: {
         type: Date
     },
-    visitScheduleStatus: {
+    applicationStage: {
         type: String,
         required: true,
-        default: 'waiting'
-    },
-    visitationStatus: {
-        type: String,
-        required: true,
-        default: 'waiting'
-    },
-    installationStatus: {
-        type: String,
-        required: true,
-        default: 'waiting'
+        default: 'upload requirements'
     }
+
 })
 
 module.exports = mongoose.model('Application', applicationSchema)

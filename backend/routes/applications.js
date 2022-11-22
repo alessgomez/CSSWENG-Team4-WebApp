@@ -57,7 +57,7 @@ router.patch('/step2/:id', getClient, (req, res) => {
         res.client.validId = '/validIds/' + image.name
         try {
             const updatedClient = await res.client.save()
-            res.send({clientNo: updatedClient.clientNo})
+            res.send({clientNo: updatedClient.clientNol, applicationStage: res.application.applicationStage})
         } catch(err) {
             res.status(400).json({message: err.message})
         }
@@ -87,7 +87,7 @@ router.post('/step2a', generateRepNumAndApp, async (req, res) => {
             res.application.save()
     
             const client = await Client.findOne({_id: res.application.applicantNo})
-            res.send({clientNo: client.clientNo})
+            res.send({clientNo: client.clientNo, applicationStage: res.application.applicationStage})
         } catch(err) {
             res.status(400).json({message: err.message})
         }
@@ -122,7 +122,7 @@ router.get('/step3-3/:id', getApplication, (req, res) => {
 
 // Step 4: Visit Schedule
 router.get('/step4/:id', getApplication, (req, res) => {
-    res.send({visitScheduleStatus: res.application.visitScheduleStatus})
+    res.send({applicationStage: res.application.applicationStage})
 })
 
 // Step 5: Purchase Materials
@@ -138,17 +138,17 @@ router.get('/step5/:id', getApplication, async (req, res) => {
         return res.status(500).json({message: err.message})
     }
 
-    res.send({materials: materials.materials})
+    res.send({materials: materials.materials, applicationStage: res.application.applicationStage})
 })
 
-// Step 6: Visitation
+// Step 6: Visitation - TODO: ???
 router.get('/step6/:id', getApplication, (req, res) => {
-    res.send({visitationStatus: res.application.visitationStatus})
+    res.send({applicationStage: res.application.applicationStage})
 })
 
 // Step 7: Installation
 router.get('/step7/:id', getApplication, (req, res) => {
-    res.send({installationStatus: res.application.installationStatus})
+    res.send({applicationStage: res.application.applicationStage})
 })
 
 // Add materials
