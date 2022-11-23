@@ -54,8 +54,10 @@ const applicationSchema = new mongoose.Schema({
         type: String,
         required: true,
         default: 'upload requirements'
+    },
+    validId: {
+        type: String
     }
-
 })
 
 module.exports = mongoose.model('Application', applicationSchema)

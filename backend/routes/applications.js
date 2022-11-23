@@ -25,7 +25,7 @@ router.post('/step1', generateNums, async (req, res) => {
         contactNo: req.body.contactNo
     })
 
-    try{
+    try {
         const newClient = await client.save()
         
         const application = new Application({
@@ -41,7 +41,7 @@ router.post('/step1', generateNums, async (req, res) => {
 
         try{
             const newApplication = await application.save()
-            res.send({clientNo: newClient.clientNo})
+            res.send({applicationNo: newApplication.applicationNo}) //check
         } catch(err){
             res.status(400).json({message: err.message})
         }
@@ -51,21 +51,27 @@ router.post('/step1', generateNums, async (req, res) => {
 })
 
 // Step 2: Uploading valid ID for application
-router.patch('/step2/:id', getClient, (req, res) => {
+router.patch('/step2/:id', getApplication, (req, res) => {
     const image = req.files.validId
     image.mv(path.resolve(__dirname, '../public/validIds',image.name), async (error) => {
-        res.client.validId = '/validIds/' + image.name
+        res.application.validId = '/validIds/' + image.name
+        
+        if (req.body.hasRepresentative == true)
+            res.application.applicationStage = 'add representative'
+        else 
+            res.application.applicationStage = 'print requirements'
+
         try {
-            const updatedClient = await res.client.save()
-            res.send({clientNo: updatedClient.clientNol, applicationStage: res.application.applicationStage})
+            const updatedApplication = await res.application.save()
+            res.send({applicationNo: updatedApplication.applicationNo})
         } catch(err) {
             res.status(400).json({message: err.message})
         }
     })
 })
 
-// Step 2A: Creating representative, if applicable
-router.post('/step2a', generateRepNumAndApp, async (req, res) => {
+// Step 2A: Creating representative, if applicable TODO!
+router.post('/step2a/:id', generateRepNumAndApp, async (req, res) => {
     const representative = new Representative ({
         idNo: res.repNum,
         firstName: req.body.firstName,
@@ -84,10 +90,14 @@ router.post('/step2a', generateRepNumAndApp, async (req, res) => {
         try {
             const newRepresentative = await representative.save()
             res.application.representativeNo = newRepresentative._id
-            res.application.save()
-    
-            const client = await Client.findOne({_id: res.application.applicantNo})
-            res.send({clientNo: client.clientNo, applicationStage: res.application.applicationStage})
+            res.application.applicationStage = 'print requirements'
+            
+            try {
+                const updatedApplication = await res.application.save()
+                res.send({applicationNo: updatedApplication.applicationNo})
+            } catch(err) {
+                res.status(400).json({message: err.message})
+            }
         } catch(err) {
             res.status(400).json({message: err.message})
         }
@@ -95,35 +105,59 @@ router.post('/step2a', generateRepNumAndApp, async (req, res) => {
 })
 
 router.get('/step3-1/:id', getApplication, (req, res) => {
-    createAppForm('./public/files/Application Form.pdf', './public/files/Application Form-filled.pdf', res.application)
-    res.download(path.resolve(__dirname, '../public/files/Application Form-filled.pdf'), function(err) {
+    createAppForm('./public/files/Application Form.pdf', './public/files/Application Form-' + res.application.applicationNo + '.pdf', res.application)
+    res.download(path.resolve(__dirname, '../public/files/Application Form-' + res.application.applicationNo + '.pdf'), function(err) {
         if (err){
             console.log(err);
         }
     })
 })
 
-router.get('/step3-2', (req, res) => {
-    res.download(path.resolve(__dirname, '../public/files/Customer Reminders Slip.pdf'), function(err) {
+router.get('/step3-2/:id', getApplication, async (req, res) => {
+    res.download(path.resolve(__dirname, '../public/files/Customer Reminders Slip.pdf'), async function(err) {
         if (err){
             console.log(err);
+        }
+        else 
+        {
+            if (res.application.representativeNo == null)
+            {
+                res.application.applicationStage = 'waiting for survey schedule'
+    
+                try {
+                    const updatedApplication = await res.application.save()
+                } catch(err) { 
+                    console.log(err)
+                }
+            }
         }
     })
 })
 
-router.get('/step3-3/:id', getApplication, (req, res) => {
-    createAuthLetter('./public/files/Authorization Letter.pdf', './public/files/Authorization Letter-filled.pdf', res.application)
-    res.download(path.resolve(__dirname, '../public/files/Authorization Letter-filled.pdf'), function(err) {
+router.get('/step3-3/:id', getApplication, async (req, res) => {
+    createAuthLetter('./public/files/Authorization Letter.pdf', './public/files/Authorization Letter-' + res.application.applicationNo + '.pdf', res.application)
+    res.download(path.resolve(__dirname, '../public/files/Authorization Letter-' + res.application.applicationNo + '.pdf'), async function(err) {
         if (err){
             console.log(err);
+        }
+        else 
+        {
+            res.application.applicationStage = 'waiting for survey schedule'
+
+            try {
+                const updatedApplication = await res.application.save()
+                res.send({applicationNo: updatedApplication.applicationNo})
+            } catch(err) { 
+                console.log(err)
+            }
         }
     })
 })
 
-// Step 4: Visit Schedule
-router.get('/step4/:id', getApplication, (req, res) => {
+// Step 4: Visit Schedule - admin side
+/*router.get('/step4/:id', getApplication, (req, res) => {
     res.send({applicationStage: res.application.applicationStage})
-})
+})*/
 
 // Step 5: Purchase Materials
 router.get('/step5/:id', getApplication, async (req, res) => {
@@ -134,21 +168,36 @@ router.get('/step5/:id', getApplication, async (req, res) => {
         if (materials == null){
             return res.status(404).json({message: 'Cannot find materials'})
         }
+        else {
+            res.send({materials: materials.materials, applicationNo: res.application.applicationNo})
+        }
     } catch(err) {
         return res.status(500).json({message: err.message})
     }
-
-    res.send({materials: materials.materials, applicationStage: res.application.applicationStage})
 })
 
-// Step 6: Visitation - TODO: ???
-router.get('/step6/:id', getApplication, (req, res) => {
-    res.send({applicationStage: res.application.applicationStage})
+// Step 6: Visitation
+router.get('/step6/:id', getApplication, async (req, res) => {
+    res.application.applicationStage = 'waiting for visit'
+
+    try {
+        const updatedApplication = await res.application.save()
+        res.send({applicationNo: updatedApplication.applicationNo})
+    } catch(err){
+        res.status(400).json({message: err.message})
+    }
 })
 
 // Step 7: Installation
-router.get('/step7/:id', getApplication, (req, res) => {
-    res.send({applicationStage: res.application.applicationStage})
+router.get('/step7/:id', getApplication, async (req, res) => {
+    res.application.applicationStage = 'waiting for installation'
+
+    try {
+        const updatedApplication = await res.application.save()
+        res.send({applicationNo: updatedApplication.applicationNo})
+    } catch(err){
+        res.status(400).json({message: err.message})
+    }
 })
 
 // Add materials
@@ -167,6 +216,7 @@ router.post('/addmaterials', generateMaterialNum, async (req, res) => {
     }
 })
 
+/* ****************** ASYNC HELPER FUNCTIONS ****************** */
 async function generateNums(req, res, next) {
     let clients
     let applications
@@ -199,16 +249,18 @@ async function generateNums(req, res, next) {
 
 async function generateRepNumAndApp(req, res, next) {
     let representatives
+    let application
 
     try {
         representatives = await Representative.find()
-        applications = await Application.find()
+        application = await Application.findOne({applicationNo: req.params.id})
     } catch(err) {
         return res.status(500).json({message: err.message})
     }
 
     res.repNum = representatives.length
-    res.application = applications[applications.length-1]
+    res.application = application
+
     next()
 }
 
@@ -319,8 +371,8 @@ async function createAuthLetter(input, output, application) {
 
         form.getTextField('text_1ikep').setText(date.toLocaleDateString()) // date
         form.getTextField('text_2bbyb').setText(client.firstName + ' ' + client.middleName + ' ' + client.lastName) // client (given middle last)
-        form.getTextField('text_3lisc').setText(representative.firstName + ' ' + representative.middleName + representative.lastName) // representative (given middle last)
-        form.getTextField('text_4vdsg').setText(representative.firstName + ' ' + representative.middleName + representative.lastName) // representative (given middle last)
+        form.getTextField('text_3lisc').setText(representative.firstName + ' ' + representative.middleName + ' ' + representative.lastName) // representative (given middle last)
+        form.getTextField('text_4vdsg').setText(representative.firstName + ' ' + representative.middleName + ' ' + representative.lastName) // representative (given middle last)
         form.getTextField('text_5pfye').setText(client.firstName + ' ' + client.middleName + ' ' + client.lastName) // client (given middle last)
 
         const pdfBytes = await pdfDoc.save()

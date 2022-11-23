@@ -1,32 +1,6 @@
-GET http://localhost:3000/applications
+// ***************************** APPLICATIONS.JS ROUTES ***************************** */
 
-###
-
-GET http://localhost:3000/applications/634d902d295b5dcd5bb4ba6c
-
-###
-
-POST http://localhost:3000/applications
-Content-Type: application/json
-
-{
-    "name": "Amazing Person",
-    "subscribedToChannel": "Web Dev Simplified"
-}
-
-### 
-
-DELETE http://localhost:3000/applications/634d902d295b5dcd5bb4ba6c
-
-###
-PATCH http://localhost:3000/applications/634d92c602df8404c52aad36
-Content-Type: application/json
-
-{
-    "name": "New Name"
-}
-
-###
+// STEP 1 TEST: Creating a client & application
 POST http://localhost:3000/applications/step1
 Content-Type: application/json
 
@@ -49,39 +23,47 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/applications/submitID
-Content-Type: application/json
+// For STEP 2 TEST: Uploading Valid ID for new application, use Thunder Client/Insomnia/API testing clients for form data (json/text fields and file upload)
+    // Form data found below:
+    {
+        "hasRepresentative": true, // Test both boolean values to check if updated status is correct
+        "validId": "validid.jpg" // Should be uploaded as file
+    }
+###
 
-{
-    "name": "gomezLicense.jpg"
-}
+// For STEP 2A TEST: Representative Details (if applicable), use Thunder Client/Insomnia/API testing clients for form data (json/text fields and file upload)
+    // Form data found below:
+    {
+        "firstName": "Jane",
+        "middleName": "G.",
+        "lastName": "Doe",
+        "email": "jgd@gmail.com",
+        "contactNo": "09756365927",
+        "relationship": "aunt",
+        "validId": "janedoepassport.jpg" // Should be uploaded as file
+    }
 
 ###
 
-POST http://localhost:3000/applications/step2a
-Content-Type: application/json
-
-{
-    "firstName": "Jane",
-    "middleName": "G.",
-    "lastName": "Doe",
-    "email": "jgd@gmail.com",
-    "contactNo": "09756365927",
-    "relationship": "aunt",
-    "validId": "janedoepassport.jpg"
-}
+// STEP 3-1 TEST: Autogenerating & Downloading Application Form
+// NOTE: To test automatic download feature, copy the route link to browser
+GET http://localhost:3000/applications/step3-1/0
 
 ###
 
-PATCH http://localhost:3000/applications/step2/0
-Content-Type: image/png
+// STEP 3-2 TEST: Downloading of Customer Reminders Document
+// NOTE: To test automatic download feature, copy the route link to browser
+GET http://localhost:3000/applications/step3-2/0
 
 ###
 
-GET http://localhost:3000/applications/step5/0
+// STEP 3-3 TEST: Autogenerating & Downloading Authorization Letter (if w/ representative)
+// NOTE: To test automatic download feature, copy the route link to browser
+GET http://localhost:3000/applications/step3-3/0
 
 ###
 
+// STEP 5 PREREQUISITE: Add materials to database
 POST http://localhost:3000/applications/addmaterials
 Content-Type: application/json
 
@@ -99,19 +81,31 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/applications/step3-1/0
-
-###
-GET http://localhost:3000/applications/step3-3/1
-
-//GET http://localhost:3000/applications/generateFilledPDF/1
-
-//Admin Dashboard API TESTING:
+// STEP 5 TEST: Display Needed Materials
+GET http://localhost:3000/applications/step5/0
 
 ###
 
+// STEP 6 TEST: Update Application Stage to Visitation Status
+GET http://localhost:3000/applications/step6/0
+
+###
+
+// STEP 7 TEST: Update Application Stage to Installation Status
+GET http://localhost:3000/applications/step7/0
+
+// ***************************** END OF APPLICATIONS.JS ROUTES ***************************** */
+
+###
+
+// ***************************** ADMIN.JS ROUTES ***************************** */
+
+// LOG IN TEST (Aless)
+
+// ADMIN DASHBOARD TEST (Hannah)
+    // See all applications
 GET http://localhost:3000/admin/applications
 
+###
 
-
-//END of Admin Dashboard API Testing
+// APPLICATION DETAILS TEST (Aless)
