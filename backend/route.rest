@@ -101,6 +101,37 @@ GET http://localhost:3000/applications/step7/0
 // ***************************** ADMIN.JS ROUTES ***************************** */
 
 // LOG IN TEST (Aless)
+    // STEP 1 Prerequisite: Add Credentials
+POST http://localhost:3000/admin/addcredentials
+Content-Type: application/json
+
+{
+    "firstName": "Jane",
+    "middleName": "G.",
+    "lastName": "Doe",
+    "contactNo": "09260716958",
+    "email": "jgd@swsi.com",
+    "username": "swsidoej",
+    "password": "J@n3d0e123"
+}
+
+###
+
+    // STEP 1: Login
+POST http://localhost:3000/admin/login
+Content-Type: application/json
+
+{
+    "username": "swsidoej",
+    "password": "J@n3d0e123"
+}
+
+###
+
+    // STEP 1 BONUS: Logout
+POST http://localhost:3000/admin/logout
+
+###
 
 // ADMIN DASHBOARD TEST (Hannah)
     // See all applications
