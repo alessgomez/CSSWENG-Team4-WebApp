@@ -109,3 +109,31 @@ GET http://localhost:3000/admin/applications
 ###
 
 // APPLICATION DETAILS TEST (Aless)
+
+
+
+// HANNAH TEST:
+
+POST http://localhost:3000/applications/step1
+Content-Type: application/json
+
+{
+    "firstName": "hannah",
+    "middleName": "Chua",
+    "lastName": "Fong",
+    "email": "reg",
+    "contactNo": "09260716958",
+    "establishmentName": "",
+    "address": "159-C Apo St.",
+    "refClientNo": 0,
+    "refFirstName": "Aless",
+    "refMiddleName": "Interino",
+    "refLastName": "Gomez",
+    "landmark": "Lourdes School, QC",
+    "ownership": "leased",
+    "connectionType": "Tapping"
+}
+
+###
+
+GET http://localhost:3000/admin/applications/test

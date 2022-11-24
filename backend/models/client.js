@@ -28,4 +28,13 @@ const clientSchema = new mongoose.Schema({
     }
 })
 
+clientSchema.index(
+    {
+      firstName: "text",
+      middleName: "text",
+      email: "text",
+      
+    }
+  )
+
 module.exports = mongoose.model('Client', clientSchema)
