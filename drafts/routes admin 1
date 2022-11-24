@@ -1,0 +1,22 @@
+
+router.get('/applications/search', async (req, res) => {
+
+    try{
+        q = req.query.q
+
+        const results = await Client.find({$or: [{firstName: q}, {middleName: q}, {lastName: q}]}, {_id: 1}) 
+
+        try {
+
+        }
+        catch(err){
+
+        }
+
+        //{ field: { $in: [<value1>, <value2>, ... <valueN> ] } }
+
+    }
+    catch(err){ 
+        res.status(500).json({message: err.message}) //TODO check if correct status code
+    }
+})

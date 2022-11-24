@@ -149,7 +149,7 @@ POST http://localhost:3000/applications/step1
 Content-Type: application/json
 
 {
-    "firstName": "hannah",
+    "firstName": "159-C Apo St.",
     "middleName": "Chua",
     "lastName": "Fong",
     "email": "reg",
@@ -160,11 +160,11 @@ Content-Type: application/json
     "refFirstName": "Aless",
     "refMiddleName": "Interino",
     "refLastName": "Gomez",
-    "landmark": "Lourdes School, QC",
+    "landmark": "Lourdes",
     "ownership": "leased",
     "connectionType": "Tapping"
 }
 
 ###
 
-GET http://localhost:3000/admin/applications/test
+GET http://localhost:3000/admin/applications/filter?stage=ok dffadgadfg
