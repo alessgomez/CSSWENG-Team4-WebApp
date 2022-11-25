@@ -1,12 +1,12 @@
 const express = require('express')
-const { db } = require('../models/application')
 const router = express.Router()
 const Application = require('../models/application')
-const client = require('../models/client')
+const Representative = require('../models/representative')
 const Client = require('../models/client')
 const Update = require('../models/update')
 const Employee = require('../models/employee')
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs")
+const path = require('path')
 
 /*URL:
 http://localhost:3000/admin
@@ -33,7 +33,7 @@ router.post('/addcredentials', generateEmployeeNum, async (req, res) => {
             const newEmployee = await employee.save()
             res.json(newEmployee)
         })
-    } catch(err) {
+    } catch (err) {
         res.status(400).json({message: err.message})
     }
 })
@@ -56,20 +56,74 @@ router.post('/login', async(req, res) => {
                     res.send({session: req.session})
                 }
             })
-    } catch(err) {
+    } catch (err) {
         return res.status(500).json({message: err.message})
     }
 })
 
 // Step 1 Bonus: Logout
 router.post('/logout', async(req, res) => {
-    if (req.session)
-        {
-            req.session.destroy(() => {
-                res.clearCookie('connect.sid');
-                res.send({message: 'Session successfully deleted!'});
-            });
+    try {
+        if (req.session)
+            {
+                req.session.destroy(() => {
+                    res.clearCookie('connect.sid');
+                    res.send({message: 'Session successfully deleted!'});
+                });
+            }
+    } catch (err) {
+        return res.status(500).json({message: err.message})
+    }
+})
+
+// Step 2: Displaying application details based on selection
+router.get('/applications/:id', getApplication, async (req, res) => {
+    try {
+        const client = await Client.findOne({_id: res.application.applicantNo})
+        var reference = null, rep = null
+        var refAccNo = "", refAccName = ""
+
+        if (res.application.referenceClientNo != null) {
+            reference = await Client.findOne({_id: res.application.referenceClientNo})
+            refAccNo = reference.clientNo
+            refAccName = reference.firstName + ' ' + reference.middleName + ' ' + reference.lastName
         }
+
+        if (res.application.representativeNo != null)
+            rep = await Representative.findOne({_id: res.application.representativeNo})
+        
+        const details = {
+            applicationNo: res.application.applicationNo,
+            fullName: client.firstName + ' ' + client.middleName + ' ' + client.lastName,
+            submissionDate: res.application.startDate,
+            email: client.email,
+            establishmentName: res.application.establishmentName,
+            contactNo: client.contactNo,
+            address: res.application.address,
+            refAccountNo: refAccNo,
+            refAccountName: refAccName,
+            landmark: res.application.landmark,
+            ownership: res.application.ownership,
+            validId: res.application.validId,
+            representative: rep
+        }
+
+        res.send(details)
+    } catch (err) {
+        return res.status(500).json({message: err.message})
+    }
+})
+
+// Step 2a: Download valid ID based on link displayed in details
+router.get('/applications/:id/:filename', async (req, res) => {
+    try {
+        res.download(path.resolve(__dirname, '../public/validIds/' + req.params.filename), async function(err) {
+            if (err)
+                console.log(err)
+        })
+    } catch (err) {
+        return res.status(500).json({message: err.message})
+    }
 })
 
 //Step 4: See all applications - TODO: make it work for when applications button is selected (coming from complaints)
@@ -180,54 +234,6 @@ router.get('/applications/filter', async (req, res) => {
 
 //Step 5 xiv: Status change from dropdown (aless) + //Step 6? (completion): Completion date is stored 
 
-async function getApplication(req, res, next) {
-    let application 
-    try{
-        application = await Application.findOne({applicationNo: req.params.id})
-        if (application == null){
-            return res.status(404).json({message: 'Cannot find application'})
-        }
-    } catch(err) {
-        return res.status(500).json({message: err.message})
-    }
-
-    res.application = application
-    next()
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Step 5: Return selected applicant (initial action)
-router.get('/applications/:id', async (req, res) => {
-
-})
-
-//Step 5 xiv 3: Visitation date 
-router.patch('/applications/:id', async (req, res) => {
-    //add visitation date
-})
-
-//Step 5 xiv 6a: Installation date 
-router.patch('/applications/:id', async (req, res) => {
-    //add installation date
-})
-
-//Step 5: Updating the stage (general)
-router.patch('/applications/:id', async (req, res) => {
-    //udpate stage of application 
-})
 
 /* ****************** ASYNC HELPER FUNCTIONS ****************** */
 async function generateEmployeeNum(req, res, next) {
@@ -240,6 +246,21 @@ async function generateEmployeeNum(req, res, next) {
     }
 
     res.employeeNo = employees.length
+    next()
+}
+
+async function getApplication(req, res, next) {
+    let application 
+    try{
+        application = await Application.findOne({applicationNo: req.params.id})
+        if (application == null){
+            return res.status(404).json({message: 'Cannot find application'})
+        }
+    } catch(err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.application = application
     next()
 }
 

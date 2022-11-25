@@ -6,7 +6,7 @@ const Document = require('../models/document')
 const Representative = require('../models/representative')
 const Material = require('../models/material')
 
-const path = require('path'); // Local path directory for our static resource folder
+const path = require('path') // Local path directory for our static resource folder
 const fileUpload = require('express-fileupload')
 const {PDFDocument} = require('pdf-lib')
 const {readFile, writeFile} = require('fs/promises')

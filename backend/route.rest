@@ -13,9 +13,9 @@ Content-Type: application/json
     "establishmentName": "",
     "address": "159-C Apo St.",
     "refClientNo": 0,
-    "refFirstName": "Aless",
-    "refMiddleName": "Interino",
-    "refLastName": "Gomez",
+    "refFirstName": "Hannah",
+    "refMiddleName": "Chua",
+    "refLastName": "Fong",
     "landmark": "Lourdes School, QC",
     "ownership": "leased",
     "connectionType": "Tapping"
@@ -27,7 +27,7 @@ Content-Type: application/json
     // Form data found below:
     {
         "hasRepresentative": true, // Test both boolean values to check if updated status is correct
-        "validId": "validid.jpg" // Should be uploaded as file
+        "validId": "validid.png" // Should be uploaded as file
     }
 ###
 
@@ -40,7 +40,7 @@ Content-Type: application/json
         "email": "jgd@gmail.com",
         "contactNo": "09756365927",
         "relationship": "aunt",
-        "validId": "janedoepassport.jpg" // Should be uploaded as file
+        "validId": "janedoepassport.png" // Should be uploaded as file
     }
 
 ###
@@ -130,6 +130,16 @@ Content-Type: application/json
 
     // STEP 1 BONUS: Logout
 POST http://localhost:3000/admin/logout
+
+###
+
+// STEP 2 TEST: Display details for one application entry
+GET http://localhost:3000/admin/applications/0
+
+###
+
+// STEP 2A TEST: Download Valid ID based on link on details page
+GET http://localhost:3000/admin/applications/0/validid.png
 
 ###
 
