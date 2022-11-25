@@ -57,6 +57,12 @@ const applicationSchema = new mongoose.Schema({
     },
     validId: {
         type: String
+    },
+    surveySchedule: {
+        type: Date
+    },
+    installationSchedule: {
+        type: Date
     }
 })
 

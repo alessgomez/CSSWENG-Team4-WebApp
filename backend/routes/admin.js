@@ -131,6 +131,10 @@ router.get('/applications', async (req, res) => {
     
     try{
         const applications = await Application.find()
+
+        //delete after using:
+        console.log("START DATE: " + applications[0].startDate)
+
         res.json(applications)
     }
     catch(err){
@@ -216,7 +220,6 @@ router.delete('/applications/delete/:id', getApplication, async (req, res) => {
 })
 
 //Step ?: Status filter - NOTE: Need to test
-
 router.get('/applications/filter', async (req, res) => {
     try {
         const applications = await Application.find({applicationStage: req.query.stage})
@@ -228,9 +231,30 @@ router.get('/applications/filter', async (req, res) => {
 })
 
 //Step 5 xiv 3a: Employee is asked to input the survey schedule
-
+router.get('/surveyschedule/:id',  getApplication, async (req, res) => {
+    res.application.surveySchedule = new Date(req.query.date + "T" + req.query.time + ":00" + "Z");
+    
+    try {
+        const updatedApplication = await res.application.save()
+        console.log("updatedApplication: " + updatedApplication)
+        res.send({applicationNo: updatedApplication.applicationNo})
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+})
 
 //Step 5 xiv 6a: Employee is asked to input the installation schedule  
+router.get('/installationschedule/:id',  getApplication, async (req, res) => {
+    res.application.installationSchedule = new Date(req.query.date + "T" + req.query.time + ":00" + "Z");
+    
+    try {
+        const updatedApplication = await res.application.save()
+        console.log("updatedApplication: " + updatedApplication)
+        res.send({applicationNo: updatedApplication.applicationNo})
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+})
 
 //Step 5 xiv: Status change from dropdown (aless) + //Step 6? (completion): Completion date is stored 
 
