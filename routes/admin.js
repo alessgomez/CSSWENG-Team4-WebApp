@@ -17,6 +17,11 @@ router.get('/getLogin', (req, res) => {
     res.render('admin_login', {layout: false})
 })
 
+// Render dashboard
+router.get('/dashboard', (req, res) => {
+    res.render('admin_applications_dashboard')
+})
+
 // Step 1 Prerequisite: Add Employee Credentials
 router.post('/addcredentials', generateEmployeeNum, async (req, res) => {
     const employee = new Employee ({
@@ -59,7 +64,7 @@ router.post('/login', async(req, res) => {
                     req.session.objectId = employee._id
                     req.session.user = employee.employeeNo;
                     req.session.name = employee.firstName + " " + employee.middleName + " " + employee.lastName;
-                    res.render('admin_application_dashboard')
+                    res.redirect('/dashboard')
                 }
             })
     } catch (err) {
