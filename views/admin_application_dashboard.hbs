@@ -1,0 +1,52 @@
+<div class = "left">
+    <!-- Temporary placeholder -->
+    <img src = "../images/logo/logo_placeholder.png" class = "user-img"> 
+
+    <div class = "uname">username</div>
+    <div class = "center-btn">
+        <button class = "btn">Applications</button>
+    </div>
+    <div class = "center-btn">
+        <button class = "btn">Complaints</button>
+    </div>
+</div>
+<div class = "right">
+    <!-- Template for all stage -->
+    <div class = "applications">
+        <label id = "applications">Applications</label>
+        <input id = "search" type="text" placeholder="Search..">
+    </div>
+    
+    <div class = "Filter">
+        <label class = "filter-by">Filter by:</label>
+            <select name="filter-options" id="filter-options">
+                <option style="display:none;" selected>Select Stage</option>
+                <option value="option-surveyor-visit">Pending Surveyor Visit</option>
+                <option value="option-installation">Pending Installation</option>
+                <option value="option-onsite-visit">Pending Onsite Visit</option>
+            </select>
+    </div>
+    <div class = "table-title">{{this.stage}}</div>
+
+    <table class = "surveyor-visit">
+        {{#each this.applications}}
+            <tr>
+                <th>Date</th>
+                <th>Ref No.</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Contact No.</th>
+                <th>Stage</th>
+            </tr>
+            <tr>
+                <td>{{startDate}}</td>
+                <td>{{applicationNo}}</td>
+                <td>{{name}}</td>
+                <td>{{address}}</td>
+                <td>{{contactNo}}</td>
+                <td>{{applicationStage}}</td>
+            </tr>
+        {{/each}}
+    </table>
+</div>
+

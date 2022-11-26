@@ -88,7 +88,7 @@ router.post('/logout', async(req, res) => {
     }
 })
 
-// Step 2: Displaying application details based on selection
+// Step 2: Displaying application details based on selection - POP UP
 router.get('/applications/:id', getApplication, async (req, res) => {
     try {
         const client = await Client.findOne({_id: res.application.applicantNo})
@@ -143,11 +143,33 @@ router.get('/applications', async (req, res) => {
     
     try{
         const applications = await Application.find()
+        //console.log(applications);
 
-        //delete after using:
-        console.log("START DATE: " + applications[0].startDate)
+        /*const data = {
+            stage: "All",
+            results: []
+        }
 
-        res.json(applications)
+        for (var i = 0; i < applications.length; i++)
+        {
+            var client = await Client.findOne({_id: applications[i].applicantNo})
+            
+            
+            //var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
+
+            var applicationObj = {
+                startDate: applications[i].startDate,
+                applicationNo: applications[i].applicationNo,
+                applicationStage: applications[i].applicationStage,
+                name: fullName,
+                address: applications[i].address,
+                contactNo: client.contactNo
+            }
+
+            data.results.push(applicationObj);
+        }*/
+
+        res.render("admin_application_dashboard");
     }
     catch(err){
         res.status(500).json({message: err.message})
