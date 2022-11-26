@@ -87,27 +87,24 @@ router.post('/step2a/:id', generateRepNumAndApp, async (req, res) => {
     })
 
     const image = req.files.validId
-    if (image.name.split('.')[1] == "png" || image.name.split('.')[1] == "jpg" || image.name.split('.')[1] == "jpeg" || image.name.split('.')[1] == "pdf")
-        image.mv(path.resolve(__dirname, '../public/validIds',image.name), async (error) => {
-            representative.validId = '/validIds/' + image.name
+    image.mv(path.resolve(__dirname, '../public/validIds',image.name), async (error) => {
+        representative.validId = '/validIds/' + image.name
+        
+        try {
+            const newRepresentative = await representative.save()
+            res.application.representativeNo = newRepresentative._id
+            res.application.applicationStage = 'print requirements'
             
             try {
-                const newRepresentative = await representative.save()
-                res.application.representativeNo = newRepresentative._id
-                res.application.applicationStage = 'print requirements'
-                
-                try {
-                    const updatedApplication = await res.application.save()
-                    res.send({applicationNo: updatedApplication.applicationNo})
-                } catch(err) {
-                    res.status(400).json({message: err.message})
-                }
+                const updatedApplication = await res.application.save()
+                res.send({applicationNo: updatedApplication.applicationNo})
             } catch(err) {
                 res.status(400).json({message: err.message})
             }
-        })
-    else
-        res.send({message: 'Invalid file type'})
+        } catch(err) {
+            res.status(400).json({message: err.message})
+        }
+    })
 })
 
 router.get('/step3-1/:id', getApplication, (req, res) => {
