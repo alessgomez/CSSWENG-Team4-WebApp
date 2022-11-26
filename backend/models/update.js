@@ -7,11 +7,11 @@ const updateSchema = new mongoose.Schema({
         required: true 
     },
     updatedBy: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'Employee', //not yet created
+        type: mongoose.Schema.Types.ObjectId, ref: 'Employee',
         required: true
     },
     applicationNo: {
-        type: String, 
+        type: mongoose.Schema.Types.ObjectId, ref: 'Application', 
         required: true
     },
     newStage: {

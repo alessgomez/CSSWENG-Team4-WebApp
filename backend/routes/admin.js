@@ -51,6 +51,7 @@ router.post('/login', async(req, res) => {
                 if (!result)
                     return res.status(404).json({message: 'Incorrect password'})
                 else {
+                    req.session.objectId = employee._id
                     req.session.user = employee.employeeNo;
                     req.session.name = employee.firstName + " " + employee.middleName + " " + employee.lastName;
                     res.send({session: req.session})
@@ -256,8 +257,28 @@ router.get('/installationschedule/:id',  getApplication, async (req, res) => {
     }
 })
 
-//Step 5 xiv: Status change from dropdown (aless) + //Step 6? (completion): Completion date is stored 
+//Step 5 xiv: Status change from dropdown + Step 6 (if application is completed): Completion date is stored 
+router.patch('/updatestatus/:id', getApplication, generateUpdateNum, async (req, res) => {
+    res.application.applicationStage = req.body.newStatus
 
+    if (req.body.newStatus == "Completed")
+        res.application.completionDate = Date.now ()
+
+    const update = new Update ({
+        updateNo: res.updateNo,
+        updatedBy: req.session.objectId,
+        applicationNo: res.application._id,
+        newStage: req.body.newStatus
+    })
+
+    try {
+        const updatedApplication = await res.application.save()
+        const newUpdate = await update.save()
+        res.send({newUpdate})
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+})
 
 /* ****************** ASYNC HELPER FUNCTIONS ****************** */
 async function generateEmployeeNum(req, res, next) {
@@ -270,6 +291,19 @@ async function generateEmployeeNum(req, res, next) {
     }
 
     res.employeeNo = employees.length
+    next()
+}
+
+async function generateUpdateNum(req, res, next) {
+    let updates
+
+    try {
+        updates = await Update.find()
+    } catch(err) {
+        return res.status(500).json({message: err.message})
+    }
+
+    res.updateNo = updates.length
     next()
 }
 

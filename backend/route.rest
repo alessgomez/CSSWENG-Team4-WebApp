@@ -150,7 +150,15 @@ GET http://localhost:3000/admin/applications
 ###
 
 // APPLICATION DETAILS TEST (Aless)
+    // Updating status and creating Update db entry
+PATCH http://localhost:3000/admin/updatestatus/0
+Content-Type: application/json
 
+{
+    "newStatus": "Completed"
+}
+
+###
 
 
 // HANNAH TEST:
