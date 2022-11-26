@@ -12,6 +12,11 @@ const path = require('path')
 http://localhost:3000/admin
 */
 
+// Render login page
+router.get('/getLogin', (req, res) => {
+    res.render('admin_login', {layout: false})
+})
+
 // Step 1 Prerequisite: Add Employee Credentials
 router.post('/addcredentials', generateEmployeeNum, async (req, res) => {
     const employee = new Employee ({
@@ -42,7 +47,7 @@ router.post('/addcredentials', generateEmployeeNum, async (req, res) => {
 router.post('/login', async(req, res) => {
     let employee
     try {
-        employee = await Employee.findOne({username: req.body.username})
+        employee = await Employee.findOne({username: req.body.uname})
 
         if (employee == null)
                 return res.status(404).json({message: 'Cannot find employee'})
@@ -54,7 +59,7 @@ router.post('/login', async(req, res) => {
                     req.session.objectId = employee._id
                     req.session.user = employee.employeeNo;
                     req.session.name = employee.firstName + " " + employee.middleName + " " + employee.lastName;
-                    res.send({session: req.session})
+                    res.render('admin_application_dashboard')
                 }
             })
     } catch (err) {
