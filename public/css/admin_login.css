@@ -1,0 +1,72 @@
+/* Font links*/
+@import url('https://fonts.googleapis.com/css?family=Inter');
+
+/* Background */
+body {
+    /* fix bg placement */
+    background: url("../images/background/application_bg.png") no-repeat;
+} 
+
+/* Panel Content */
+.panel {
+    font-family: 'Inter';
+    font-style: normal;
+    margin: auto;
+    background: rgba(240, 240, 240, 0.8);
+    box-shadow: 0px 4px 20px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    width: 33%;
+    margin-top: 20%;
+}
+
+.admin {
+    text-align: center;
+    font-weight: 800;
+    font-size: 160%;
+    padding-top: 5%;
+    padding-left: 5%;
+    color: #000080;
+}
+
+.input-uname {
+    padding-top: 5%;
+    margin: auto;
+    width: 70%;
+}
+
+.input-pass {
+    padding-top: 5%;
+    padding-bottom: 5%;
+    margin: auto;
+    width: 70%;
+}
+
+input {
+    width: 100%;
+    background: #FFFFFF;
+    border-radius: 5px;
+    padding-left: 2%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.label-title {
+    font-size: 80%;
+    color: #1E1E1E;
+}
+
+/* Login button */
+.btn {
+    background: #000080;
+    color: #FFFFFF;
+    box-shadow: 0px 4px 10px 6px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 1% 5% 1% 5%;
+    font-size: 140%;
+}
+
+.center-btn {
+    text-align: center;
+    padding-top: 5%;
+    padding-bottom: 8%;
+}
