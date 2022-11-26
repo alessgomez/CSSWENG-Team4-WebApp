@@ -65,13 +65,14 @@ router.post('/login', async(req, res) => {
 // Step 1 Bonus: Logout
 router.post('/logout', async(req, res) => {
     try {
-        if (req.session)
-            {
-                req.session.destroy(() => {
-                    res.clearCookie('connect.sid');
-                    res.send({message: 'Session successfully deleted!'});
-                });
-            }
+        if (req.session.name == null)
+            res.send({message: 'No existing session!'})
+        else {
+            req.session.destroy(() => {
+                res.clearCookie('connect.sid')
+                res.send({message: 'Session successfully deleted!'})
+            })
+        }
     } catch (err) {
         return res.status(500).json({message: err.message})
     }
