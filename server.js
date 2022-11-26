@@ -3,9 +3,15 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
-const session = require('express-session');
-// const flash = require('connect-flash');
-const MongoStore = require('connect-mongo');
+const session = require('express-session')
+// const flash = require('connect-flash')
+const MongoStore = require('connect-mongo')
+const exphbs = require("express-handlebars")
+
+app.set("view engine", "hbs")
+app.engine("hbs", exphbs.engine({extname: "hbs"}))
+app.use(express.urlencoded({extended: true}))
+app.use(express.static("public"))
 
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true})
 const db = mongoose.connection
