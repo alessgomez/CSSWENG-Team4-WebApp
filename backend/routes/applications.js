@@ -53,21 +53,24 @@ router.post('/step1', generateNums, async (req, res) => {
 // Step 2: Uploading valid ID for application
 router.patch('/step2/:id', getApplication, (req, res) => {
     const image = req.files.validId
-    image.mv(path.resolve(__dirname, '../public/validIds',image.name), async (error) => {
-        res.application.validId = '/validIds/' + image.name
-        
-        if (req.body.hasRepresentative == true)
-            res.application.applicationStage = 'add representative'
-        else 
-            res.application.applicationStage = 'print requirements'
+    if (image.name.split('.')[1] == "png" || image.name.split('.')[1] == "jpg" || image.name.split('.')[1] == "jpeg" || image.name.split('.')[1] == "pdf")
+        image.mv(path.resolve(__dirname, '../public/validIds',image.name), async (error) => {
+            res.application.validId = '/validIds/' + image.name
+            
+            if (req.body.hasRepresentative == true)
+                res.application.applicationStage = 'add representative'
+            else 
+                res.application.applicationStage = 'print requirements'
 
-        try {
-            const updatedApplication = await res.application.save()
-            res.send({applicationNo: updatedApplication.applicationNo})
-        } catch(err) {
-            res.status(400).json({message: err.message})
-        }
-    })
+            try {
+                const updatedApplication = await res.application.save()
+                res.send({applicationNo: updatedApplication.applicationNo})
+            } catch(err) {
+                res.status(400).json({message: err.message})
+            }
+        })
+    else
+        res.send({message: 'Invalid file type'})
 })
 
 // Step 2A: Creating representative, if applicable TODO!
