@@ -167,7 +167,7 @@ POST http://localhost:3000/applications/step1
 Content-Type: application/json
 
 {
-    "firstName": "159-C Apo St.",
+    "firstName": "Hannah",
     "middleName": "Chua",
     "lastName": "Fong",
     "email": "reg",
@@ -180,7 +180,8 @@ Content-Type: application/json
     "refLastName": "Gomez",
     "landmark": "Lourdes",
     "ownership": "leased",
-    "connectionType": "Tapping"
+    "connectionType": "Tapping",
+    "applicationStage": "adding-representative"
 }
 
 ###

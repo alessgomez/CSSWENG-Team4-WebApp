@@ -53,7 +53,7 @@ const applicationSchema = new mongoose.Schema({
     applicationStage: {
         type: String,
         required: true,
-        default: 'upload requirements'
+        default: 'uploading-requirements'
     },
     validId: {
         type: String

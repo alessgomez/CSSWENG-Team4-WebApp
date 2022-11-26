@@ -20,24 +20,34 @@
     <div class = "Filter">
         <label class = "filter-by">Filter by:</label>
             <select name="filter-options" id="filter-options">
-                <option style="display:none;" selected>Select Stage</option>
-                <option value="option-surveyor-visit">Pending Surveyor Visit</option>
-                <option value="option-installation">Pending Installation</option>
-                <option value="option-onsite-visit">Pending Onsite Visit</option>
+                {{#switch stage}}
+                    <option value="" {{#case "All"}} selected {{/case}}>Select Stage</option>
+                    <option value="uploading-requirements" {{#case "uploading-requirements"}} selected {{/case}}>Uploading Requirements</option>
+                    <option value="adding-representative" {{#case "adding-representative"}} selected {{/case}}>Adding Representative</option>
+                    <option value="printing-and-preparing-documents" {{#case "printing-and-preparing-documents"}} selected {{/case}}>Printing and Preparing Documents</option>
+                    <option value="waiting-for-survey-schedule" {{#case "waiting-for-survey-schedule"}} selected {{/case}}>Waiting for Survey Schedule</option>
+                    <option value="pending-surveyor-visit" {{#case "pending-surveyor-visit"}} selected {{/case}}>Pending Surveyor Visit</option>
+                    <option value="purchasing-of-materials" {{#case "purchasing-of-materials"}} selected {{/case}}>Purchasing of Materials</option>
+                    <option value="pending-onsite-visit" {{#case "pending-onsite-visit"}} selected {{/case}}>Pending Onsite Visit</option>
+                    <option value="pending-installation" {{#case "pending-installation"}} selected {{/case}}>Pending Installation</option>
+                    <option value="completed" {{#case "completed"}} selected {{/case}}>Completed</option>
+                {{/switch}}
             </select>
     </div>
     <div class = "table-title">{{this.stage}}</div>
 
     <table class = "surveyor-visit">
-        {{#each this.applications}}
-            <tr>
-                <th>Date</th>
-                <th>Ref No.</th>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Contact No.</th>
-                <th>Stage</th>
-            </tr>
+        <tr>
+            <th>Date</th>
+            <th>Application No.</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Contact No.</th>
+            <th>Stage</th>
+        </tr>
+
+        {{#each this.results}}
+
             <tr>
                 <td>{{startDate}}</td>
                 <td>{{applicationNo}}</td>
@@ -48,5 +58,6 @@
             </tr>
         {{/each}}
     </table>
+
 </div>
 

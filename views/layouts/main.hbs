@@ -3,6 +3,25 @@
         <title>Sinukuan Water System, Inc.</title>
         <link href = "../../css/navbar.css" rel = "stylesheet"/>
         <link href = "../../css/admin_application_dashboard.css" rel = "stylesheet"/>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
+        {{#each this.script}}
+            <script src="/js/{{this}}.js"></script>
+        {{/each}}
+        <script>
+            Handlebars.registerHelper('switch', function(value, options) {
+            this.switch_value = value;
+            this.switch_break = false;
+            return options.fn(this);
+            });
+
+            Handlebars.registerHelper('case', function(value, options) {
+            if (value == this.switch_value) {
+                this.switch_break = true;
+                return options.fn(this);
+            }
+            });
+        </script>
     </head>
     <body>
         <!-- Header -->

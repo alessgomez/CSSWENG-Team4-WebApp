@@ -64,7 +64,7 @@ router.post('/login', async(req, res) => {
                     req.session.objectId = employee._id
                     req.session.user = employee.employeeNo;
                     req.session.name = employee.firstName + " " + employee.middleName + " " + employee.lastName;
-                    res.redirect('/admin/dashboard')
+                    res.redirect('/admin/applications')
                 }
             })
     } catch (err) {
@@ -140,12 +140,11 @@ router.get('/applications/:id/:filename', async (req, res) => {
 
 //Step 4: See all applications - TODO: make it work for when applications button is selected (coming from complaints)
 router.get('/applications', async (req, res) => {
-    
     try{
         const applications = await Application.find()
-        //console.log(applications);
 
-        /*const data = {
+        const data = {
+            script: ["admin_dashboard"],
             stage: "All",
             results: []
         }
@@ -155,10 +154,10 @@ router.get('/applications', async (req, res) => {
             var client = await Client.findOne({_id: applications[i].applicantNo})
             
             
-            //var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
+            var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
 
             var applicationObj = {
-                startDate: applications[i].startDate,
+                startDate: applications[i].startDate.getMonth() + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
                 applicationNo: applications[i].applicationNo,
                 applicationStage: applications[i].applicationStage,
                 name: fullName,
@@ -167,9 +166,8 @@ router.get('/applications', async (req, res) => {
             }
 
             data.results.push(applicationObj);
-        }*/
-
-        res.render("admin_application_dashboard");
+        }
+        res.render("admin_application_dashboard", data);
     }
     catch(err){
         res.status(500).json({message: err.message})
@@ -254,11 +252,35 @@ router.delete('/applications/delete/:id', getApplication, async (req, res) => {
 })
 
 //Step ?: Status filter - NOTE: Need to test
-router.get('/applications/filter', async (req, res) => {
+router.get('/filter', async (req, res) => {
     try {
         const applications = await Application.find({applicationStage: req.query.stage})
-        
-        res.json(applications)
+        console.log("filter: " + req.query.stage);
+        const data = {
+            script: ["admin_dashboard"],
+            stage: "All",
+            results: []
+        }
+
+        for (var i = 0; i < applications.length; i++)
+        {
+            var client = await Client.findOne({_id: applications[i].applicantNo})
+            
+            
+            var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
+
+            var applicationObj = {
+                startDate: applications[i].startDate.getMonth() + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
+                applicationNo: applications[i].applicationNo,
+                applicationStage: applications[i].applicationStage,
+                name: fullName,
+                address: applications[i].address,
+                contactNo: client.contactNo
+            }
+
+            data.results.push(applicationObj);
+        }
+        res.render("admin_application_dashboard", data);
     } catch (err) {
         res.status(500).json({message: err.message})
     }

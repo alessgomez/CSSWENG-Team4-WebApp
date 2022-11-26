@@ -58,9 +58,9 @@ router.patch('/step2/:id', getApplication, (req, res) => {
             res.application.validId = '/validIds/' + image.name
             
             if (req.body.hasRepresentative == true)
-                res.application.applicationStage = 'add representative'
+                res.application.applicationStage = 'adding-representative'
             else 
-                res.application.applicationStage = 'print requirements'
+                res.application.applicationStage = 'printing-and-preparing-documents'
 
             try {
                 const updatedApplication = await res.application.save()
@@ -94,7 +94,7 @@ router.post('/step2a/:id', generateRepNumAndApp, async (req, res) => {
             try {
                 const newRepresentative = await representative.save()
                 res.application.representativeNo = newRepresentative._id
-                res.application.applicationStage = 'print requirements'
+                res.application.applicationStage = 'printing-and-preparing-documents'
                 
                 try {
                     const updatedApplication = await res.application.save()
@@ -128,7 +128,7 @@ router.get('/step3-2/:id', getApplication, async (req, res) => {
         {
             if (res.application.representativeNo == null)
             {
-                res.application.applicationStage = 'waiting for survey schedule'
+                res.application.applicationStage = 'waiting-for-survey-schedule'
     
                 try {
                     const updatedApplication = await res.application.save()
@@ -148,7 +148,7 @@ router.get('/step3-3/:id', getApplication, async (req, res) => {
         }
         else 
         {
-            res.application.applicationStage = 'waiting for survey schedule'
+            res.application.applicationStage = 'waiting-for-survey-schedule'
 
             try {
                 const updatedApplication = await res.application.save()
@@ -184,7 +184,7 @@ router.get('/step5/:id', getApplication, async (req, res) => {
 
 // Step 6: Visitation
 router.get('/step6/:id', getApplication, async (req, res) => {
-    res.application.applicationStage = 'waiting for visit'
+    res.application.applicationStage = 'pending-onsite-visit'
 
     try {
         const updatedApplication = await res.application.save()
@@ -196,7 +196,7 @@ router.get('/step6/:id', getApplication, async (req, res) => {
 
 // Step 7: Installation
 router.get('/step7/:id', getApplication, async (req, res) => {
-    res.application.applicationStage = 'waiting for installation'
+    res.application.applicationStage = 'pending-installation'
 
     try {
         const updatedApplication = await res.application.save()
