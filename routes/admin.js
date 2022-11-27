@@ -99,6 +99,51 @@ router.get('/applications/:id', getApplication, async (req, res) => {
 
         if (res.application.representativeNo != null)
             rep = await Representative.findOne({_id: res.application.representativeNo})
+
+            /*
+            <option value="uploading-requirements" selected>Uploading Requirements</option>
+                <option value="adding-representative">Adding Representative</option>
+                <option value="printing-and-preparing-documents">Printing and Preparing Documents</option>
+                <option value="waiting-for-survey-schedule">Waiting for Survey Schedule</option>
+                <option value="pending-surveyor-visit">Pending Surveyor Visit</option>
+                <option value="purchasing-of-materials">Purchasing of Materials</option>
+                <option value="pending-onsite-visit">Pending Onsite Visit</option>
+                <option value="pending-installation">Pending Installation</option>
+                <option value="completed">Completed</option>
+            */
+    
+        
+        var b1, b2, b3, b4, b5, b6, b7, b8, b9 = false;
+        
+        switch (res.application.applicationStage) {
+            case 'uploading-requirements': b1 = true;
+            break;
+            
+            case 'adding-representative': b2= true;
+            break;
+            
+            case 'printing-and-preparing-documents': b3 = true;
+            break;
+            
+            case 'waiting-for-survey-schedule': b4 = true;
+            break;
+            
+            case 'pending-surveyor-visit': b5 = true;
+            break;
+
+            case 'purchasing-of-materials': b6 = true;
+            break;
+
+            case 'pending-onsite-visit': b7 = true;
+            break;
+
+            case 'pending-installation': b8 = true;
+            break;
+
+            case 'completed': b9 = true;
+            break;
+            
+            }
         
         const details = {
             applicationNo: res.application.applicationNo,
@@ -114,7 +159,16 @@ router.get('/applications/:id', getApplication, async (req, res) => {
             ownership: res.application.ownership,
             validId: res.application.validId,
             applicationStage: res.application.applicationStage,
-            representative: rep
+            representative: rep,
+            b1: b1,
+            b2: b2,
+            b3: b3,
+            b4: b4,
+            b5: b5,
+            b6: b6,
+            b7: b7,
+            b8: b8,
+            b9: b9
         }
 
         
@@ -322,6 +376,7 @@ router.get('/installationschedule/:id',  getApplication, async (req, res) => {
 
 //Step 5 xiv: Status change from dropdown + Step 6 (if application is completed): Completion date is stored 
 router.patch('/updatestatus/:id', getApplication, generateUpdateNum, async (req, res) => {
+    console.log("update status api called");
     res.application.applicationStage = req.body.newStatus
 
     if (req.body.newStatus == "Completed")

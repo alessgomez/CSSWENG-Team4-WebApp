@@ -3,11 +3,8 @@ $(document).ready(function(){
     
     // delete application
     $("#delete").click(function(){
-        console.log("clicked");
-        //router.delete('/applications/delete/:id', getApplication, async (req, res) => {
-        //$.get('/getAddOn', {name: name}, function(result)  {
+       
         const applicationNo = parseInt($("#refno").text());
-        console.log("applicationNo: " + applicationNo);
 
         $.ajax({ 
             url: '/admin/applications/delete/' + applicationNo,
@@ -27,9 +24,30 @@ $(document).ready(function(){
     });
 
     // update stage based on dropdown
-    $("#filter-options").change(function(){
-     
+    $("#status-dropdown").change(function(){
+        
+        var stage = $("#status-dropdown").val();
+        $("#status").text(stage);
+
     });
+
+    $("#saveBtn").click(function() {
+
+        const applicationNo = parseInt($("#refno").text());
+
+        $.ajax({ 
+            url: '/admin/applications/updatestatus/' + applicationNo,
+            type: 'patch',
+            success: function() {
+                // your success response data here in data variable
+                console.log('successfully updated status');
+            }
+        });
+        
+        //window.location.href="http://localhost:3000/admin/applications";
+
+    });
+
     
     
  });

@@ -17,6 +17,13 @@ body {
     border-radius: 5px;	
 }
 
+#saveBtn {
+    width: 50%;
+    background-color: #000080;
+    border-radius: 5px;	
+    margin-left: 40px;
+}
+
 .panel {
     font-family: 'Inter';
     font-style: normal;
@@ -99,7 +106,7 @@ body {
 #status-dropdown {
     font-family: 'Inter';
     border-color: #000080;
-    width: 150px;
+    width: 200px;
     height: 30px;
 }
 

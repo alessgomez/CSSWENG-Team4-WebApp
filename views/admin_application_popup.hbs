@@ -2,16 +2,26 @@
 
 <div class = "panel">
     <div class = "left">
-        <div id="backDiv"><button id="backBtn">&#8920; Go Back</button></div>
+        
         <div class = "refno" id="refno" value={{this.details.applicationNo}}>{{this.details.applicationNo}}</div>
         <div class = "name">{{this.details.fullName}}</div>
-        <div class = "status">{{this.details.applicationStage}}</div>
+        <div class = "status" id="status">{{this.details.applicationStage}}</div>
         <div class = "dropdown">
             <label for="status-dropdown">Update Status</label>
             <select name="status-dropdown" id="status-dropdown">
-                <option value="waiting">Waiting</option>
+                <option value="uploading-requirements" {{#if this.details.b1}} selected {{/if}}>Uploading Requirements</option>
+                <option value="adding-representative" {{#if this.details.b2}} selected {{/if}}>Adding Representative</option>
+                <option value="printing-and-preparing-documents" {{#if this.details.b3}} selected {{/if}}>Printing and Preparing Documents</option>
+                <option value="waiting-for-survey-schedule" {{#if this.details.b4}} selected {{/if}}>Waiting for Survey Schedule</option>
+                <option value="pending-surveyor-visit" {{#if this.details.b5}} selected {{/if}}>Pending Surveyor Visit</option>
+                <option value="purchasing-of-materials" {{#if this.details.b6}} selected {{/if}}>Purchasing of Materials</option>
+                <option value="pending-onsite-visit" {{#if this.details.b7}} selected {{/if}}>Pending Onsite Visit</option>
+                <option value="pending-installation" {{#if this.details.b8}} selected {{/if}}>Pending Installation</option>
+                <option value="completed" {{#if this.details.b9}} selected {{/if}}>Completed</option>
             </select>
         </div>
+        <div style="height: 40px;"></div>
+        <div id="backDiv" style="margin-left: 25px"><button id="backBtn">&#8920; Go Back</button> <button id="saveBtn">Save Changes</button></div>
     </div>
     <div class = "right">
         <table>
