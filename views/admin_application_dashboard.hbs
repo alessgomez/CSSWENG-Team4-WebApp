@@ -20,7 +20,7 @@
     <div class = "Filter">
         <label class = "filter-by">Filter by:</label>
             <select name="filter-options" id="filter-options">
-                <option value="" selected>Select Stage</option>
+                <option value="all" selected>All</option>
                 <option value="uploading-requirements">Uploading Requirements</option>
                 <option value="adding-representative">Adding Representative</option>
                 <option value="printing-and-preparing-documents">Printing and Preparing Documents</option>
@@ -32,29 +32,9 @@
                 <option value="completed">Completed</option>
             </select>
     </div>
-    <div class = "table-title">{{this.stage}}</div>
-
-    <table class = "surveyor-visit">
-        <tr>
-            <th>Date</th>
-            <th>Application No.</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Contact No.</th>
-            <th>Stage</th>
-        </tr>
-
-        {{#each this.results}}
-            <tr>
-                <td>{{startDate}}</td>
-                <td id="applicationNo"><a  href="/admin/applications/{{applicationNo}}">{{applicationNo}}</a></td>
-                <td>{{name}}</td>
-                <td>{{address}}</td>
-                <td>{{contactNo}}</td>
-                <td>{{applicationStage}}</td>
-            </tr>
-        {{/each}}
-    </table>
-
+    <div class = "table-title" id="stageheader">{{this.stage}}</div>
+    <div id = "applications-table">
+        {{> approw this.results}}
+    </div>
 </div>
 

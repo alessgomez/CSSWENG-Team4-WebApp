@@ -1,0 +1,21 @@
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Application No.</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Contact No.</th>
+        <th>Stage</th>
+    </tr>
+
+    {{#each this}}     
+        <tr class="temp">
+            <td>{{startDate}}</td>
+            <td id="applicationNo"><a  href="/admin/applications/{{applicationNo}}">{{applicationNo}}</a></td>
+            <td>{{name}}</td>
+            <td>{{address}}</td>
+            <td>{{contactNo}}</td>
+            <td>{{applicationStage}}</td>
+        </tr>
+    {{/each}}
+</table>

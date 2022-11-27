@@ -5,7 +5,7 @@ POST http://localhost:3000/applications/step1
 Content-Type: application/json
 
 {
-    "firstName": "Hannah",
+    "firstName": "Hannah8",
     "middleName": "Chua",
     "lastName": "Fong",
     "email": "hrf@gmail.com",
@@ -158,6 +158,16 @@ Content-Type: application/json
     "newStatus": "Completed"
 }
 
+
+// uploading-requirements
+// adding-representative
+// printing-and-preparing-documents
+// waiting-for-survey-schedule
+// pending-surveyor-visit
+// purchasing-of-materials
+// pending-onsite-visit
+// pending-installation
+
 ###
 
 
@@ -173,7 +183,7 @@ Content-Type: application/json
     "email": "reg",
     "contactNo": "09260716958",
     "establishmentName": "",
-    "address": "159-C Apo St.",
+    "address": "11",
     "refClientNo": 0,
     "refFirstName": "Aless",
     "refMiddleName": "Interino",

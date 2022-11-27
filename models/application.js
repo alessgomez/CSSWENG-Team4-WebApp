@@ -73,3 +73,5 @@ applicationSchema.index(
   )
 
 module.exports = mongoose.model('Application', applicationSchema)
+
+/** */

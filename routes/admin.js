@@ -236,7 +236,7 @@ router.get('/applications', async (req, res) => {
 
 //Step 4d: Search - TODO: assumed to be based on applicant name and app. number ONLY 
 //NOTE: Retains latest copy (so not in chronological order based on date)
-router.get('/applications/search', async (req, res) => {
+router.get('/search', async (req, res) => {
      
     try{
         let clientAppResult = []
@@ -274,7 +274,45 @@ router.get('/applications/search', async (req, res) => {
 
         const uniqResults = [...allResults.reduce((map, obj) => map.set(obj.applicationNo, obj), new Map()).values()]  //NOTE: Retains latest copy (so not in chronological order based on date)
 
-        res.json(uniqResults)
+
+
+
+        const data = {
+            script: ["admin_dashboard"],
+            style: ["admin_application_dashboard"],
+            stage: "Search Results",
+            results: []
+        }
+
+        for (var i = 0; i < uniqResults.length; i++)
+        {
+            var client = await Client.findOne({_id: uniqResults[i].applicantNo})
+            
+            
+            var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
+
+            var applicationObj = {
+                startDate: uniqResults[i].startDate.getMonth() + "/" + uniqResults[i].startDate.getDate() + "/" + uniqResults[i].startDate.getFullYear(),
+                applicationNo: uniqResults[i].applicationNo,
+                applicationStage: uniqResults[i].applicationStage,
+                name: fullName,
+                address: uniqResults[i].address,
+                contactNo: client.contactNo
+            }
+
+            data.results.push(applicationObj);
+        }
+
+        res.render('partials\\approw', data.results, function(err, html) {
+            if (err)
+            {
+                throw err;
+            } 
+            console.log("HTML: " + html);
+            res.send(html);
+        });
+
+        //res.json(uniqResults)
     }
     catch (err){
         res.status(500).json({message: err.message})
@@ -314,11 +352,21 @@ router.delete('/applications/delete/:id', getApplication, async (req, res) => {
 //Step ?: Status filter - NOTE: Need to test
 router.get('/filter', async (req, res) => {
     try {
-        const applications = await Application.find({applicationStage: req.query.stage})
-        console.log("filter: " + req.query.stage);
+        let applications
+
+        if (req.query.stage === "all")
+        {
+            applications = await Application.find()
+        }
+        else
+        {
+            applications = await Application.find({applicationStage: req.query.stage})
+        }   
+       
         const data = {
             script: ["admin_dashboard"],
-            stage: "All",
+            style: ["admin_application_dashboard"],
+            stage: "all",
             results: []
         }
 
@@ -340,7 +388,15 @@ router.get('/filter', async (req, res) => {
 
             data.results.push(applicationObj);
         }
-        res.render("admin_application_dashboard", data);
+
+        res.render('partials\\approw', data.results, function(err, html) {
+            if (err)
+            {
+                throw err;
+            } 
+            console.log("HTML: " + html);
+            res.send(html);
+        });
     } catch (err) {
         res.status(500).json({message: err.message})
     }
