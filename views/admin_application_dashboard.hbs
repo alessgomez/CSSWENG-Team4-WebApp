@@ -21,15 +21,15 @@
         <label class = "filter-by">Filter by:</label>
             <select name="filter-options" id="filter-options">
                 <option value="" selected>Select Stage</option>
-                <option value="uploading-requirements" {{#case "uploading-requirements"}} selected {{/case}}>Uploading Requirements</option>
-                <option value="adding-representative" {{#case "adding-representative"}} selected {{/case}}>Adding Representative</option>
-                <option value="printing-and-preparing-documents" {{#case "printing-and-preparing-documents"}} selected {{/case}}>Printing and Preparing Documents</option>
-                <option value="waiting-for-survey-schedule" {{#case "waiting-for-survey-schedule"}} selected {{/case}}>Waiting for Survey Schedule</option>
-                <option value="pending-surveyor-visit" {{#case "pending-surveyor-visit"}} selected {{/case}}>Pending Surveyor Visit</option>
-                <option value="purchasing-of-materials" {{#case "purchasing-of-materials"}} selected {{/case}}>Purchasing of Materials</option>
-                <option value="pending-onsite-visit" {{#case "pending-onsite-visit"}} selected {{/case}}>Pending Onsite Visit</option>
-                <option value="pending-installation" {{#case "pending-installation"}} selected {{/case}}>Pending Installation</option>
-                <option value="completed" {{#case "completed"}} selected {{/case}}>Completed</option>
+                <option value="uploading-requirements">Uploading Requirements</option>
+                <option value="adding-representative">Adding Representative</option>
+                <option value="printing-and-preparing-documents">Printing and Preparing Documents</option>
+                <option value="waiting-for-survey-schedule">Waiting for Survey Schedule</option>
+                <option value="pending-surveyor-visit">Pending Surveyor Visit</option>
+                <option value="purchasing-of-materials">Purchasing of Materials</option>
+                <option value="pending-onsite-visit">Pending Onsite Visit</option>
+                <option value="pending-installation">Pending Installation</option>
+                <option value="completed">Completed</option>
             </select>
     </div>
     <div class = "table-title">{{this.stage}}</div>
@@ -45,10 +45,9 @@
         </tr>
 
         {{#each this.results}}
-
             <tr>
                 <td>{{startDate}}</td>
-                <td>{{applicationNo}}</td>
+                <td id="applicationNo"><a  href="/admin/applications/{{applicationNo}}">{{applicationNo}}</a></td>
                 <td>{{name}}</td>
                 <td>{{address}}</td>
                 <td>{{contactNo}}</td>

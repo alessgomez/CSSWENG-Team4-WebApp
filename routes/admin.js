@@ -17,11 +17,6 @@ router.get('/getLogin', (req, res) => {
     res.render('admin_login', {layout: false})
 })
 
-// Render dashboard
-router.get('/dashboard', (req, res) => {
-    res.render('admin_application_dashboard')
-})
-
 // Step 1 Prerequisite: Add Employee Credentials
 router.post('/addcredentials', generateEmployeeNum, async (req, res) => {
     const employee = new Employee ({
@@ -64,7 +59,7 @@ router.post('/login', async(req, res) => {
                     req.session.objectId = employee._id
                     req.session.user = employee.employeeNo;
                     req.session.name = employee.firstName + " " + employee.middleName + " " + employee.lastName;
-                    res.redirect('/admin/applications')
+                    res.redirect('/admin/applications') 
                 }
             })
     } catch (err) {
@@ -91,6 +86,7 @@ router.post('/logout', async(req, res) => {
 // Step 2: Displaying application details based on selection - POP UP
 router.get('/applications/:id', getApplication, async (req, res) => {
     try {
+        
         const client = await Client.findOne({_id: res.application.applicantNo})
         var reference = null, rep = null
         var refAccNo = "", refAccName = ""
@@ -120,7 +116,13 @@ router.get('/applications/:id', getApplication, async (req, res) => {
             representative: rep
         }
 
-        res.send(details)
+        const data = {
+            style: ["admin_application_popup"],
+            details: details
+        }
+
+        
+        res.render("admin_application_popup", data);
     } catch (err) {
         return res.status(500).json({message: err.message})
     }
@@ -145,6 +147,7 @@ router.get('/applications', async (req, res) => {
 
         const data = {
             script: ["admin_dashboard"],
+            style: ["admin_application_dashboard"],
             stage: "All",
             results: []
         }
@@ -167,6 +170,7 @@ router.get('/applications', async (req, res) => {
 
             data.results.push(applicationObj);
         }
+        
         res.render("admin_application_dashboard", data);
     }
     catch(err){
@@ -365,6 +369,7 @@ async function generateUpdateNum(req, res, next) {
 async function getApplication(req, res, next) {
     let application 
     try{
+        
         application = await Application.findOne({applicationNo: req.params.id})
         if (application == null){
             return res.status(404).json({message: 'Cannot find application'})

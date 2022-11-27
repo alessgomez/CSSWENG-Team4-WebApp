@@ -43,6 +43,7 @@ app.use('/applications', applicationRouter)
 const adminRouter = require('./routes/admin')
 app.use('/admin', adminRouter)
 
+/*
 Handlebars.registerHelper('switch', function(value, options) {
     this.switch_value = value;
     this.switch_break = false;
@@ -55,5 +56,6 @@ Handlebars.registerHelper('switch', function(value, options) {
         return options.fn(this);
     }
     });
+*/
     
 app.listen(3000, () => console.log('Server Started'))

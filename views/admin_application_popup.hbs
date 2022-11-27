@@ -1,74 +1,107 @@
-<!DOCTYPE html>
-    <head>
-        <title>Sinukuan Water System, Inc.</title>
-        <link href = "../styles/navbar.css" rel = "stylesheet"/>
-        <link href = "../styles/admin_application_popup.css" rel = "stylesheet"/>
-    </head>
-    <body>
-        <!-- Header -->
-        <nav>
-            <div class = "navbar">
-                <!-- Logo -->
-                <img src = "../images/logo/logo_placeholder.png" class = "logo">
 
-                <!-- Company name -->
-                <div class = "heading-title">Sinukuan Water System, Inc.</div>
-                <!-- Navigation links -->
-                <div class = "menu">
-                    <img src = "../images/icons/menu_icon.png" class = "hbmenu">
-                </div>
-            </div>
-        </nav>
 
-        <div class = "panel">
-            <div class = "left">
-                <div class = "refno">12345678</div>
-                <div class = "name">Juan Carlo M. Dela Cruz</div>
-                <div class = "status">Waiting for visit</div>
-                <div class = "update">Update Status
-                <div class = "dropdown"></div>
-            </div>
-            <div class = "right">
-                <table>
-                    <tr>
-                        <th><div class = "label">Application Date:</div></th>
-                        <th><div class = "date">11/22/2022</div></th>
-                    </tr>
-                    <tr>
-                        <th><div class = "label">Address:</div></th>
-                        <th><div class = "address">Clark, Pampanga</div></th>
-                    </tr>
-                    <tr>
-                        <th><div class = "label">Landmarks/Remarks:</div></th>
-                        <th><div class = "landmarks"></div></th>
-                    </tr>
-                    <tr>
-                        <th><div class = "label">Establishment Name: </div></th>
-                        <th><div class = "establishment"></div></th>
-                    </tr>
-                    <tr>
-                        <th><div class = "label">Property Ownership:</div></th>
-                        <th><div class = "ownership"></div></th>
-                    </tr>
-                    <tr>
-                        <th><div class = "label">Reference Account No:</div></th>
-                        <th><div class = "ref-acc-no"></div></th>
-                    </tr>
-                    <tr>
-                        <th><div class = "label">Email Address:</div></th>
-                        <th><div class = "email"></div></th>
-                    </tr>
-                    <tr>
-                        <th><div class = "label">Contact Number:</div></th>
-                        <th><div class = "contactno"></div></th>
-                    </tr>
-                    
-                    <tr>
-                        <th><div class = "label">Valid ID:</div></th>
-                        <th><div class = "validid"></div></th>
-                    </tr>
-                </table>
-            </div>
+<div class = "panel">
+    <div class = "left">
+        <div class = "refno">12345678</div>
+        <div class = "name">Juan Carlo M. Dela Cruz</div>
+        <div class = "status">WAITING FOR VISIT</div>
+        <div class = "dropdown">
+            <label for="status-dropdown">Update Status</label>
+            <select name="status-dropdown" id="status-dropdown">
+                <option value="waiting">Waiting</option>
+            </select>
         </div>
-    </body>
-</html>
+    </div>
+    <div class = "right">
+        <table>
+            <tr>
+                <th><div class = "label">Application Date:</div></th>
+                <th><div class = "date">11/22/2022</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Address:</div></th>
+                <th><div class = "address">Clark, Pampanga</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Landmarks/Remarks:</div></th>
+                <th><div class = "landmarks">Near the store</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Establishment Name: </div></th>
+                <th><div class = "establishment">TamaNaPls</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Property Ownership:</div></th>
+                <th><div class = "ownership">Owned</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Reference Account No:</div></th>
+                <th><div class = "ref-acc-no">Owned</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Reference Account Name:</div></th>
+                <th><div class = "ref-acc-name">Owned</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Email Address:</div></th>
+                <th><div class = "email">juancarlo@gmail.com</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Contact Number:</div></th>
+                <th><div class = "contactno">+639274877316</div></th>
+            </tr>
+            
+            <tr>
+                <th><div class = "label">Valid ID:</div></th>
+                <th><div class = "validid">id.jpg</div></th>
+            </tr>
+
+            <!-- Representative -->
+            <tr>
+                <th><br>Representative</th>
+                <th></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Name: </div></th>
+                <th><div class = "rep-name">Carlo Juan M. Dela Cruz</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Email Address:</div></th>
+                <th><div class = "rep-email">carlojuan@gmail.com</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Contact Number:</div></th>
+                <th><div class = "rep-contactno">+629174892123</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Relationship to Applicant:</div></th>
+                <th><div class = "relationship">Brother</div></th>
+            </tr>
+            <tr>
+                <th><div class = "label">Valid ID:</div></th>
+                <th><div class = "rep-validid">id.jpg</div></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>
+                    <!-- Delete -->
+                    <button class = "delete-button" onclick="document.getElementById('delete_prompt').style.display='block'" href = "#popup1">Delete Application</button>
+                    <div id="delete_prompt" class="modal">
+                    <span onclick="document.getElementById('delete_prompt').style.display='none'" class="close" title="Close Modal">&times;</span>
+                    <form class="modal-content" action="/action_page.php">
+                        <div class="container">
+                        <h1>Delete Application</h1>
+                        <p>Are you sure you want to delete this application?</p>
+
+                        <div class="clearfix">
+                            <button type="button" class="cancelbtn">Cancel</button>
+                            <button type="button" class="deletebtn">Delete</button>
+                        </div>
+                        </div>
+                    </form>
+                    </div>
+                </th>
+            </tr>
+        </table>
+    </div>
+</div>

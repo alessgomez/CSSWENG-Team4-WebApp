@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
     
+
    $("#filter-options").change(function(){
     var stage = $("#filter-options").val();
 
@@ -16,5 +17,7 @@ $(document).ready(function(){
     $.get('/admin/filter', {stage: stage}, function(result){
 
     });*/
-   }) 
+   });
+   
+   
 });
