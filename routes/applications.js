@@ -246,8 +246,16 @@ async function generateNums(req, res, next) {
         res.status(500).json({message: err.message})
     }
 
-    res.clientNum = clients[clients.length-1].clientNo + 1
-    res.applicationNum = applications[applications.length-1].applicationNo + 1
+    if (clients.length > 0)
+        res.clientNum = clients[clients.length-1].clientNo + 1
+    else
+        res.clientNum = clients.length
+    
+    if (applications.length > 0)
+        res.applicationNum = applications[applications.length-1].applicationNo + 1
+    else
+        res.applicationNum = applications.length
+    
     if (refClient != null)
         res.refClient = refClient._id
     next()
@@ -264,7 +272,11 @@ async function generateRepNumAndApp(req, res, next) {
         return res.status(500).json({message: err.message})
     }
 
-    res.repNum = representatives[representatives.length-1].representativeNo + 1
+    if (representatives.length > 0)
+        res.repNum = representatives[representatives.length-1].representativeNo + 1
+    else
+        res.repNum = representatives.length
+
     res.application = application
 
     next()
@@ -279,7 +291,10 @@ async function generateMaterialNum(req, res, next) {
         return res.status(500).json({message: err.message})
     }
 
-    res.materialNo = materials[materials.length-1].materialNo + 1
+    if (materials.length > 0)
+        res.materialNo = materials[materials.length-1].materialNo + 1
+    else
+        res.materialNo = materials.length
     next()
 }
 

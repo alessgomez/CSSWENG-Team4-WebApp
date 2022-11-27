@@ -29,6 +29,8 @@ $(document).ready(function(){
         var stage = $("#status-dropdown").val();
         $("#status").text(stage);
 
+        
+
     });
 
     $("#saveBtn").click(function() {

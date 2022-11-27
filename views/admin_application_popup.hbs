@@ -48,14 +48,18 @@
                 <th><div class = "label">Property Ownership:</div></th>
                 <th><div class = "ownership">{{this.details.ownership}}</div></th>
             </tr>
+            {{#if this.details.refAccountNo}}
             <tr>
                 <th><div class = "label">Reference Account No:</div></th>
                 <th><div class = "ref-acc-no">{{this.details.refAccountNo}}</div></th>
             </tr>
+            {{/if}}
+            {{#if this.details.refAccountName}}
             <tr>
                 <th><div class = "label">Reference Account Name:</div></th>
                 <th><div class = "ref-acc-name">{{this.details.refAccountName}}</div></th>
             </tr>
+            {{/if}}
             <tr>
                 <th><div class = "label">Email Address:</div></th>
                 <th><div class = "email">{{this.details.email}}</div></th>
@@ -71,30 +75,32 @@
             </tr>
 
             <!-- Representative -->
-            <tr>
-                <th><br>Representative</th>
-                <th></th>
-            </tr>
-            <tr>
-                <th><div class = "label">Name: </div></th>
-                <th><div class = "rep-name">{{this.details.representative.firstName}} {{this.details.representative.middleName}} {{this.details.representative.lastName}}</div></th>
-            </tr>
-            <tr>
-                <th><div class = "label">Email Address:</div></th>
-                <th><div class = "rep-email">{{this.details.representative.email}}</div></th>
-            </tr>
-            <tr>
-                <th><div class = "label">Contact Number:</div></th>
-                <th><div class = "rep-contactno">{{this.details.representative.contactNo}}</div></th>
-            </tr>
-            <tr>
-                <th><div class = "label">Relationship to Applicant:</div></th>
-                <th><div class = "relationship">{{this.details.representative.relationshipToApplicant}}</div></th>
-            </tr>
-            <tr>
-                <th><div class = "label">Valid ID:</div></th>
-                <th><div class = "rep-validid"><a href="/admin/applications/{{this.details.applicationNo}}/{{this.details.representative.validId}}">{{this.details.representative.validId}}</a></div></th>
-            </tr>
+            {{#if this.details.representative}}
+                <tr>
+                    <th><br>Representative</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th><div class = "label">Name: </div></th>
+                    <th><div class = "rep-name">{{this.details.representative.firstName}} {{this.details.representative.middleName}} {{this.details.representative.lastName}}</div></th>
+                </tr>
+                <tr>
+                    <th><div class = "label">Email Address:</div></th>
+                    <th><div class = "rep-email">{{this.details.representative.email}}</div></th>
+                </tr>
+                <tr>
+                    <th><div class = "label">Contact Number:</div></th>
+                    <th><div class = "rep-contactno">{{this.details.representative.contactNo}}</div></th>
+                </tr>
+                <tr>
+                    <th><div class = "label">Relationship to Applicant:</div></th>
+                    <th><div class = "relationship">{{this.details.representative.relationshipToApplicant}}</div></th>
+                </tr>
+                <tr>
+                    <th><div class = "label">Valid ID:</div></th>
+                    <th><div class = "rep-validid"><a href="/admin/applications/{{this.details.applicationNo}}/{{this.details.representative.validId}}">{{this.details.representative.validId}}</a></div></th>
+                </tr>
+            {{/if}}
             <tr>
                 <th></th>
                 <th>

@@ -85,15 +85,14 @@ router.post('/logout', async(req, res) => {
 
 // Step 2: Displaying application details based on selection - POP UP
 router.get('/applications/:id', getApplication, async (req, res) => {
-    try {
-        
+    try {        
         const client = await Client.findOne({_id: res.application.applicantNo})
         var reference = null, rep = null
         var refAccNo = "", refAccName = ""
 
         if (res.application.referenceClientNo != null) {
             reference = await Client.findOne({_id: res.application.referenceClientNo})
-            refAccNo = reference.clientNo
+            refAccNo = reference.clientNo.toString()
             refAccName = reference.firstName + ' ' + reference.middleName + ' ' + reference.lastName
         }
 
@@ -392,7 +391,10 @@ async function generateEmployeeNum(req, res, next) {
         return res.status(500).json({message: err.message})
     }
 
-    res.employeeNo = employees[employees.length-1].employeeNo + 1
+    if (employees.length > 0)
+        res.employeeNo = employees[employees.length-1].employeeNo + 1
+    else
+        res.employeeNo = employees.length
     next()
 }
 
@@ -405,7 +407,10 @@ async function generateUpdateNum(req, res, next) {
         return res.status(500).json({message: err.message})
     }
 
-    res.updateNo = updates[updates.length-1].updateNo + 1
+    if (updates.length > 0)
+        res.updateNo = updates[updates.length-1].updateNo + 1
+    else
+        res.updateNo = updates.length
     next()
 }
 
