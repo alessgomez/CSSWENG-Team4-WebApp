@@ -113,11 +113,15 @@ router.get('/applications/:id', getApplication, async (req, res) => {
             landmark: res.application.landmark,
             ownership: res.application.ownership,
             validId: res.application.validId,
+            applicationStage: res.application.applicationStage,
             representative: rep
         }
 
+        
+
         const data = {
             style: ["admin_application_popup"],
+            script: ["admin_popup"],
             details: details
         }
 

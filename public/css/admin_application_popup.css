@@ -7,6 +7,16 @@ body {
     background: url("../images/background/application_bg.png") no-repeat;
 } 
 
+#backDiv {
+    text-align: left;
+}
+
+#backBtn {
+    width: 25%;
+    background-color: #000080;
+    border-radius: 5px;	
+}
+
 .panel {
     font-family: 'Inter';
     font-style: normal;
@@ -88,7 +98,7 @@ body {
 
 #status-dropdown {
     font-family: 'Inter';
-    border-color: #000080;;
+    border-color: #000080;
     width: 150px;
     height: 30px;
 }
