@@ -75,10 +75,12 @@
                 <th><div class = "contactno">{{this.details.contactNo}}</div></th>
             </tr>
             
+            {{#if this.details.validId}}
             <tr>
                 <th><div class = "label">Valid ID: </div></th>
                 <th><div class = "validid"><a href="/admin/applications/{{this.details.applicationNo}}/{{this.details.validId}}">{{this.details.validId}}</a></div></th>
             </tr>
+            {{/if}}
 
             <!-- Representative -->
             {{#if this.details.representative}}

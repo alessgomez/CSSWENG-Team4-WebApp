@@ -75,6 +75,7 @@ router.patch('/step2/:id', getApplication, (req, res) => {
 
 // Step 2A: Creating representative, if applicable TODO!
 router.post('/step2a/:id', generateRepNumAndApp, async (req, res) => {
+    
     const representative = new Representative ({
         idNo: res.repNum,
         firstName: req.body.firstName,
@@ -273,9 +274,10 @@ async function generateRepNumAndApp(req, res, next) {
     }
 
     if (representatives.length > 0)
-        res.repNum = representatives[representatives.length-1].representativeNo + 1
+        res.repNum = representatives[representatives.length-1].idNo + 1
     else
         res.repNum = representatives.length
+    
 
     res.application = application
 

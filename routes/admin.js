@@ -101,7 +101,15 @@ router.get('/applications/:id', getApplication, async (req, res) => {
             rep.validId = rep.validId.split('/')[2]
         }
         
-        var b1, b2, b3, b4, b5, b6, b7, b8, b9 = false;
+        var b1 = false
+        var b2 = false
+        var b3 = false
+        var b4 = false
+        var b5 = false
+        var b6 = false
+        var b7 = false
+        var b8 = false
+        var b9 = false
         
         switch (res.application.applicationStage) {
             case 'uploading-requirements': b1 = true;
@@ -133,6 +141,11 @@ router.get('/applications/:id', getApplication, async (req, res) => {
             
             }
         
+        var validId = null;
+        
+        if (res.application.applicationStage != "uploading-requirements")
+            validId = res.application.validId.split('/')[2]
+
         const details = {
             applicationNo: res.application.applicationNo,
             fullName: client.firstName + ' ' + client.middleName + ' ' + client.lastName,
@@ -145,7 +158,7 @@ router.get('/applications/:id', getApplication, async (req, res) => {
             refAccountName: refAccName,
             landmark: res.application.landmark,
             ownership: res.application.ownership,
-            validId: res.application.validId.split('/')[2],
+            validId: validId,
             applicationStage: res.application.applicationStage,
             representative: rep,
             b1: b1,
