@@ -392,7 +392,7 @@ async function generateEmployeeNum(req, res, next) {
         return res.status(500).json({message: err.message})
     }
 
-    res.employeeNo = employees.length
+    res.employeeNo = employees[employees.length-1].employeeNo + 1
     next()
 }
 
@@ -405,7 +405,7 @@ async function generateUpdateNum(req, res, next) {
         return res.status(500).json({message: err.message})
     }
 
-    res.updateNo = updates.length
+    res.updateNo = updates[updates.length-1].updateNo + 1
     next()
 }
 
