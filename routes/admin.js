@@ -97,21 +97,10 @@ router.get('/applications/:id', getApplication, async (req, res) => {
             refAccName = reference.firstName + ' ' + reference.middleName + ' ' + reference.lastName
         }
 
-        if (res.application.representativeNo != null)
-            rep = await Representative.findOne({_id: res.application.representativeNo})
-
-            /*
-            <option value="uploading-requirements" selected>Uploading Requirements</option>
-                <option value="adding-representative">Adding Representative</option>
-                <option value="printing-and-preparing-documents">Printing and Preparing Documents</option>
-                <option value="waiting-for-survey-schedule">Waiting for Survey Schedule</option>
-                <option value="pending-surveyor-visit">Pending Surveyor Visit</option>
-                <option value="purchasing-of-materials">Purchasing of Materials</option>
-                <option value="pending-onsite-visit">Pending Onsite Visit</option>
-                <option value="pending-installation">Pending Installation</option>
-                <option value="completed">Completed</option>
-            */
-    
+        if (res.application.representativeNo != null) {
+            rep = await Representative.findOne({_id: res.application.representativeNo}).lean()
+            rep.validId = rep.validId.split('/')[2]
+        }
         
         var b1, b2, b3, b4, b5, b6, b7, b8, b9 = false;
         
@@ -157,7 +146,7 @@ router.get('/applications/:id', getApplication, async (req, res) => {
             refAccountName: refAccName,
             landmark: res.application.landmark,
             ownership: res.application.ownership,
-            validId: res.application.validId,
+            validId: res.application.validId.split('/')[2],
             applicationStage: res.application.applicationStage,
             representative: rep,
             b1: b1,
@@ -171,15 +160,12 @@ router.get('/applications/:id', getApplication, async (req, res) => {
             b9: b9
         }
 
-        
-
         const data = {
             style: ["admin_application_popup"],
             script: ["admin_popup"],
             details: details
         }
 
-        
         res.render("admin_application_popup", data);
     } catch (err) {
         return res.status(500).json({message: err.message})
@@ -376,10 +362,8 @@ router.get('/installationschedule/:id',  getApplication, async (req, res) => {
 
 //Step 5 xiv: Status change from dropdown + Step 6 (if application is completed): Completion date is stored 
 router.patch('/updatestatus/:id', getApplication, generateUpdateNum, async (req, res) => {
-    console.log("update status api called");
     res.application.applicationStage = req.body.newStatus
-
-    if (req.body.newStatus == "Completed")
+    if (req.body.newStatus == "Completed" || req.body.newStatus == "completed")
         res.application.completionDate = Date.now ()
 
     const update = new Update ({

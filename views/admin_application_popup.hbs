@@ -22,6 +22,7 @@
         </div>
         <div style="height: 40px;"></div>
         <div id="backDiv" style="margin-left: 25px"><button id="backBtn">&#8920; Go Back</button> <button id="saveBtn">Save Changes</button></div>
+        <p id="saved"></p>
     </div>
     <div class = "right">
         <table>
@@ -66,7 +67,7 @@
             
             <tr>
                 <th><div class = "label">Valid ID:</div></th>
-                <th><div class = "validid">{{this.details.validId}}</div></th>
+                <th><div class = "validid"><a href="/admin/applications/{{this.details.applicationNo}}/{{this.details.validId}}">{{this.details.validId}}</a></div></th>
             </tr>
 
             <!-- Representative -->
@@ -76,23 +77,23 @@
             </tr>
             <tr>
                 <th><div class = "label">Name: </div></th>
-                <th><div class = "rep-name">{{this.details.repName}}</div></th>
+                <th><div class = "rep-name">{{this.details.representative.firstName}} {{this.details.representative.middleName}} {{this.details.representative.lastName}}</div></th>
             </tr>
             <tr>
                 <th><div class = "label">Email Address:</div></th>
-                <th><div class = "rep-email">carlojuan@gmail.com</div></th>
+                <th><div class = "rep-email">{{this.details.representative.email}}</div></th>
             </tr>
             <tr>
                 <th><div class = "label">Contact Number:</div></th>
-                <th><div class = "rep-contactno">+629174892123</div></th>
+                <th><div class = "rep-contactno">{{this.details.representative.contactNo}}</div></th>
             </tr>
             <tr>
                 <th><div class = "label">Relationship to Applicant:</div></th>
-                <th><div class = "relationship">Brother</div></th>
+                <th><div class = "relationship">{{this.details.representative.relationshipToApplicant}}</div></th>
             </tr>
             <tr>
                 <th><div class = "label">Valid ID:</div></th>
-                <th><div class = "rep-validid">id.jpg</div></th>
+                <th><div class = "rep-validid"><a href="/admin/applications/{{this.details.applicationNo}}/{{this.details.representative.validId}}">{{this.details.representative.validId}}</a></div></th>
             </tr>
             <tr>
                 <th></th>

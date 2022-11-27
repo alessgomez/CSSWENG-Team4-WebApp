@@ -211,3 +211,7 @@ hr {
     clear: both;
     display: table;
 }
+
+#saved {
+    color: green;
+}

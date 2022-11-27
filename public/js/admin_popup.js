@@ -34,20 +34,20 @@ $(document).ready(function(){
     $("#saveBtn").click(function() {
 
         const applicationNo = parseInt($("#refno").text());
-
-        $.ajax({ 
-            url: '/admin/applications/updatestatus/' + applicationNo,
+        const newStage = $("#status").html();
+        
+        $.ajax({
+            contentType: 'application/json',
+            url: '/admin/updatestatus/' + applicationNo,
             type: 'patch',
+            dataType: 'json',
+            data: JSON.stringify({"newStatus": newStage}),
             success: function() {
                 // your success response data here in data variable
                 console.log('successfully updated status');
             }
         });
         
-        //window.location.href="http://localhost:3000/admin/applications";
-
+        $("#saved").text("Successfully updated status!");
     });
-
-    
-    
  });
