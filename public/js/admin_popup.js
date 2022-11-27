@@ -25,19 +25,46 @@ $(document).ready(function(){
 
     // update stage based on dropdown
     $("#status-dropdown").change(function(){
-        
         var stage = $("#status-dropdown").val();
         $("#status").text(stage);
+        $("#saved").text("")
 
-        
+        if (stage == "pending-surveyor-visit" || stage == "pending-installation") {
+            $("#saveBtn").prop("disabled", true)
+            $("#saveBtn").css("background-color", "gray")
+            $("#dateAndTime").show()
+            
+            $("#inputDate").change(function() {
+                if ($("#inputDate").val() && $("#inputTime").val()) {
+                    $("#saveBtn").prop("disabled", false)
+                    $("#saveBtn").css("background-color", "#000080")
+                }
+            })
 
+            $("#inputTime").change(function() {
+                if ($("#inputDate").val() && $("#inputTime").val()) {
+                    $("#saveBtn").prop("disabled", false)
+                    $("#saveBtn").css("background-color", "#000080")
+                }
+            })
+        }
+        else {
+            $("#saveBtn").prop("disabled", false)
+            $("#saveBtn").css("background-color", "#000080")
+            $("#dateAndTime").hide()
+        }
+
+        $("#inputDate").val("")
+        $("#inputTime").val("")
     });
 
     $("#saveBtn").click(function() {
 
         const applicationNo = parseInt($("#refno").text());
         const newStage = $("#status").html();
-        
+
+        $("#saved").text("Successfully updated status!");
+
         $.ajax({
             contentType: 'application/json',
             url: '/admin/updatestatus/' + applicationNo,
@@ -48,8 +75,36 @@ $(document).ready(function(){
                 // your success response data here in data variable
                 console.log('successfully updated status');
             }
-        });
-        
-        $("#saved").text("Successfully updated status!");
+        })
+
+        if (newStage == "pending-surveyor-visit") {
+            var date = $("#inputDate").val()
+            var time = $("#inputTime").val()
+
+            $.ajax({
+                url: '/admin/surveyschedule/' + applicationNo,
+                type: 'get',
+                data: {date: date, time: time},
+                success: function() {
+                    // your success response data here in data variable
+                    console.log('changed survey date');
+                }
+            })
+        }
+
+        if (newStage == "pending-installation") {
+            var date = $("#inputDate").val()
+            var time = $("#inputTime").val()
+
+            $.ajax({
+                url: '/admin/installationschedule/' + applicationNo,
+                type: 'get',
+                data: {date: date, time: time},
+                success: function() {
+                    // your success response data here in data variable
+                    console.log('changed installation date');
+                }
+            })
+        }
     });
  });

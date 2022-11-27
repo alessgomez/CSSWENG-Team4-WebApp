@@ -339,7 +339,6 @@ router.get('/surveyschedule/:id',  getApplication, async (req, res) => {
     
     try {
         const updatedApplication = await res.application.save()
-        console.log("updatedApplication: " + updatedApplication)
         res.send({applicationNo: updatedApplication.applicationNo})
     } catch (err) {
         res.status(500).json({message: err.message})
@@ -352,7 +351,6 @@ router.get('/installationschedule/:id',  getApplication, async (req, res) => {
     
     try {
         const updatedApplication = await res.application.save()
-        console.log("updatedApplication: " + updatedApplication)
         res.send({applicationNo: updatedApplication.applicationNo})
     } catch (err) {
         res.status(500).json({message: err.message})

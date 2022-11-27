@@ -6,7 +6,7 @@
         <div class = "refno" id="refno" value={{this.details.applicationNo}}>{{this.details.applicationNo}}</div>
         <div class = "name">{{this.details.fullName}}</div>
         <div class = "status" id="status">{{this.details.applicationStage}}</div>
-        <div class = "dropdown">
+        <div class = "dropdown" id="dropdown">
             <label for="status-dropdown">Update Status</label>
             <select name="status-dropdown" id="status-dropdown">
                 <option value="uploading-requirements" {{#if this.details.b1}} selected {{/if}}>Uploading Requirements</option>
@@ -20,6 +20,12 @@
                 <option value="completed" {{#if this.details.b9}} selected {{/if}}>Completed</option>
             </select>
         </div>
+        <div class = "dateAndTime" id = "dateAndTime" hidden>
+            <br> <label for='inputDate'>Input Date: </label>
+            <input type='date' id='inputDate' name='inputDate'> </input> <br>
+            <label for='inputTime'>Input Time: </label>
+            <input type='time' id='inputTime' name='inputTime'> </input>
+        </div>
         <div style="height: 40px;"></div>
         <div id="backDiv" style="margin-left: 25px"><button id="backBtn">&#8920; Go Back</button> <button id="saveBtn">Save Changes</button></div>
         <p id="saved"></p>
@@ -27,15 +33,15 @@
     <div class = "right">
         <table>
             <tr>
-                <th><div class = "label">Application Date:</div></th>
+                <th><div class = "label">Application Date: </div></th>
                 <th><div class = "date">{{this.details.submissionDate}}</div></th>
             </tr>
             <tr>
-                <th><div class = "label">Address:</div></th>
+                <th><div class = "label">Address: </div></th>
                 <th><div class = "address">{{this.details.address}}</div></th>
             </tr>
             <tr>
-                <th><div class = "label">Landmarks/Remarks:</div></th>
+                <th><div class = "label">Landmarks/Remarks: </div></th>
                 <th><div class = "landmarks">{{this.details.landmark}}</div></th>
             </tr>
             {{#if this.details.establishmentName}}
@@ -45,32 +51,32 @@
             </tr>
             {{/if}}
             <tr>
-                <th><div class = "label">Property Ownership:</div></th>
+                <th><div class = "label">Property Ownership: </div></th>
                 <th><div class = "ownership">{{this.details.ownership}}</div></th>
             </tr>
             {{#if this.details.refAccountNo}}
             <tr>
-                <th><div class = "label">Reference Account No:</div></th>
+                <th><div class = "label">Reference Account No: </div></th>
                 <th><div class = "ref-acc-no">{{this.details.refAccountNo}}</div></th>
             </tr>
             {{/if}}
             {{#if this.details.refAccountName}}
             <tr>
-                <th><div class = "label">Reference Account Name:</div></th>
+                <th><div class = "label">Reference Account Name: </div></th>
                 <th><div class = "ref-acc-name">{{this.details.refAccountName}}</div></th>
             </tr>
             {{/if}}
             <tr>
-                <th><div class = "label">Email Address:</div></th>
+                <th><div class = "label">Email Address: </div></th>
                 <th><div class = "email">{{this.details.email}}</div></th>
             </tr>
             <tr>
-                <th><div class = "label">Contact Number:</div></th>
+                <th><div class = "label">Contact Number: </div></th>
                 <th><div class = "contactno">{{this.details.contactNo}}</div></th>
             </tr>
             
             <tr>
-                <th><div class = "label">Valid ID:</div></th>
+                <th><div class = "label">Valid ID: </div></th>
                 <th><div class = "validid"><a href="/admin/applications/{{this.details.applicationNo}}/{{this.details.validId}}">{{this.details.validId}}</a></div></th>
             </tr>
 
@@ -85,19 +91,19 @@
                     <th><div class = "rep-name">{{this.details.representative.firstName}} {{this.details.representative.middleName}} {{this.details.representative.lastName}}</div></th>
                 </tr>
                 <tr>
-                    <th><div class = "label">Email Address:</div></th>
+                    <th><div class = "label">Email Address: </div></th>
                     <th><div class = "rep-email">{{this.details.representative.email}}</div></th>
                 </tr>
                 <tr>
-                    <th><div class = "label">Contact Number:</div></th>
+                    <th><div class = "label">Contact Number: </div></th>
                     <th><div class = "rep-contactno">{{this.details.representative.contactNo}}</div></th>
                 </tr>
                 <tr>
-                    <th><div class = "label">Relationship to Applicant:</div></th>
+                    <th><div class = "label">Relationship to Applicant: </div></th>
                     <th><div class = "relationship">{{this.details.representative.relationshipToApplicant}}</div></th>
                 </tr>
                 <tr>
-                    <th><div class = "label">Valid ID:</div></th>
+                    <th><div class = "label">Valid ID: </div></th>
                     <th><div class = "rep-validid"><a href="/admin/applications/{{this.details.applicationNo}}/{{this.details.representative.validId}}">{{this.details.representative.validId}}</a></div></th>
                 </tr>
             {{/if}}
