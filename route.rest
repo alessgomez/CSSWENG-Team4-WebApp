@@ -5,7 +5,7 @@ POST http://localhost:3000/applications/step1
 Content-Type: application/json
 
 {
-    "firstName": "Hannah8",
+    "firstName": "Hannah",
     "middleName": "Chua",
     "lastName": "Fong",
     "email": "hrf@gmail.com",

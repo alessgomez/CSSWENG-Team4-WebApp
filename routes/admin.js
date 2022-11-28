@@ -316,7 +316,7 @@ router.get('/search', isPrivate, async (req, res) => {
             var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
 
             var applicationObj = {
-                startDate: uniqResults[i].startDate.getMonth() + "/" + uniqResults[i].startDate.getDate() + "/" + uniqResults[i].startDate.getFullYear(),
+                startDate: (uniqResults[i].startDate.getMonth()+1) + "/" + uniqResults[i].startDate.getDate() + "/" + uniqResults[i].startDate.getFullYear(),
                 applicationNo: uniqResults[i].applicationNo,
                 applicationStage: uniqResults[i].applicationStage,
                 name: fullName,
@@ -410,7 +410,7 @@ router.get('/filter', isPrivate, async (req, res) => {
             var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
 
             var applicationObj = {
-                startDate: applications[i].startDate.getMonth() + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
+                startDate: (applications[i].startDate.getMonth()+1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
                 applicationNo: applications[i].applicationNo,
                 applicationStage: applications[i].applicationStage,
                 name: fullName,
