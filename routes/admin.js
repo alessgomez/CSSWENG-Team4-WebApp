@@ -123,7 +123,8 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
         var d7 = true
         var d8 = true
 
-        var enableUpdate = false
+        //var enableUpdate = false
+        var enableUpdate = true
 
         
         switch (res.application.applicationStage) {
@@ -142,7 +143,7 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
             case 'pending-surveyor-visit': b5 = true; d1 = false; d2 = false; d3 = false; d4 = false; enableUpdate = true;
             break;
 
-            case 'purchasing-of-materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; enableUpdate = false;
+            case 'purchasing-of-materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; //enableUpdate = false;
             break;
 
             case 'pending-onsite-visit': b7 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; enableUpdate = true;
