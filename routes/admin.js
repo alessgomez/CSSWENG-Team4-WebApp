@@ -92,8 +92,11 @@ router.get('/applications/:id', getApplication, async (req, res) => {
 
         if (res.application.referenceClientNo != null) {
             reference = await Client.findOne({_id: res.application.referenceClientNo})
-            refAccNo = reference.clientNo.toString()
-            refAccName = reference.firstName + ' ' + reference.middleName + ' ' + reference.lastName
+
+            if (reference != null) {
+                refAccNo = reference.clientNo.toString()
+                refAccName = reference.firstName + ' ' + reference.middleName + ' ' + reference.lastName
+            }
         }
 
         if (res.application.representativeNo != null) {
@@ -214,16 +217,16 @@ router.get('/applications', async (req, res) => {
             
             
             var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
-
+            
             var applicationObj = {
-                startDate: applications[i].startDate.getMonth() + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
+                startDate: (applications[i].startDate.getMonth() + 1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
                 applicationNo: applications[i].applicationNo,
                 applicationStage: applications[i].applicationStage,
                 name: fullName,
                 address: applications[i].address,
                 contactNo: client.contactNo
             }
-
+            
             data.results.push(applicationObj);
         }
         
@@ -273,9 +276,6 @@ router.get('/search', async (req, res) => {
         }
 
         const uniqResults = [...allResults.reduce((map, obj) => map.set(obj.applicationNo, obj), new Map()).values()]  //NOTE: Retains latest copy (so not in chronological order based on date)
-
-
-
 
         const data = {
             script: ["admin_dashboard"],
@@ -341,6 +341,14 @@ router.delete('/applications/delete/:id', getApplication, async (req, res) => {
             const client = await Client.findOne({_id: applicantNo})
             console.log("type: " + typeof client + " | itself: " + client)
             await client.remove()
+
+            const referencedBy = await Application.find({referenceClientNo: applicantNo})
+
+            if (referencedBy.length > 0) // Client is used as reference by other applicants
+                for (i=0; i < referencedBy.length; i++) {
+                    referencedBy[i].referenceClientNo = null
+                    await referencedBy[i].save()
+                }
         }
         
         res.json({message: "Deleted Application"})
