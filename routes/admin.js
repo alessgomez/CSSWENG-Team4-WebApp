@@ -113,33 +113,43 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
         var b7 = false
         var b8 = false
         var b9 = false
+
+        var d1 = true
+        var d2 = true
+        var d3 = true
+        var d4 = true
+        var d5 = true
+        var d6 = true
+        var d7 = true
+        var d8 = true
+
         
         switch (res.application.applicationStage) {
-            case 'uploading-requirements': b1 = true;
+            case 'uploading-requirements': b1 = true; 
             break;
             
-            case 'adding-representative': b2= true;
+            case 'adding-representative': b2= true; d1 = false;
             break;
             
-            case 'printing-and-preparing-documents': b3 = true;
+            case 'printing-and-preparing-documents': b3 = true;  d1 = false; d2 = false;
             break;
             
-            case 'waiting-for-survey-schedule': b4 = true;
+            case 'waiting-for-survey-schedule': b4 = true; d1 = false; d2 = false; d3 = false;
             break;
             
-            case 'pending-surveyor-visit': b5 = true;
+            case 'pending-surveyor-visit': b5 = true; d1 = false; d2 = false; d3 = false; d4 = false;
             break;
 
-            case 'purchasing-of-materials': b6 = true;
+            case 'purchasing-of-materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false;
             break;
 
-            case 'pending-onsite-visit': b7 = true;
+            case 'pending-onsite-visit': b7 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false;
             break;
 
-            case 'pending-installation': b8 = true;
+            case 'pending-installation': b8 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false;
             break;
 
-            case 'completed': b9 = true;
+            case 'completed': b9 = true; d1 = false; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; d8 = false;
             break;
             
             }
@@ -172,7 +182,15 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
             b6: b6,
             b7: b7,
             b8: b8,
-            b9: b9
+            b9: b9,
+            d1: d1,
+            d2: d2,
+            d3: d3,
+            d4: d4,
+            d5: d5,
+            d6: d6,
+            d7: d7,
+            d8: d8
         }
 
         const data = {
