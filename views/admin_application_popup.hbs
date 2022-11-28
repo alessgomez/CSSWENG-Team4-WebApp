@@ -7,36 +7,43 @@
         <div class = "name">{{this.details.fullName}}</div>
         <div class = "status" id="status">{{this.details.applicationStage}}</div>
         {{#if this.details.b5}}
-            <br><div id="surveySched">Survey Scheduled on: {{this.details.surveySchedule}}</div>
+            <br><div id="surveySched" class="sched">Survey Scheduled on: {{this.details.surveySchedule}}</div>
         {{/if}}
         {{#if this.details.b8}}
-            <br><div id="installationSched"><div id="surveySched">Installation Scheduled on: {{this.details.installationSchedule}}</div>
+            <br><div id="installationSched" class="sched">Installation Scheduled on: {{this.details.installationSchedule}}</div>
         {{/if}}
-        <div id="installationSched"></div>
-        <div class = "dropdown" id="dropdown">
-            <label for="status-dropdown">Update Status</label>
-            <select name="status-dropdown" id="status-dropdown">
-                {{#if this.details.d1}}<option value="uploading-requirements" {{#if this.details.b1}} selected {{/if}}>Uploading Requirements</option>{{/if}}
-                {{#if this.details.d2}}<option value="adding-representative" {{#if this.details.b2}} selected {{/if}}>Adding Representative</option>{{/if}}
-                {{#if this.details.d3}}<option value="printing-and-preparing-documents" {{#if this.details.b3}} selected {{/if}}>Printing and Preparing Documents</option>{{/if}}
-                {{#if this.details.d4}}<option value="waiting-for-survey-schedule" {{#if this.details.b4}} selected {{/if}}>Waiting for Survey Schedule</option>{{/if}}
-                {{#if this.details.d5}}<option value="pending-surveyor-visit" {{#if this.details.b5}} selected {{/if}}>Pending Surveyor Visit</option>{{/if}}
-                {{#if this.details.d6}}<option value="purchasing-of-materials" {{#if this.details.b6}} selected {{/if}}>Purchasing of Materials</option>{{/if}}
-                {{#if this.details.d7}}<option value="pending-onsite-visit" {{#if this.details.b7}} selected {{/if}}>Pending Onsite Visit</option>{{/if}}
-                {{#if this.details.d8}}<option value="pending-installation" {{#if this.details.b8}} selected {{/if}}>Pending Installation</option>{{/if}}
-                                       <option value="completed" {{#if this.details.b9}} selected {{/if}}>Completed</option>
-                
-            </select>
-        </div>
-        <div class = "dateAndTime" id = "dateAndTime" hidden>
-            <br> <label for='inputDate'>Input Date: </label>
-            <input type='date' id='inputDate' name='inputDate'> </input> <br>
-            <label for='inputTime'>Input Time: </label>
-            <input type='time' id='inputTime' name='inputTime'> </input>
-        </div>
-        <div style="height: 40px;"></div>
-        <div id="backDiv" style="margin-left: 25px"><button id="backBtn">&#8920; Go Back</button> <button id="saveBtn">Save Changes</button></div>
-        <p id="saved"></p>
+        
+        {{#if this.details.enableUpdate}}
+            <div class = "dropdown" id="dropdown">
+                <label for="status-dropdown">Update Status</label>
+                <select name="status-dropdown" id="status-dropdown">
+                    {{#if this.details.d1}}<option value="uploading-requirements" {{#if this.details.b1}} selected {{/if}}>Uploading Requirements</option>{{/if}}
+                    {{#if this.details.d2}}<option value="adding-representative" {{#if this.details.b2}} selected {{/if}}>Adding Representative</option>{{/if}}
+                    {{#if this.details.d3}}<option value="printing-and-preparing-documents" {{#if this.details.b3}} selected {{/if}}>Printing and Preparing Documents</option>{{/if}}
+                    {{#if this.details.d4}}<option value="waiting-for-survey-schedule" {{#if this.details.b4}} selected {{/if}}>Waiting for Survey Schedule</option>{{/if}}
+                    {{#if this.details.d5}}<option value="pending-surveyor-visit" {{#if this.details.b5}} selected {{/if}}>Pending Surveyor Visit</option>{{/if}}
+                    {{#if this.details.d6}}<option value="purchasing-of-materials" {{#if this.details.b6}} selected {{/if}}>Purchasing of Materials</option>{{/if}}
+                    {{#if this.details.d7}}<option value="pending-onsite-visit" {{#if this.details.b7}} selected {{/if}}>Pending Onsite Visit</option>{{/if}}
+                    {{#if this.details.d8}}<option value="pending-installation" {{#if this.details.b8}} selected {{/if}}>Pending Installation</option>{{/if}}
+                                        <option value="completed" {{#if this.details.b9}} selected {{/if}}>Completed</option>
+                    
+                </select>
+            </div>
+        
+            <div class = "dateAndTime" id = "dateAndTime" hidden>
+                <br> <label for='inputDate'>Input Date: </label>
+                <input type='date' id='inputDate' name='inputDate'> </input> <br>
+                <label for='inputTime'>Input Time: </label>
+                <input type='time' id='inputTime' name='inputTime'> </input>
+            </div>
+            {{/if}}
+            <div style="height: 40px;"></div>
+            <div id="backDiv" style="margin-left: 25px">
+                <button id="backBtn">&#8920; Go Back</button> 
+                {{#if this.details.enableUpdate}}<button id="saveBtn">Save Changes</button>{{/if}}
+            </div>
+            <p id="saved"></p>
+       
     </div>
     <div class = "right">
         <table>

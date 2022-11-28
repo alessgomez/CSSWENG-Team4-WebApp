@@ -123,6 +123,8 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
         var d7 = true
         var d8 = true
 
+        var enableUpdate = false
+
         
         switch (res.application.applicationStage) {
             case 'uploading-requirements': b1 = true; 
@@ -134,22 +136,22 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
             case 'printing-and-preparing-documents': b3 = true;  d1 = false; d2 = false;
             break;
             
-            case 'waiting-for-survey-schedule': b4 = true; d1 = false; d2 = false; d3 = false;
+            case 'waiting-for-survey-schedule': b4 = true; d1 = false; d2 = false; d3 = false; enableUpdate = true;
             break;
             
-            case 'pending-surveyor-visit': b5 = true; d1 = false; d2 = false; d3 = false; d4 = false;
+            case 'pending-surveyor-visit': b5 = true; d1 = false; d2 = false; d3 = false; d4 = false; enableUpdate = true;
             break;
 
-            case 'purchasing-of-materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false;
+            case 'purchasing-of-materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; enableUpdate = false;
             break;
 
-            case 'pending-onsite-visit': b7 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false;
+            case 'pending-onsite-visit': b7 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; enableUpdate = true;
             break;
 
-            case 'pending-installation': b8 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false;
+            case 'pending-installation': b8 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; enableUpdate = true;
             break;
 
-            case 'completed': b9 = true; d1 = false; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; d8 = false;
+            case 'completed': b9 = true; d1 = false; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; d8 = false; enableUpdate = true;
             break;
             
             }
@@ -192,7 +194,8 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
             d5: d5,
             d6: d6,
             d7: d7,
-            d8: d8
+            d8: d8,
+            enableUpdate: enableUpdate
         }
 
         const data = {
