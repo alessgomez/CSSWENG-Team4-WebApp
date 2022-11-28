@@ -13,7 +13,7 @@ http://localhost:3000/admin
 */
 
 // Render login page
-router.get('/getLogin', (req, res) => {
+router.get('/getLogin', isPublic, (req, res) => {
     res.render('admin_login', {layout: false})
 })
 
@@ -57,9 +57,9 @@ router.post('/login', async(req, res) => {
                     return res.status(404).json({message: 'Incorrect password'})
                 else {
                     req.session.objectId = employee._id
-                    req.session.user = employee.employeeNo;
-                    req.session.name = employee.firstName + " " + employee.middleName + " " + employee.lastName;
-                    res.redirect('/admin/applications') 
+                    req.session.user = employee.employeeNo
+                    req.session.name = employee.firstName + " " + employee.middleName + " " + employee.lastName
+                    res.redirect('/admin/applications')
                 }
             })
     } catch (err) {
@@ -68,14 +68,14 @@ router.post('/login', async(req, res) => {
 })
 
 // Step 1 Bonus: Logout
-router.post('/logout', async(req, res) => {
+router.get('/logout', isPrivate, async(req, res) => {
     try {
         if (req.session.name == null)
             res.send({message: 'No existing session!'})
         else {
             req.session.destroy(() => {
                 res.clearCookie('connect.sid')
-                res.send({message: 'Session successfully deleted!'})
+                res.redirect('/admin/getLogin')
             })
         }
     } catch (err) {
@@ -84,7 +84,7 @@ router.post('/logout', async(req, res) => {
 })
 
 // Step 2: Displaying application details based on selection - POP UP
-router.get('/applications/:id', getApplication, async (req, res) => {
+router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
     try {        
         const client = await Client.findOne({_id: res.application.applicantNo})
         var reference = null, rep = null
@@ -188,7 +188,7 @@ router.get('/applications/:id', getApplication, async (req, res) => {
 })
 
 // Step 2a: Download valid ID based on link displayed in details
-router.get('/applications/:id/:filename', async (req, res) => {
+router.get('/applications/:id/:filename', isPrivate, async (req, res) => {
     try {
         res.download(path.resolve(__dirname, '../public/validIds/' + req.params.filename), async function(err) {
             if (err)
@@ -200,7 +200,7 @@ router.get('/applications/:id/:filename', async (req, res) => {
 })
 
 //Step 4: See all applications - TODO: make it work for when applications button is selected (coming from complaints)
-router.get('/applications', async (req, res) => {
+router.get('/applications', isPrivate, async (req, res) => {
     try{
         const applications = await Application.find()
 
@@ -239,7 +239,7 @@ router.get('/applications', async (req, res) => {
 
 //Step 4d: Search - TODO: assumed to be based on applicant name and app. number ONLY 
 //NOTE: Retains latest copy (so not in chronological order based on date)
-router.get('/search', async (req, res) => {
+router.get('/search', isPrivate, async (req, res) => {
      
     try{
         let clientAppResult = []
@@ -321,7 +321,7 @@ router.get('/search', async (req, res) => {
 
 //Step 4e: Option to delete an application
 //NOTE: Test if a client has another existing application (if it will get deleted)
-router.delete('/applications/delete/:id', getApplication, async (req, res) => {
+router.delete('/applications/delete/:id', isPrivate, getApplication, async (req, res) => {
     let applicantNo
     try{
         applicantNo = res.application.applicantNo
@@ -358,7 +358,7 @@ router.delete('/applications/delete/:id', getApplication, async (req, res) => {
 })
 
 //Step ?: Status filter - NOTE: Need to test
-router.get('/filter', async (req, res) => {
+router.get('/filter', isPrivate, async (req, res) => {
     try {
         let applications
 
@@ -411,7 +411,7 @@ router.get('/filter', async (req, res) => {
 })
 
 //Step 5 xiv 3a: Employee is asked to input the survey schedule
-router.get('/surveyschedule/:id',  getApplication, async (req, res) => {
+router.get('/surveyschedule/:id',  isPrivate, getApplication, async (req, res) => {
     res.application.surveySchedule = new Date(req.query.date + "T" + req.query.time + ":00" + "Z");
     
     try {
@@ -423,7 +423,7 @@ router.get('/surveyschedule/:id',  getApplication, async (req, res) => {
 })
 
 //Step 5 xiv 6a: Employee is asked to input the installation schedule  
-router.get('/installationschedule/:id',  getApplication, async (req, res) => {
+router.get('/installationschedule/:id',  isPrivate, getApplication, async (req, res) => {
     res.application.installationSchedule = new Date(req.query.date + "T" + req.query.time + ":00" + "Z");
     
     try {
@@ -435,7 +435,7 @@ router.get('/installationschedule/:id',  getApplication, async (req, res) => {
 })
 
 //Step 5 xiv: Status change from dropdown + Step 6 (if application is completed): Completion date is stored 
-router.patch('/updatestatus/:id', getApplication, generateUpdateNum, async (req, res) => {
+router.patch('/updatestatus/:id', isPrivate, getApplication, generateUpdateNum, async (req, res) => {
     res.application.applicationStage = req.body.newStatus
     if (req.body.newStatus == "Completed" || req.body.newStatus == "completed")
         res.application.completionDate = Date.now ()
@@ -457,6 +457,20 @@ router.patch('/updatestatus/:id', getApplication, generateUpdateNum, async (req,
 })
 
 /* ****************** ASYNC HELPER FUNCTIONS ****************** */
+async function isPrivate (req, res, next) {
+    if (req.session.name)
+        next()
+    else
+        res.redirect('/admin/getLogin')
+}
+
+async function isPublic (req, res, next) {
+    if (req.session.name)
+        res.redirect('/admin/applications')
+    else
+        next()
+}
+
 async function generateEmployeeNum(req, res, next) {
     let employees
 
