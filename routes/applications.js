@@ -111,8 +111,8 @@ router.post('/step2a/:id', generateRepNumAndApp, async (req, res) => {
         res.send({message: 'Invalid file type'})
 })
 
-router.get('/step3-1/:id', getApplication, (req, res) => {
-    createAppForm('./public/files/Application Form.pdf', './public/files/Application Form-' + res.application.applicationNo + '.pdf', res.application)
+router.get('/step3-1/:id', getApplication, async (req, res) => {
+    await createAppForm('./public/files/Application Form.pdf', './public/files/Application Form-' + res.application.applicationNo + '.pdf', res.application)
     res.download(path.resolve(__dirname, '../public/files/Application Form-' + res.application.applicationNo + '.pdf'), function(err) {
         if (err){
             console.log(err);
@@ -142,7 +142,7 @@ router.get('/step3-2/:id', getApplication, async (req, res) => {
 })
 
 router.get('/step3-3/:id', getApplication, async (req, res) => {
-    createAuthLetter('./public/files/Authorization Letter.pdf', './public/files/Authorization Letter-' + res.application.applicationNo + '.pdf', res.application)
+    await createAuthLetter('./public/files/Authorization Letter.pdf', './public/files/Authorization Letter-' + res.application.applicationNo + '.pdf', res.application)
     res.download(path.resolve(__dirname, '../public/files/Authorization Letter-' + res.application.applicationNo + '.pdf'), async function(err) {
         if (err){
             console.log(err);
@@ -153,7 +153,6 @@ router.get('/step3-3/:id', getApplication, async (req, res) => {
 
             try {
                 const updatedApplication = await res.application.save()
-                res.send({applicationNo: updatedApplication.applicationNo})
             } catch(err) { 
                 console.log(err)
             }
