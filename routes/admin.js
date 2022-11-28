@@ -173,6 +173,8 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
             ownership: res.application.ownership,
             validId: validId,
             applicationStage: res.application.applicationStage,
+            surveySchedule: res.application.surveySchedule,
+            installationSchedule: res.application.installationSchedule,
             representative: rep,
             b1: b1,
             b2: b2,

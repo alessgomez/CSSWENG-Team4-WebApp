@@ -6,6 +6,13 @@
         <div class = "refno" id="refno" value={{this.details.applicationNo}}>{{this.details.applicationNo}}</div>
         <div class = "name">{{this.details.fullName}}</div>
         <div class = "status" id="status">{{this.details.applicationStage}}</div>
+        {{#if this.details.b5}}
+            <br><div id="surveySched">Survey Scheduled on: {{this.details.surveySchedule}}</div>
+        {{/if}}
+        {{#if this.details.b8}}
+            <br><div id="installationSched"><div id="surveySched">Installation Scheduled on: {{this.details.installationSchedule}}</div>
+        {{/if}}
+        <div id="installationSched"></div>
         <div class = "dropdown" id="dropdown">
             <label for="status-dropdown">Update Status</label>
             <select name="status-dropdown" id="status-dropdown">
