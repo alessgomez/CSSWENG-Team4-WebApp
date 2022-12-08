@@ -144,7 +144,7 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
             case 'Pending Surveyor Visit': b5 = true; d1 = false; d2 = false; d3 = false; d4 = false; enableUpdate = true; stageColor = '#7B3F00'; 
             break;
 
-            case 'Purchasing of Materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; enableUpdate = false; stageColor = '#db7093'; 
+            case 'Purchasing of Materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; enableUpdate = true; stageColor = '#db7093'; 
             break;
 
             case 'Pending Onsite Visit': b7 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; enableUpdate = true; stageColor = '#FF8C00'; 
