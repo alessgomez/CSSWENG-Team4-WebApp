@@ -15,8 +15,9 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static("public"))
 
 app.use(cors({
-    origin: 'http://localhost:8080'
-}))
+    origin: '*',
+    methods: '*'
+}));
 
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true})
 const db = mongoose.connection

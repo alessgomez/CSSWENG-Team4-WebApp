@@ -171,11 +171,14 @@ router.get('/step3-3/:id', getApplication, async (req, res) => {
 })
 
 // Step 4: Visit Schedule - admin side
-/*router.get('/step4/:id', getApplication, (req, res) => {
-    res.send({applicationStage: res.application.applicationStage})
-})*/
+router.get('/step4/:id', getApplication, (req, res) => {
+    res.send({applicationStage: res.application.applicationStage, visitationSchedule: res.application.surveySchedule})
+})
+
+
 
 // Step 5: Purchase Materials
+/*
 router.get('/step5/:id', getApplication, async (req, res) => {
     let materials
     try {
@@ -191,11 +194,14 @@ router.get('/step5/:id', getApplication, async (req, res) => {
         return res.status(500).json({message: err.message})
     }
 })
+*/
 
 // Resume application
 router.get('/:id', getApplication, async (req, res) => {
     res.send({applicationStage: res.application.applicationStage})
 })
+
+
 
 // Step 6: Visitation
 router.get('/step6/:id', getApplication, async (req, res) => {
@@ -215,7 +221,7 @@ router.get('/step7/:id', getApplication, async (req, res) => {
 
     try {
         const updatedApplication = await res.application.save()
-        res.send({applicationNo: updatedApplication.applicationNo})
+        res.send({applicationNo: updatedApplication.applicationNo, installationSchedule: updatedApplication.installationSchedule})
     } catch(err){
         res.status(400).json({message: err.message})
     }
@@ -319,6 +325,7 @@ async function getApplication(req, res, next) {
     try{
         
         application = await Application.findOne({applicationNo: req.params.id})
+
 
         if (application == null){
             return res.status(404).json({message: 'Cannot find application'})
