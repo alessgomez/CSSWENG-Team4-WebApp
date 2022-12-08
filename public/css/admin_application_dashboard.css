@@ -50,6 +50,7 @@ body {
     width: 70%;
     text-align: center;
     margin-bottom: 5%;
+    cursor: pointer;
 }
 
 /* Right */
