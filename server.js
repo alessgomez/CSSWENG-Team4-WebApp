@@ -7,11 +7,16 @@ const session = require('express-session')
 // const flash = require('connect-flash')
 const MongoStore = require('connect-mongo')
 const exphbs = require("express-handlebars")
+const cors = require('cors')
 
 app.set("view engine", "hbs")
 app.engine("hbs", exphbs.engine({extname: "hbs"}))
 app.use(express.urlencoded({extended: true}))
 app.use(express.static("public"))
+
+app.use(cors({
+    origin: 'http://localhost:8080'
+}))
 
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true})
 const db = mongoose.connection
