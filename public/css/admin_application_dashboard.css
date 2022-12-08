@@ -10,7 +10,7 @@ body {
 
 /* Left Panel */
 .left {
-    font-family: 'Inter';
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
     background: rgba(240, 240, 240, 0.8);
     box-shadow: 0px 3px 20px 7px rgba(0, 0, 0, 0.25);
@@ -20,7 +20,7 @@ body {
     text-align: center;
     float: left;
     padding-bottom: 5%;
-    width: 23%;
+    width: 18%;
     margin-left: 3%;
 }
 
@@ -32,24 +32,33 @@ body {
 
 .uname {
     font-size: 150%;
-    font-weight: 600;
     padding-top: 10%;
     padding-bottom: 7%;
 }
 
 /* Buttons */
 .btn {
-    background: #000080;
-    color: #FFFFFF;
-    box-shadow: 0px 3px 10px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
-    border: 0;
-    padding: 3% 5% 3% 5%;
-    font-size: 150%;
-    font-weight: 600;
+    background: #003366;
+    color: #F7F5EE;
     width: 70%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
     text-align: center;
+    padding: 3% 5% 3% 5%;
+    line-height: 30px;
+    display: inline-block;
+    position: relative;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 2px #888888;
+    transition: color 0.3s, background-image 0.5s, ease-in-out;
     margin-bottom: 5%;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #bbd3ec;
+    color: #003366;
     cursor: pointer;
 }
 
@@ -64,17 +73,28 @@ body {
 }
 
 #applications {
-    font-family: 'Inter';
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
-    font-weight: 800;
     font-size: 230%;
     width: 100%;
     text-align: left;
-    color: #000080;
+    color: #003366;
 }
 
+#applications-table tbody{
+    background-color: rgba(240, 240, 240, 0.8);
+    font-weight: normal;
+}
+
+#applications-table {
+    margin-bottom: 100px;
+}
+
+#th-header {
+    font-weight: normal;
+}
 #search {
-    font-family: 'Inter';
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 100%;
     float: right;
     width: 25%;
@@ -94,16 +114,15 @@ body {
 }
 
 .filter-by {
-    font-family: 'Inter';
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
-    font-weight: 600;
     font-size: 140%;
-    color: #000080;
+    color: #003366;
 }
 
 #filter-options {
-    font-family: 'Inter';
-    border-color: #000080;;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border-color: #003366;;
     width: 20%;
     margin-left: 1%;
     padding-top: 1%;
@@ -112,10 +131,17 @@ body {
     border-radius: 8px;
     border: 0;
     box-shadow: 0px 3px 10px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+#filter-options:hover {
+    background: #bbd3ec;
+    color: #003366;
+    cursor: pointer;
 }
 
 table {
-    font-family: 'Inter';
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
     border-collapse: collapse;
     width: 100%;
@@ -128,20 +154,17 @@ table, td, th {
     margin-top: 2%;
     margin-left: auto;
     margin-right: auto;
-    font-weight: 500;
 }
 
 th {
-    font-weight: 800;
-    background: #000080;
+    background: #003366;
     color: #FFFFFF;
 }
 
 .table-title {
-    font-family: 'Inter';
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
     font-size: 150%;
-    font-weight: 600;
 }
 
 a:not(#stage) {
