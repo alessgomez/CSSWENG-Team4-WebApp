@@ -121,7 +121,7 @@ router.post('/step2a/:id', generateRepNumAndApp, async (req, res) => {
         res.send({message: 'Invalid file type'})
 })
 
-router.get('/step3-1/:id', getApplication, async (req, res) => {
+router.post('/step3-1/:id', getApplication, async (req, res) => {
     await createAppForm('./public/files/Application Form.pdf', './public/files/Application Form-' + res.application.applicationNo + '.pdf', res.application)
     res.download(path.resolve(__dirname, '../public/files/Application Form-' + res.application.applicationNo + '.pdf'), function(err) {
         if (err){
@@ -130,7 +130,7 @@ router.get('/step3-1/:id', getApplication, async (req, res) => {
     })
 })
 
-router.get('/step3-2/:id', getApplication, async (req, res) => {
+router.post('/step3-2/:id', getApplication, async (req, res) => {
     res.download(path.resolve(__dirname, '../public/files/Customer Reminders Slip.pdf'), async function(err) {
         if (err){
             console.log(err);
@@ -151,7 +151,7 @@ router.get('/step3-2/:id', getApplication, async (req, res) => {
     })
 })
 
-router.get('/step3-3/:id', getApplication, async (req, res) => {
+router.post('/step3-3/:id', getApplication, async (req, res) => {
     await createAuthLetter('./public/files/Authorization Letter.pdf', './public/files/Authorization Letter-' + res.application.applicationNo + '.pdf', res.application)
     res.download(path.resolve(__dirname, '../public/files/Authorization Letter-' + res.application.applicationNo + '.pdf'), async function(err) {
         if (err){
@@ -171,7 +171,7 @@ router.get('/step3-3/:id', getApplication, async (req, res) => {
 })
 
 // Step 4: Visit Schedule - admin side
-router.get('/step4/:id', getApplication, (req, res) => {
+router.post('/step4/:id', getApplication, (req, res) => {
     res.send({applicationStage: res.application.applicationStage, visitationSchedule: res.application.surveySchedule})
 })
 
@@ -197,14 +197,14 @@ router.get('/step5/:id', getApplication, async (req, res) => {
 */
 
 // Resume application
-router.get('/:id', getApplication, async (req, res) => {
+router.post('/:id', getApplication, async (req, res) => {
     res.send({applicationStage: res.application.applicationStage})
 })
 
 
 
 // Step 6: Visitation
-router.get('/step6/:id', getApplication, async (req, res) => {
+router.post('/step6/:id', getApplication, async (req, res) => {
     res.application.applicationStage = 'Pending Onsite Visit'
 
     try {
@@ -216,7 +216,7 @@ router.get('/step6/:id', getApplication, async (req, res) => {
 })
 
 // Step 7: Installation
-router.get('/step7/:id', getApplication, async (req, res) => {
+router.post('/step7/:id', getApplication, async (req, res) => {
     res.application.applicationStage = 'Pending Installation'
 
     try {
