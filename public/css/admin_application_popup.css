@@ -8,8 +8,12 @@ body {
     background-size: 100%;
 } 
 
+.name {
+    text-transform: uppercase;
+    font-weight: normal;
+}
 .sched  {
-    font-family: 'Inter';
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
 }
 
@@ -18,13 +22,24 @@ body {
 }
 
 #backBtn, #saveBtn {
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     width: 45%;
-    background-color: #000080;
+    font-size: 100%;
+    background-color: #003366;
+    color: #F7F5EE;
+    box-shadow: 0 2px 2px #888888;
     border-radius: 5px;	
+    font-weight: normal;
+}
+
+#backBtn:hover, #saveBtn:hover {
+    background: #000d1c;
+    color: #F7F5EE;
+    cursor: pointer;
 }
 
 .panel {
-    font-family: 'Inter';
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
     background: rgba(240, 240, 240, 0.8);
     box-shadow: 0px 4px 20px 10px rgba(0, 0, 0, 0.25);
@@ -49,13 +64,13 @@ body {
 }
 
 .refno {
-    font-family: 'Inter';
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
     color: #000080;
 }
 
 .name {
-    font-family: 'Inter';
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
     margin-top: 25%;
     margin-bottom: 5%;
@@ -76,8 +91,8 @@ body {
 }
 
 .status {
-    font-family: 'Inter';
-    font-weight: bold;
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: lighter;
     border-radius: 5px;
     font-size: 130%;
     margin-left: auto;
@@ -94,7 +109,7 @@ body {
 }
 
 .status-dropdown {
-    font-family: 'Inter';
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 100%;
@@ -103,7 +118,7 @@ body {
 }
 
 #status-dropdown {
-    font-family: 'Inter';
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     border-color: #000080;
     width: 70%;
     margin-top: 2%;
@@ -115,13 +130,46 @@ body {
     box-shadow: 0px 1px 10px 2px rgba(0, 0, 0, 0.25);
 }
 
-th {
-    padding-top: 2%;
+#status-dropdown:hover {
+    background: #e5effb;
+    color: #003366;
+    cursor: pointer;
 }
 
+
 th.label {
-    font-family: 'Inter';
-    padding-right: 10%;
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    font-weight: bolder;
+}
+
+.label {
+    padding-right: 5px;
+    padding-top: 10px;
+    padding-left: 10px;
+    height: 30px;
+    background-color: #d0e2f4;
+    color: #003366;
+    text-transform: uppercase;
+    border-radius: 3%;
+}
+
+#table-data {
+    padding-right: 5px;
+    padding-top: 10px;
+    padding-left: 10px;
+    height: 30px;
+    background-color: #f9f9f0;
+    color: #000000;
+    border-radius: 3%;
+}
+
+th #table-data {
+    font-weight: lighter;
+}
+
+th {
+    padding-top: 1px;
 }
 
 table {
@@ -129,19 +177,27 @@ table {
 }
 
 .delete-button {
-    font-family: 'Inter';
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 100%;
     font-style: normal;
-    font-weight: 800;
-    background-color: #CB0000;
+    font-weight: normal;
+    background-color: #940000;
     color: #FFFFFF;
     border-radius: 5px;
+    margin-top: 20px;
     padding-top: 2%;
     padding-bottom: 2%;
     width: 50%;
     float: right;
     margin-top: 10%;
     margin-bottom: 7%;
+    box-shadow: 0 2px 2px #888888;
+}
+
+.delete-button:hover {
+    background-color: #470000;
+    color: #FFFFFF;
+    cursor: pointer;
 }
 
 button {
@@ -154,8 +210,17 @@ button {
     font-weight: 700;
 }
 
+#delete-header {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#delete-question {
+    font-weight: normal;
+}
+
 .cancelbtn, .deletebtn {
-    font-family: 'Inter';
+    font-family:'Gill Sans Light', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
     border-radius: 5px;
     font-size: 80%;
@@ -164,11 +229,23 @@ button {
 .cancelbtn {
     background-color: #ccc;
     color: black;
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.cancelbtn:hover {
+    background-color: rgb(191, 191, 191);
 }
 
 .deletebtn {
-    background-color: #f44336;
+    background-color: #b6453d;
     margin-top: 5%;
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.deletebtn:hover {
+    background-color: #5e1510;
 }
 
 .container {
