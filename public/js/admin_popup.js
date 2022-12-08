@@ -71,20 +71,20 @@ $(document).ready(function(){
             $("#inputDate").change(function() {
                 if ($("#inputDate").val() && $("#inputTime").val()) {
                     $("#saveBtn").prop("disabled", false)
-                    $("#saveBtn").css("background-color", "#000080")
+                    $("#saveBtn").css("background-color", "#003366")
                 }
             })
 
             $("#inputTime").change(function() {
                 if ($("#inputDate").val() && $("#inputTime").val()) {
                     $("#saveBtn").prop("disabled", false)
-                    $("#saveBtn").css("background-color", "#000080")
+                    $("#saveBtn").css("background-color", "#003366")
                 }
             })
         }
         else {
             $("#saveBtn").prop("disabled", false)
-            $("#saveBtn").css("background-color", "#000080")
+            $("#saveBtn").css("background-color", "#003366")
             $("#dateAndTime").hide()
         }
 
