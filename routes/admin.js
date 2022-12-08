@@ -57,8 +57,9 @@ router.post('/login', async(req, res) => {
                     return res.status(404).json({message: 'Incorrect password'})
                 else {
                     req.session.objectId = employee._id
-                    req.session.user = employee.employeeNo
+                    req.session.employeeNo = employee.employeeNo
                     req.session.name = employee.firstName + " " + employee.middleName + " " + employee.lastName
+                    req.session.user = employee.username
                     res.redirect('/admin/applications')
                 }
             })
@@ -128,38 +129,38 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
 
         
         switch (res.application.applicationStage) {
-            case 'uploading-requirements': b1 = true; 
+            case 'Uploading Requirements': b1 = true; 
             break;
             
-            case 'adding-representative': b2= true; d1 = false;
+            case 'Adding Representative': b2= true; d1 = false;
             break;
             
-            case 'printing-and-preparing-documents': b3 = true;  d1 = false; d2 = false;
+            case 'Printing and Preparing Documents': b3 = true;  d1 = false; d2 = false;
             break;
             
-            case 'waiting-for-survey-schedule': b4 = true; d1 = false; d2 = false; d3 = false; enableUpdate = true;
+            case 'Waiting for Survey Schedule': b4 = true; d1 = false; d2 = false; d3 = false; enableUpdate = true;
             break;
             
-            case 'pending-surveyor-visit': b5 = true; d1 = false; d2 = false; d3 = false; d4 = false; enableUpdate = true;
+            case 'Pending Surveyor Visit': b5 = true; d1 = false; d2 = false; d3 = false; d4 = false; enableUpdate = true;
             break;
 
-            case 'purchasing-of-materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; enableUpdate = false;
+            case 'Purchasing of Materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; enableUpdate = false;
             break;
 
-            case 'pending-onsite-visit': b7 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; enableUpdate = true;
+            case 'Pending Onsite Visit': b7 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; enableUpdate = true;
             break;
 
-            case 'pending-installation': b8 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; enableUpdate = true;
+            case 'Pending Installation': b8 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; enableUpdate = true;
             break;
 
-            case 'completed': b9 = true; d1 = false; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; d8 = false; enableUpdate = true;
+            case 'Completed': b9 = true; d1 = false; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; d8 = false; enableUpdate = true;
             break;
             
             }
         
         var validId = null;
         
-        if (res.application.applicationStage != "uploading-requirements")
+        if (res.application.applicationStage != "Uploading Requirements")
             validId = res.application.validId.split('/')[2]
 
         const details = {
@@ -232,26 +233,31 @@ router.get('/applications', isPrivate, async (req, res) => {
             script: ["admin_dashboard"],
             style: ["admin_application_dashboard"],
             stage: "All",
-            results: []
+            results: [],
+            username: req.session.user
         }
+
 
         for (var i = 0; i < applications.length; i++)
         {
             var client = await Client.findOne({_id: applications[i].applicantNo})
             
-            
             var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
             
-            var applicationObj = {
-                startDate: (applications[i].startDate.getMonth() + 1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
-                applicationNo: applications[i].applicationNo,
-                applicationStage: applications[i].applicationStage,
-                name: fullName,
-                address: applications[i].address,
-                contactNo: client.contactNo
+            if (applications[i].archived == false)
+            {
+                var applicationObj = {
+                    startDate: (applications[i].startDate.getMonth() + 1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
+                    applicationNo: applications[i].applicationNo,
+                    applicationStage: applications[i].applicationStage,
+                    name: fullName,
+                    address: applications[i].address,
+                    contactNo: client.contactNo
+                }
+                
+                data.results.push(applicationObj);
             }
             
-            data.results.push(applicationObj);
         }
         
         res.render("admin_application_dashboard", data);
@@ -355,28 +361,8 @@ router.delete('/applications/delete/:id', isPrivate, getApplication, async (req,
         
         console.log("PASOK")
 
-        await res.application.remove()
-
-        console.log("applicantNo type: " + typeof applicantNo + " | itself: " + applicantNo)
-
-        const otherApp = await Application.find({applicantNo: applicantNo})
-        
-        console.log("type: " + typeof otherApp + " | itself: " + otherApp)
-
-        if (otherApp.length == 0) //no other applications under this client
-        {
-            const client = await Client.findOne({_id: applicantNo})
-            console.log("type: " + typeof client + " | itself: " + client)
-            await client.remove()
-
-            const referencedBy = await Application.find({referenceClientNo: applicantNo})
-
-            if (referencedBy.length > 0) // Client is used as reference by other applicants
-                for (i=0; i < referencedBy.length; i++) {
-                    referencedBy[i].referenceClientNo = null
-                    await referencedBy[i].save()
-                }
-        }
+        res.application.archived = true
+        await res.application.save()
         
         res.json({message: "Deleted Application"})
     } catch(err) {
@@ -389,7 +375,7 @@ router.get('/filter', isPrivate, async (req, res) => {
     try {
         let applications
 
-        if (req.query.stage === "all")
+        if (req.query.stage === "All")
         {
             applications = await Application.find()
         }
@@ -401,7 +387,7 @@ router.get('/filter', isPrivate, async (req, res) => {
         const data = {
             script: ["admin_dashboard"],
             style: ["admin_application_dashboard"],
-            stage: "all",
+            stage: "All",
             results: []
         }
 
@@ -412,16 +398,19 @@ router.get('/filter', isPrivate, async (req, res) => {
             
             var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
 
-            var applicationObj = {
-                startDate: (applications[i].startDate.getMonth()+1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
-                applicationNo: applications[i].applicationNo,
-                applicationStage: applications[i].applicationStage,
-                name: fullName,
-                address: applications[i].address,
-                contactNo: client.contactNo
-            }
+            if (applications[i].archived == false)
+            {
+                var applicationObj = {
+                    startDate: (applications[i].startDate.getMonth()+1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
+                    applicationNo: applications[i].applicationNo,
+                    applicationStage: applications[i].applicationStage,
+                    name: fullName,
+                    address: applications[i].address,
+                    contactNo: client.contactNo
+                }
 
-            data.results.push(applicationObj);
+                data.results.push(applicationObj);
+            }
         }
 
         res.render('partials\\approw', data.results, function(err, html) {
@@ -464,7 +453,7 @@ router.get('/installationschedule/:id',  isPrivate, getApplication, async (req, 
 //Step 5 xiv: Status change from dropdown + Step 6 (if application is completed): Completion date is stored 
 router.patch('/updatestatus/:id', isPrivate, getApplication, generateUpdateNum, async (req, res) => {
     res.application.applicationStage = req.body.newStatus
-    if (req.body.newStatus == "Completed" || req.body.newStatus == "completed")
+    if (req.body.newStatus == "Completed")
         res.application.completionDate = Date.now ()
 
     const update = new Update ({

@@ -2,7 +2,7 @@
     <!-- Temporary placeholder -->
     <img src = "../images/icons/userImage.jpeg" class = "user-img"> 
 
-    <div class = "uname">username</div>
+    <div class = "uname">{{username}}</div>
    
     <div class = "center-btn">
         <button class = "btn" id="logoutBtn">Logout</button>
@@ -18,16 +18,16 @@
     <div class = "Filter">
         <label class = "filter-by">Filter by:</label>
             <select name="filter-options" id="filter-options">
-                <option value="all" selected>all</option>
-                <option value="uploading-requirements">Uploading Requirements</option>
-                <option value="adding-representative">Adding Representative</option>
-                <option value="printing-and-preparing-documents">Printing and Preparing Documents</option>
-                <option value="waiting-for-survey-schedule">Waiting for Survey Schedule</option>
-                <option value="pending-surveyor-visit">Pending Surveyor Visit</option>
-                <option value="purchasing-of-materials">Purchasing of Materials</option>
-                <option value="pending-onsite-visit">Pending Onsite Visit</option>
-                <option value="pending-installation">Pending Installation</option>
-                <option value="completed">Completed</option>
+                <option value="All" selected>All</option>
+                <option value="Uploading Requirements">Uploading Requirements</option>
+                <option value="Adding Representative">Adding Representative</option>
+                <option value="Printing and Preparing Documents">Printing and Preparing Documents</option>
+                <option value="Waiting for Survey Schedule">Waiting for Survey Schedule</option>
+                <option value="Pending Surveyor Visit">Pending Surveyor Visit</option>
+                <option value="Purchasing of Materials">Purchasing of Materials</option>
+                <option value="Pending Onsite Visit">Pending Onsite Visit</option>
+                <option value="Pending Installation">Pending Installation</option>
+                <option value="Completed">Completed</option>
             </select>
     </div>
     <div class = "table-title" id="stageheader">{{this.stage}}</div>

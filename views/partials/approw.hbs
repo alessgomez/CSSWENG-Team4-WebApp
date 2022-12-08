@@ -10,12 +10,12 @@
 
     {{#each this}}     
         <tr class="temp">
-            <td>{{startDate}}</td>
+            <td><a  href="/admin/applications/{{applicationNo}}">{{startDate}}</a></td>
             <td id="applicationNo"><a  href="/admin/applications/{{applicationNo}}">{{applicationNo}}</a></td>
-            <td>{{name}}</td>
-            <td>{{address}}</td>
-            <td>{{contactNo}}</td>
-            <td>{{applicationStage}}</td>
+            <td><a  href="/admin/applications/{{applicationNo}}">{{name}}</a></td>
+            <td><a  href="/admin/applications/{{applicationNo}}">{{address}}</a></td>
+            <td><a  href="/admin/applications/{{applicationNo}}">{{contactNo}}</a></td>
+            <td bgcolor="red"><a  href="/admin/applications/{{applicationNo}}">{{applicationStage}}</a></td>
         </tr>
     {{/each}}
 </table>

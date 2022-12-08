@@ -53,7 +53,7 @@ const applicationSchema = new mongoose.Schema({
     applicationStage: {
         type: String,
         required: true,
-        default: 'uploading-requirements'
+        default: 'Uploading Requirements'
     },
     validId: {
         type: String
@@ -63,6 +63,11 @@ const applicationSchema = new mongoose.Schema({
     },
     installationSchedule: {
         type: Date
+    },
+    archived: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 })
 
