@@ -317,7 +317,7 @@ hr {
 
 #status {
     color: white;
-    font-weight: bolder;
+    font-weight: normal;
 }
 
 ::-webkit-scrollbar {

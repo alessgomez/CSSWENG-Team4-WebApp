@@ -165,8 +165,11 @@ table {
 .stage  {
     text-decoration:none;
     color:white;
-    font-weight: bolder;
-    
+    font-weight: normal;
+}
+
+#stage {
+    border-color: 2px #FFFFFF;
 }
 
 
