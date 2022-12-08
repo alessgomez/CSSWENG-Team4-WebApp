@@ -182,6 +182,11 @@ router.get('/step5/:id', getApplication, async (req, res) => {
     }
 })
 
+// Resume application
+router.get('/:id', getApplication, async (req, res) => {
+    res.send({applicationStage: res.application.applicationStage})
+})
+
 // Step 6: Visitation
 router.get('/step6/:id', getApplication, async (req, res) => {
     res.application.applicationStage = 'Pending Onsite Visit'
