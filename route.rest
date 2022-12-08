@@ -201,3 +201,6 @@ GET http://localhost:3000/admin/hello
 ###
 
 GET http://localhost:3000/admin/surveySchedule/1?date=2021-12-12&time=14:10
+
+###
+GET http://localhost:3000/applications/0
