@@ -15,19 +15,53 @@ $(document).ready(function(){
             }
         });          
           
-        window.location.href="http://localhost:3000/admin/applications";
+        window.location.href="/admin/applications";
 
     });
 
     $("#backBtn").click(function()  {
-        window.location.href="http://localhost:3000/admin/applications";
+        window.location.href="/admin/applications";
     });
 
     // update stage based on dropdown
     $("#status-dropdown").change(function(){
         var stage = $("#status-dropdown").val();
+        var stageColor;
+
         $("#status").text(stage);
         $("#saved").text("")
+
+        switch (stage) {
+            case 'Uploading Requirements': stageColor = 'teal'; 
+            break;
+            
+            case 'Adding Representative': stageColor = '#DAA520';
+            break;
+            
+            case 'Printing and Preparing Documents': stageColor = 'purple';
+            break;
+            
+            case 'Waiting for Survey Schedule': stageColor = '#B80000';
+            break;
+            
+            case 'Pending Surveyor Visit': stageColor = '#7B3F00';
+            break;
+
+            case 'Purchasing of Materials': stageColor = '#db7093';
+            break;
+
+            case 'Pending Onsite Visit': stageColor = '#FF8C00';
+            break;
+
+            case 'Pending Installation': stageColor = 'blue';
+            break;
+
+            case 'Completed': stageColor = 'green';
+            break;
+        }
+
+        $("#status").css({"background": stageColor});
+
 
         if (stage == "Pending Surveyor Visit" || stage == "Pending Installation") {
             $("#saveBtn").prop("disabled", true)
@@ -107,6 +141,6 @@ $(document).ready(function(){
             })
         }
 
-        window.location.href="http://localhost:3000/admin/applications";
+        window.location.href="/admin/applications";
     });
  });

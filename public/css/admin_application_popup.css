@@ -48,6 +48,7 @@ body {
     margin-top: 10%;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 5%;
     padding-bottom: 5%;
     padding-top: 1%;
 }
@@ -188,6 +189,8 @@ table {
     padding-bottom: 2%;
     width: 50%;
     float: right;
+    margin-top: 10%;
+    margin-bottom: 7%;
     box-shadow: 0 2px 2px #888888;
 }
 
@@ -308,6 +311,13 @@ hr {
 
 #saved {
     color: green;
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+}
+
+#status {
+    color: white;
+    font-weight: bolder;
 }
 
 ::-webkit-scrollbar {

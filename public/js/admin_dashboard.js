@@ -29,7 +29,7 @@ $(document).ready(function(){
     
     //$.get('/admin/logout');
     //console.log("logout");
-    window.location.href="http://localhost:3000/admin/logout";
+    window.location.href="/admin/logout";
   });
 
 });
