@@ -144,15 +144,11 @@ th {
     font-weight: 600;
 }
 
-a {
+a:not(#stage) {
     text-decoration: none;
     color: black;
 }
 
-a:visited {
+a:not(#stage):visited {
     color: black;
-}
-
-#stage {
-    color: teal;
 }

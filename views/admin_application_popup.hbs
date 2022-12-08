@@ -5,7 +5,7 @@
         
         <div class = "refno" id="refno" value={{this.details.applicationNo}}>{{this.details.applicationNo}}</div>
         <div class = "name">{{this.details.fullName}}</div>
-        <div class = "status" id="status">{{this.details.applicationStage}}</div>
+        <div class = "status" id="status" style="background:{{this.details.color}}">{{this.details.applicationStage}}</div>
         {{#if this.details.b5}}
             <br><div id="surveySched" class="sched">Survey Scheduled on: {{this.details.surveySchedule}}</div>
         {{/if}}

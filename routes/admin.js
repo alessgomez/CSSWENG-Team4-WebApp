@@ -126,37 +126,36 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
 
         //var enableUpdate = false
         var enableUpdate = true
-
+        let stageColor
         
         switch (res.application.applicationStage) {
-            case 'Uploading Requirements': b1 = true; 
+            case 'Uploading Requirements': b1 = true; stageColor = 'teal'; 
             break;
             
-            case 'Adding Representative': b2= true; d1 = false;
+            case 'Adding Representative': b2= true; d1 = false; stageColor = 'yellow'; 
             break;
             
-            case 'Printing and Preparing Documents': b3 = true;  d1 = false; d2 = false;
+            case 'Printing and Preparing Documents': b3 = true;  d1 = false; d2 = false; stageColor = 'purple'; 
             break;
             
-            case 'Waiting for Survey Schedule': b4 = true; d1 = false; d2 = false; d3 = false; enableUpdate = true;
+            case 'Waiting for Survey Schedule': b4 = true; d1 = false; d2 = false; d3 = false; enableUpdate = true; stageColor = 'red'; 
             break;
             
-            case 'Pending Surveyor Visit': b5 = true; d1 = false; d2 = false; d3 = false; d4 = false; enableUpdate = true;
+            case 'Pending Surveyor Visit': b5 = true; d1 = false; d2 = false; d3 = false; d4 = false; enableUpdate = true; stageColor = 'brown'; 
             break;
 
-            case 'Purchasing of Materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; enableUpdate = false;
+            case 'Purchasing of Materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; enableUpdate = false; stageColor = 'pink'; 
             break;
 
-            case 'Pending Onsite Visit': b7 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; enableUpdate = true;
+            case 'Pending Onsite Visit': b7 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; enableUpdate = true; stageColor = 'orange'; 
             break;
 
-            case 'Pending Installation': b8 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; enableUpdate = true;
+            case 'Pending Installation': b8 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; enableUpdate = true; stageColor = 'blue'; 
             break;
 
-            case 'Completed': b9 = true; d1 = false; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; d8 = false; enableUpdate = true;
+            case 'Completed': b9 = true; d1 = false; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; d8 = false; enableUpdate = true; stageColor = 'green'; 
             break;
-            
-            }
+        }
         
         var validId = null;
         
@@ -197,7 +196,8 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
             d6: d6,
             d7: d7,
             d8: d8,
-            enableUpdate: enableUpdate
+            enableUpdate: enableUpdate,
+            color: stageColor
         }
 
         const data = {
@@ -227,6 +227,7 @@ router.get('/applications/:id/:filename', isPrivate, async (req, res) => {
 //Step 4: See all applications - TODO: make it work for when applications button is selected (coming from complaints)
 router.get('/applications', isPrivate, async (req, res) => {
     try{
+        let stageColor
         const applications = await Application.find({archived: false})
 
         const data = {
@@ -237,20 +238,49 @@ router.get('/applications', isPrivate, async (req, res) => {
             username: req.session.user
         }
 
-
         for (var i = 0; i < applications.length; i++)
         {
             var client = await Client.findOne({_id: applications[i].applicantNo})
             
             var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
             
+            switch (applications[i].applicationStage) {
+                case 'Uploading Requirements': stageColor = 'teal'; 
+                break;
+                
+                case 'Adding Representative': stageColor = 'yellow';
+                break;
+                
+                case 'Printing and Preparing Documents': stageColor = 'purple';
+                break;
+                
+                case 'Waiting for Survey Schedule': stageColor = 'red';
+                break;
+                
+                case 'Pending Surveyor Visit': stageColor = 'brown';
+                break;
+    
+                case 'Purchasing of Materials': stageColor = 'pink';
+                break;
+    
+                case 'Pending Onsite Visit': stageColor = 'orange';
+                break;
+    
+                case 'Pending Installation': stageColor = 'blue';
+                break;
+    
+                case 'Completed': stageColor = 'green';
+                break;
+            }
+
             var applicationObj = {
                 startDate: (applications[i].startDate.getMonth() + 1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
                 applicationNo: applications[i].applicationNo,
                 applicationStage: applications[i].applicationStage,
                 name: fullName,
                 address: applications[i].address,
-                contactNo: client.contactNo
+                contactNo: client.contactNo,
+                color: stageColor
             }
             
             data.results.push(applicationObj);            
