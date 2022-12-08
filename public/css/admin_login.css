@@ -10,7 +10,7 @@ body {
 
 /* Panel Content */
 .panel {
-    font-family: 'Inter';
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
     margin: auto;
     background: rgba(240, 240, 240, 0.8);
@@ -22,10 +22,10 @@ body {
 
 .admin {
     text-align: center;
-    font-weight: 800;
+    font-weight: normal;
     font-size: 200%;
     padding-top: 8%;
-    color: #000080;
+    color: #003366;
 }
 
 .input-uname {
@@ -62,21 +62,32 @@ input {
 
 /* Login button */
 .btn {
-    background: #000080;
-    color: #FFFFFF;
-    box-shadow: 0px 2px 10px 4px rgba(0, 0, 0, 0.25);
+    background: #003366;
+    color: #F7F5EE;
+    width: 35%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    text-align: center;
+    padding: 3% 5% 3% 5%;
+    line-height: 18px;
+    display: inline-block;
+    position: relative;
+    border: 0;
     border-radius: 10px;
-    padding: 2% 15% 2% 15%;
-    font-size: 140%;
-    font-weight: 600;
+    box-shadow: 0 2px 2px #888888;
+    transition: color 0.3s, background-image 0.5s, ease-in-out;
+    margin-bottom: 5%;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #000d1c;
+    color: #F7F5EE;
+    cursor: pointer;
 }
 
 .center-btn {
     text-align: center;
     padding-top: 5%;
     padding-bottom: 8%;
-}
-
-button:hover {
-    cursor: pointer;
 }
