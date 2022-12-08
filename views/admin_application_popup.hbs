@@ -15,7 +15,7 @@
         
         {{#if this.details.enableUpdate}}
             <div class = "dropdown" id="dropdown">
-                <label for="status-dropdown">Update Status</label>
+                <label for="status-dropdown">Update Status<br></label>
                 <select name="status-dropdown" id="status-dropdown">
                     {{#if this.details.d1}}<option value="uploading-requirements" {{#if this.details.b1}} selected {{/if}}>Uploading Requirements</option>{{/if}}
                     {{#if this.details.d2}}<option value="adding-representative" {{#if this.details.b2}} selected {{/if}}>Adding Representative</option>{{/if}}

@@ -5,6 +5,7 @@
 body {
     /* fix bg placement */
     background: url("../images/background/application_bg.png") no-repeat;
+    background-size: 100%;
 } 
 
 .sched  {
@@ -16,17 +17,10 @@ body {
     text-align: left;
 }
 
-#backBtn {
-    width: 38%;
+#backBtn, #saveBtn {
+    width: 45%;
     background-color: #000080;
     border-radius: 5px;	
-}
-
-#saveBtn {
-    width: 50%;
-    background-color: #000080;
-    border-radius: 5px;	
-    margin-left: 15px;
 }
 
 .panel {
@@ -40,7 +34,6 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding-bottom: 5%;
-    height: 525px;
 }
 
 /* Left */
@@ -49,7 +42,6 @@ body {
     margin-right: 3%;
     margin-top: 5%;
     width: 33%;
-    height: 100%;
     float: left;
     text-align: center;
 }
@@ -57,6 +49,7 @@ body {
 .refno {
     font-family: 'Inter';
     font-style: normal;
+    color: #000080;
 }
 
 .name {
@@ -68,10 +61,7 @@ body {
 
 /* Right */
 .right {
-    margin-top: 5%;
-    margin-left: 5%;
     text-align: left;
-    height: 475px;
     overflow-y: scroll;
     padding-top: 50px;
 }
@@ -89,31 +79,39 @@ body {
     border-radius: 5px;
     color: #FFFFFF;
     font-size: 130%;
-    margin-left: 5%;
-    margin-right: 5%;
+    margin-left: auto;
+    margin-right: auto;
     padding-top: 3%;
     padding-bottom: 3%;
+    padding-left: 1%;
+    padding-right: 1%;
+    width: 80%;
 }
 
 .dropdown {
-    margin-top: 20px;
+    margin-top: 8%;
 }
 
 .status-dropdown {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
-    font-size: 25px;
+    font-size: 100%;
     line-height: 39px;
     color: #000080;
-
 }
 
 #status-dropdown {
     font-family: 'Inter';
     border-color: #000080;
-    width: 200px;
-    height: 30px;
+    width: 70%;
+    margin-top: 2%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 2%;
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 0px 1px 10px 2px rgba(0, 0, 0, 0.25);
 }
 
 th {
@@ -126,37 +124,38 @@ th.label {
 }
 
 table {
-    margin-top: 5%;
+    border-spacing: 10px;
 }
 
 .delete-button {
     font-family: 'Inter';
     font-size: 100%;
     font-style: normal;
+    font-weight: 800;
     background-color: #CB0000;
     color: #FFFFFF;
     border-radius: 5px;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    padding-left: 3px;
-    padding-right: 3px;
-    margin-bottom: 50px;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    width: 50%;
+    float: right;
 }
 
 button {
-    background-color: #04AA6D;
     color: white;
     padding: 14px 20px;
-    margin: 8px 0;
     border: none;
     cursor: pointer;
     width: 100%;
     opacity: 0.9;
+    font-weight: 700;
 }
 
 .cancelbtn, .deletebtn {
-    float: left;
-    width: 50%;
+    font-family: 'Inter';
+    font-style: normal;
+    border-radius: 5px;
+    font-size: 80%;
 }
 
 .cancelbtn {
@@ -166,6 +165,7 @@ button {
 
 .deletebtn {
     background-color: #f44336;
+    margin-top: 5%;
 }
 
 .container {
@@ -189,8 +189,9 @@ button {
 .modal-content {
     background-color: #fefefe;
     margin: 5% auto 15% auto; 
-    border: 1px solid #888;
-    width: 80%; 
+    border: 0;
+    border-radius: 5px;
+    width: 30%; 
 }
 
 hr {
@@ -218,6 +219,14 @@ hr {
     content: "";
     clear: both;
     display: table;
+}
+
+.clearfix {
+    margin-top: 8%;
+    width: 70%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #saved {
