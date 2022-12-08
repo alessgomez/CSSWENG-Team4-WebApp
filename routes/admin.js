@@ -227,7 +227,7 @@ router.get('/applications/:id/:filename', isPrivate, async (req, res) => {
 //Step 4: See all applications - TODO: make it work for when applications button is selected (coming from complaints)
 router.get('/applications', isPrivate, async (req, res) => {
     try{
-        const applications = await Application.find()
+        const applications = await Application.find({archived: false})
 
         const data = {
             script: ["admin_dashboard"],
@@ -244,20 +244,16 @@ router.get('/applications', isPrivate, async (req, res) => {
             
             var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
             
-            if (applications[i].archived == false)
-            {
-                var applicationObj = {
-                    startDate: (applications[i].startDate.getMonth() + 1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
-                    applicationNo: applications[i].applicationNo,
-                    applicationStage: applications[i].applicationStage,
-                    name: fullName,
-                    address: applications[i].address,
-                    contactNo: client.contactNo
-                }
-                
-                data.results.push(applicationObj);
+            var applicationObj = {
+                startDate: (applications[i].startDate.getMonth() + 1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
+                applicationNo: applications[i].applicationNo,
+                applicationStage: applications[i].applicationStage,
+                name: fullName,
+                address: applications[i].address,
+                contactNo: client.contactNo
             }
             
+            data.results.push(applicationObj);            
         }
         
         res.render("admin_application_dashboard", data);
@@ -283,7 +279,7 @@ router.get('/search', isPrivate, async (req, res) => {
         console.log("clientNameResult: " + clientNameResult)
     
         for (var i = 0; i < clientNameResult.length; i++)
-            clientAppResult = clientAppResult.concat(await Application.find({applicantNo: clientNameResult[i]._id})) 
+            clientAppResult = clientAppResult.concat(await Application.find({applicantNo: clientNameResult[i]._id, archived: false})) 
         
         if (typeof clientAppResult != "undefined" && clientAppResult.length != 0)
         {
@@ -291,7 +287,7 @@ router.get('/search', isPrivate, async (req, res) => {
             console.log("22222 *" + typeof clientAppResult + "*") //undefined            
         }
         
-        const addressResult = await Application.find({address: {$regex: req.query.search, $options: 'i'}}) //address
+        const addressResult = await Application.find({address: {$regex: req.query.search, $options: 'i'}, archived: false}) //address
         if (typeof addressResult != "undefined" && addressResult.length != 0)
         {
             allResults = allResults.concat(addressResult)
@@ -300,7 +296,7 @@ router.get('/search', isPrivate, async (req, res) => {
 
         if (isNaN(req.query.search) == false)
         {
-            const appNoResult = await Application.find({applicationNo: req.query.search}) //application number
+            const appNoResult = await Application.find({applicationNo: req.query.search, archived: false}) //application number
             if (typeof appNoResult != "undefined" && appNoResult.length != 0)
             {
                 allResults = allResults.concat(appNoResult)
@@ -377,11 +373,15 @@ router.get('/filter', isPrivate, async (req, res) => {
 
         if (req.query.stage === "All")
         {
-            applications = await Application.find()
+            applications = await Application.find({archived: false})
+        }
+        else if (req.query.stage === "Archived")
+        {
+            applications = await Application.find({archived: true})
         }
         else
         {
-            applications = await Application.find({applicationStage: req.query.stage})
+            applications = await Application.find({applicationStage: req.query.stage, archived: false})
         }   
        
         const data = {
@@ -398,19 +398,16 @@ router.get('/filter', isPrivate, async (req, res) => {
             
             var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
 
-            if (applications[i].archived == false)
-            {
-                var applicationObj = {
-                    startDate: (applications[i].startDate.getMonth()+1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
-                    applicationNo: applications[i].applicationNo,
-                    applicationStage: applications[i].applicationStage,
-                    name: fullName,
-                    address: applications[i].address,
-                    contactNo: client.contactNo
-                }
-
-                data.results.push(applicationObj);
+            var applicationObj = {
+                startDate: (applications[i].startDate.getMonth()+1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
+                applicationNo: applications[i].applicationNo,
+                applicationStage: applications[i].applicationStage,
+                name: fullName,
+                address: applications[i].address,
+                contactNo: client.contactNo
             }
+
+            data.results.push(applicationObj)
         }
 
         res.render('partials\\approw', data.results, function(err, html) {

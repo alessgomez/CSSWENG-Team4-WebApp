@@ -75,7 +75,7 @@ body {
 .status {
     font-family: 'Inter';
     font-weight: bold;
-    background: #00CB9A;
+    background: teal;
     border-radius: 5px;
     color: #FFFFFF;
     font-size: 130%;

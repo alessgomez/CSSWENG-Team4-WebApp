@@ -29,7 +29,7 @@ $(document).ready(function(){
         $("#status").text(stage);
         $("#saved").text("")
 
-        if (stage == "pending-surveyor-visit" || stage == "pending-installation") {
+        if (stage == "Pending Surveyor Visit" || stage == "Pending Installation") {
             $("#saveBtn").prop("disabled", true)
             $("#saveBtn").css("background-color", "gray")
             $("#dateAndTime").show()
@@ -77,7 +77,7 @@ $(document).ready(function(){
             }
         })
 
-        if (newStage == "pending-surveyor-visit") {
+        if (newStage == "Pending Surveyor Visit") {
             var date = $("#inputDate").val()
             var time = $("#inputTime").val()
 
@@ -92,7 +92,7 @@ $(document).ready(function(){
             })
         }
 
-        if (newStage == "pending-installation") {
+        if (newStage == "Pending Installation") {
             var date = $("#inputDate").val()
             var time = $("#inputTime").val()
 

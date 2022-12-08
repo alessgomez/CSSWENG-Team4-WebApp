@@ -137,13 +137,22 @@ th {
     color: #FFFFFF;
 }
 
-td {
-    background: #FFFFFF;
-}
-
 .table-title {
     font-family: 'Inter';
     font-style: normal;
     font-size: 150%;
     font-weight: 600;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:visited {
+    color: black;
+}
+
+#stage {
+    color: teal;
 }
