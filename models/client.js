@@ -28,12 +28,4 @@ const clientSchema = new mongoose.Schema({
     }
 })
 
-clientSchema.index(
-    {
-        firstName: "text",
-        middleName: "text",
-        lastName: "text"
-    }
-  )
-
 module.exports = mongoose.model('Client', clientSchema)

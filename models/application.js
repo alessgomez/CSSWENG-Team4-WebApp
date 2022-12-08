@@ -66,12 +66,6 @@ const applicationSchema = new mongoose.Schema({
     }
 })
 
-applicationSchema.index(
-    {
-        address: "text"
-    }
-  )
-
 module.exports = mongoose.model('Application', applicationSchema)
 
 /** */

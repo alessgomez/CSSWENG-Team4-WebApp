@@ -270,9 +270,12 @@ router.get('/search', isPrivate, async (req, res) => {
         let allResults = []
         console.log("11111 updated " + isNaN(req.query.search) + " " + req.query.search)
 
-        const clientNameResult = await Client.find({$text: {$search: req.query.search}}) //client name 
+        //{name: {$regex: req.query.q, $options: 'i'}}
+        //db.customers.find({$or: [{Country: "Germany"}, {Country: "France"}]})
+        //const clientNameResult = await Client.find({$text: {$search: req.query.search}}) //client name 
+        const clientNameResult = await Client.find({$or: [{firstName: {$regex: req.query.search, $options: 'i'}}, {middleName: {$regex: req.query.search, $options: 'i'}}, {lastName: {$regex: req.query.search, $options: 'i'}}]})
         console.log("clientNameResult: " + clientNameResult)
-        
+    
         for (var i = 0; i < clientNameResult.length; i++)
             clientAppResult = clientAppResult.concat(await Application.find({applicantNo: clientNameResult[i]._id})) 
         
@@ -282,7 +285,7 @@ router.get('/search', isPrivate, async (req, res) => {
             console.log("22222 *" + typeof clientAppResult + "*") //undefined            
         }
         
-        const addressResult = await Application.find({$text: {$search: req.query.search}}) //address
+        const addressResult = await Application.find({address: {$regex: req.query.search, $options: 'i'}}) //address
         if (typeof addressResult != "undefined" && addressResult.length != 0)
         {
             allResults = allResults.concat(addressResult)
