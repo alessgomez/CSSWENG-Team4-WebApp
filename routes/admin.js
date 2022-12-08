@@ -132,22 +132,22 @@ router.get('/applications/:id', isPrivate, getApplication, async (req, res) => {
             case 'Uploading Requirements': b1 = true; stageColor = 'teal'; 
             break;
             
-            case 'Adding Representative': b2= true; d1 = false; stageColor = 'yellow'; 
+            case 'Adding Representative': b2= true; d1 = false; stageColor = '#DAA520'; 
             break;
             
             case 'Printing and Preparing Documents': b3 = true;  d1 = false; d2 = false; stageColor = 'purple'; 
             break;
             
-            case 'Waiting for Survey Schedule': b4 = true; d1 = false; d2 = false; d3 = false; enableUpdate = true; stageColor = 'red'; 
+            case 'Waiting for Survey Schedule': b4 = true; d1 = false; d2 = false; d3 = false; enableUpdate = true; stageColor = '#B80000'; 
             break;
             
-            case 'Pending Surveyor Visit': b5 = true; d1 = false; d2 = false; d3 = false; d4 = false; enableUpdate = true; stageColor = 'brown'; 
+            case 'Pending Surveyor Visit': b5 = true; d1 = false; d2 = false; d3 = false; d4 = false; enableUpdate = true; stageColor = '#7B3F00'; 
             break;
 
-            case 'Purchasing of Materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; enableUpdate = false; stageColor = 'pink'; 
+            case 'Purchasing of Materials': b6 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; enableUpdate = false; stageColor = '#db7093'; 
             break;
 
-            case 'Pending Onsite Visit': b7 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; enableUpdate = true; stageColor = 'orange'; 
+            case 'Pending Onsite Visit': b7 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; enableUpdate = true; stageColor = '#FF8C00'; 
             break;
 
             case 'Pending Installation': b8 = true; d1 = false; d2 = false; d3 = false; d4 = false; d5 = false; d6 = false; d7 = false; enableUpdate = true; stageColor = 'blue'; 
@@ -248,22 +248,22 @@ router.get('/applications', isPrivate, async (req, res) => {
                 case 'Uploading Requirements': stageColor = 'teal'; 
                 break;
                 
-                case 'Adding Representative': stageColor = 'yellow';
+                case 'Adding Representative': stageColor = '#DAA520';
                 break;
                 
                 case 'Printing and Preparing Documents': stageColor = 'purple';
                 break;
                 
-                case 'Waiting for Survey Schedule': stageColor = 'red';
+                case 'Waiting for Survey Schedule': stageColor = '#B80000';
                 break;
                 
-                case 'Pending Surveyor Visit': stageColor = 'brown';
+                case 'Pending Surveyor Visit': stageColor = '#7B3F00';
                 break;
     
-                case 'Purchasing of Materials': stageColor = 'pink';
+                case 'Purchasing of Materials': stageColor = '#db7093';
                 break;
     
-                case 'Pending Onsite Visit': stageColor = 'orange';
+                case 'Pending Onsite Visit': stageColor = '#FF8C00';
                 break;
     
                 case 'Pending Installation': stageColor = 'blue';
@@ -300,6 +300,8 @@ router.get('/search', isPrivate, async (req, res) => {
     try{
         let clientAppResult = []
         let allResults = []
+        let stageColor
+        
         console.log("11111 updated " + isNaN(req.query.search) + " " + req.query.search)
 
         //{name: {$regex: req.query.q, $options: 'i'}}
@@ -336,6 +338,7 @@ router.get('/search', isPrivate, async (req, res) => {
 
         const uniqResults = [...allResults.reduce((map, obj) => map.set(obj.applicationNo, obj), new Map()).values()]  //NOTE: Retains latest copy (so not in chronological order based on date)
 
+     
         const data = {
             script: ["admin_dashboard"],
             style: ["admin_application_dashboard"],
@@ -350,13 +353,43 @@ router.get('/search', isPrivate, async (req, res) => {
             
             var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
 
+            switch (uniqResults[i].applicationStage) {
+                case 'Uploading Requirements': stageColor = 'teal'; 
+                break;
+                
+                case 'Adding Representative': stageColor = '#DAA520';
+                break;
+                
+                case 'Printing and Preparing Documents': stageColor = 'purple';
+                break;
+                
+                case 'Waiting for Survey Schedule': stageColor = '#B80000';
+                break;
+                
+                case 'Pending Surveyor Visit': stageColor = '#7B3F00';
+                break;
+    
+                case 'Purchasing of Materials': stageColor = '#db7093';
+                break;
+    
+                case 'Pending Onsite Visit': stageColor = '#FF8C00';
+                break;
+    
+                case 'Pending Installation': stageColor = 'blue';
+                break;
+    
+                case 'Completed': stageColor = 'green';
+                break;
+            }
+
             var applicationObj = {
                 startDate: (uniqResults[i].startDate.getMonth()+1) + "/" + uniqResults[i].startDate.getDate() + "/" + uniqResults[i].startDate.getFullYear(),
                 applicationNo: uniqResults[i].applicationNo,
                 applicationStage: uniqResults[i].applicationStage,
                 name: fullName,
                 address: uniqResults[i].address,
-                contactNo: client.contactNo
+                contactNo: client.contactNo,
+                color: stageColor
             }
 
             data.results.push(applicationObj);
@@ -400,6 +433,7 @@ router.delete('/applications/delete/:id', isPrivate, getApplication, async (req,
 router.get('/filter', isPrivate, async (req, res) => {
     try {
         let applications
+        let stageColor
 
         if (req.query.stage === "All")
         {
@@ -428,13 +462,44 @@ router.get('/filter', isPrivate, async (req, res) => {
             
             var fullName = client.firstName + " " + client.middleName + " " + client.lastName;
 
+            switch (applications[i].applicationStage) {
+                case 'Uploading Requirements': stageColor = 'teal'; 
+                break;
+                
+                case 'Adding Representative': stageColor = '#DAA520';
+                break;
+                
+                case 'Printing and Preparing Documents': stageColor = 'purple';
+                break;
+                
+                case 'Waiting for Survey Schedule': stageColor = '#B80000';
+                break;
+                
+                case 'Pending Surveyor Visit': stageColor = '#7B3F00';
+                break;
+    
+                case 'Purchasing of Materials': stageColor = '#db7093';
+                break;
+    
+                case 'Pending Onsite Visit': stageColor = '#FF8C00';
+                break;
+    
+                case 'Pending Installation': stageColor = 'blue';
+                break;
+    
+                case 'Completed': stageColor = 'green';
+                break;
+            }
+
+
             var applicationObj = {
                 startDate: (applications[i].startDate.getMonth()+1) + "/" + applications[i].startDate.getDate() + "/" + applications[i].startDate.getFullYear(),
                 applicationNo: applications[i].applicationNo,
                 applicationStage: applications[i].applicationStage,
                 name: fullName,
                 address: applications[i].address,
-                contactNo: client.contactNo
+                contactNo: client.contactNo,
+                color: stageColor
             }
 
             data.results.push(applicationObj)
